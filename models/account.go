@@ -3,7 +3,7 @@ package models
 type Account struct {
 	ID            uint   `gorm:"primaryKey"`
 	Name          string `gorm:"type:varchar(32)"`
-	Password      string
+	Password      string `json:"-"`
 	Secret        string
 	Type          uint
 	PremiumEndsAt int `gorm:"column:premium_ends_at"`
