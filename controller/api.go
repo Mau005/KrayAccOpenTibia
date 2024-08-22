@@ -89,7 +89,7 @@ func (ac *ApiController) GenerateJWT(account models.Account) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString(utils.PasswordSecurityDefaul)
+	tokenString, err := token.SignedString([]byte(utils.PasswordSecurityDefaul))
 	if err != nil {
 		return "", err
 	}
