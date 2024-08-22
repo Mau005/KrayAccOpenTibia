@@ -1,20 +1,18 @@
-Database:
-  host: 127.0.0.1
-  port: 3306
-  user: root
-  password: 12345
-  name: tfs
-  engine: mysql #mysql, sqlite
-  sqlitepath: kullin.db #if mysql is active not found
+MySQL:
+  Host: 127.0.0.1
+  Port: 3306
+  UserName: root
+  DBPassword: 12345
+  DataBase: tfs
 ServerWeb:
-  ip: 0.0.0.0 #generic ip local 
-  port: 8080 #port webserive active
-  debug: true #log debug db other errors details
+  IP: 0.0.0.0 #generic ip local 
+  Port: 8080 #port webserive active
+  Debug: true #log debug db other errors details
   ApiMode: false #If enabled, it will not display the web, and will only leave the endpoints for connections through servers
   LengthSecurity: 128 #len security generate token active
 Certificate:
 # If you activate the certificate, the web will enter secure mode 
 # and activate cookie securite True, it will only work with https requests
-  Status: false #certification ssl for https in webservice
+  ProtocolHTTPS: false #certification ssl for https in webservice
   Chain: /etc/letsencrypt/live/tibiakray.info/fullchain.pem
   PrivKey: /etc/letsencrypt/live/tibiakray.info/privkey.pem

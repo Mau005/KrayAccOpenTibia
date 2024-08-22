@@ -25,3 +25,11 @@ const (
 	CtxAccountEmail
 	CtxAccountName
 )
+
+const (
+	// Encryp passwd token
+	UpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	LowerCase = "abcdefghijklmnopqrstuvwxyz"
+	Digits    = "0123456789"
+	Special   = "!@#$%^&*()_-+=[]{}|;:,.<>?~"
+)
