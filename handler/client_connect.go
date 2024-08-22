@@ -14,10 +14,10 @@ import (
 	"github.com/Mau005/KrayAccOpenTibia/models"
 )
 
-type HandlerOldSession struct{}
+type HandlerClientConnect struct{}
 
 // Define your handlers
-func (HO *HandlerOldSession) CacheInfoHandler(w http.ResponseWriter, r *http.Request) {
+func (hcc *HandlerClientConnect) CacheInfoHandler(w http.ResponseWriter, r *http.Request) {
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -35,10 +35,10 @@ func (HO *HandlerOldSession) CacheInfoHandler(w http.ResponseWriter, r *http.Req
 		"gamingyoutubestreams": 0,
 		"gamingyoutubeviewer":  0,
 	}
-	HO.RespondJSON(w, response)
+	hcc.RespondJSON(w, response)
 }
 
-func (HO *HandlerOldSession) EventScheduleHandler(w http.ResponseWriter, r *http.Request) {
+func (hcc *HandlerClientConnect) EventScheduleHandler(w http.ResponseWriter, r *http.Request) {
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -46,17 +46,17 @@ func (HO *HandlerOldSession) EventScheduleHandler(w http.ResponseWriter, r *http
 
 	}
 	fmt.Println(string(body))
-	// Placeholder XML parsing, replace with your own logic
+	// Placehcclder XML parsing, replace with your own logic
 	eventList := []map[string]interface{}{} // Populate this with actual data
 
 	response := map[string]interface{}{
 		"eventlist":           eventList,
 		"lastupdatetimestamp": time.Now().Unix(),
 	}
-	HO.RespondJSON(w, response)
+	hcc.RespondJSON(w, response)
 }
 
-func (HO *HandlerOldSession) BoostedCreatureHandler(w http.ResponseWriter, r *http.Request) {
+func (hcc *HandlerClientConnect) BoostedCreatureHandler(w http.ResponseWriter, r *http.Request) {
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -68,17 +68,17 @@ func (HO *HandlerOldSession) BoostedCreatureHandler(w http.ResponseWriter, r *ht
 		RaceID int
 	}
 	if err := db.DB.Raw("SELECT * FROM boosted_creature").Scan(&boostedCreature).Error; err != nil {
-		HO.RespondError(w, "Error fetching boosted creature data.")
+		hcc.RespondError(w, "Error fetching boosted creature data.")
 		return
 	}
 	response := map[string]interface{}{
 		"boostedcreature": true,
 		"raceid":          boostedCreature.RaceID,
 	}
-	HO.RespondJSON(w, response)
+	hcc.RespondJSON(w, response)
 }
 
-func (HO *HandlerOldSession) loginHandler(answerExpected models.AnswerExpected, w http.ResponseWriter) (err error) {
+func (hcc *HandlerClientConnect) loginHandler(answerExpected models.AnswerExpected, w http.ResponseWriter) (err error) {
 
 	var accountCtl controller.AccountController
 
@@ -140,7 +140,7 @@ func (HO *HandlerOldSession) loginHandler(answerExpected models.AnswerExpected, 
 	return
 }
 
-func (HO *HandlerOldSession) PreparingHanlderClient(w http.ResponseWriter, r *http.Request) {
+func (hcc *HandlerClientConnect) PreparingHanlderClient(w http.ResponseWriter, r *http.Request) {
 	var answer models.AnswerExpected
 
 	err := json.NewDecoder(r.Body).Decode(&answer)
@@ -150,20 +150,20 @@ func (HO *HandlerOldSession) PreparingHanlderClient(w http.ResponseWriter, r *ht
 
 	switch answer.Type {
 	case "login":
-		HO.loginHandler(answer, w)
+		hcc.loginHandler(answer, w)
 
 	}
 }
 
 // Helper functions
-func (HO *HandlerOldSession) RespondJSON(w http.ResponseWriter, data interface{}) {
+func (hcc *HandlerClientConnect) RespondJSON(w http.ResponseWriter, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 
 }
 
-func (HO *HandlerOldSession) RespondError(w http.ResponseWriter, msg string) {
+func (hcc *HandlerClientConnect) RespondError(w http.ResponseWriter, msg string) {
 	w.WriteHeader(http.StatusConflict)
-	HO.RespondJSON(w, map[string]interface{}{
+	hcc.RespondJSON(w, map[string]interface{}{
 		"errorCode":    3,
 		"errorMessage": msg,
 	})
