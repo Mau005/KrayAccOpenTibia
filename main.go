@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Mau005/KrayAcc/db"
-	"github.com/Mau005/KrayAcc/router"
+	"github.com/Mau005/KrayAccOpenTibia/db"
+	"github.com/Mau005/KrayAccOpenTibia/router"
 )
 
 func main() {

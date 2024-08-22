@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/Mau005/KrayAcc/models"
+	"github.com/Mau005/KrayAccOpenTibia/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

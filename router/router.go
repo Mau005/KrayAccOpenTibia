@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Mau005/KrayAcc/handler"
+	"github.com/Mau005/KrayAccOpenTibia/handler"
 	"github.com/gorilla/mux"
 )
 

@@ -1,8 +1,10 @@
-module github.com/Mau005/KrayAcc
+module github.com/Mau005/KrayAccOpenTibia
 
 go 1.23.0
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/gorilla/context v1.1.2
 	github.com/gorilla/mux v1.8.1
 	gorm.io/driver/mysql v1.5.7
 	gorm.io/gorm v1.25.11

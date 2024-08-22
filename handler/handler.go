@@ -9,9 +9,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Mau005/KrayAcc/controller"
-	"github.com/Mau005/KrayAcc/db"
-	"github.com/Mau005/KrayAcc/models"
+	"github.com/Mau005/KrayAccOpenTibia/controller"
+	"github.com/Mau005/KrayAccOpenTibia/db"
+	"github.com/Mau005/KrayAccOpenTibia/models"
 )
 
 type HandlerOldSession struct{}

@@ -4,8 +4,11 @@ import (
 	"crypto/sha1"
 	"encoding/hex"
 	"log"
+	"time"
 
-	"github.com/Mau005/KrayAcc/models"
+	"github.com/Mau005/KrayAccOpenTibia/models"
+	"github.com/Mau005/KrayAccOpenTibia/utils"
+	"github.com/dgrijalva/jwt-go"
 )
 
 type ApiController struct{}
@@ -72,4 +75,23 @@ func (ac *ApiController) PreparingCharacter(players []models.Player) []models.Cl
 		log.Println(characters)
 	}
 	return characters
+}
+
+func (ac *ApiController) GenerateJWT(account models.Account) (string, error) {
+	expirationTime := time.Now().Add(utils.TimeSessionMinute * time.Minute)
+	claims := &models.Claim{
+		AccountName: account.Name,
+		Email:       account.Email,
+		IDAccount:   account.ID,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: expirationTime.Unix(),
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, err := token.SignedString(utils.PasswordSecurityDefaul)
+	if err != nil {
+		return "", err
+	}
+	return tokenString, nil
 }
