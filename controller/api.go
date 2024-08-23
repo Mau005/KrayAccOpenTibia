@@ -3,7 +3,11 @@ package controller
 import (
 	"crypto/sha1"
 	"encoding/hex"
+	"encoding/xml"
+	"fmt"
+	"io"
 	"log"
+	"net"
 	"time"
 
 	"github.com/Mau005/KrayAccOpenTibia/models"
@@ -94,4 +98,96 @@ func (ac *ApiController) GenerateJWT(account models.Account) (string, error) {
 		return "", err
 	}
 	return tokenString, nil
+}
+
+func (ac *ApiController) CheckOnlineServer(forceReload bool, ip string, port string, waitAnswerTime time.Duration) *models.ServerStatus {
+	packet := []byte{6, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}
+	status := &models.ServerStatus{}
+
+	if !forceReload {
+		return status
+	}
+
+	status.IsOnline = false
+	conn, err := net.DialTimeout("tcp", net.JoinHostPort(ip, port), waitAnswerTime)
+	if err != nil {
+		fmt.Println("Error connecting:", err)
+		return status
+	}
+	defer conn.Close()
+
+	_, err = conn.Write(packet)
+	if err != nil {
+		fmt.Println("Error writing packet:", err)
+		return status
+	}
+
+	answer, err := io.ReadAll(conn)
+	if err != nil {
+		fmt.Println("Error reading response:", err)
+		return status
+	}
+
+	if len(answer) == 0 {
+		return status
+	}
+
+	var response struct {
+		XMLName xml.Name `xml:"response"`
+		Players struct {
+			Online int `xml:"online,attr"`
+			Max    int `xml:"max,attr"`
+			Peak   int `xml:"peak,attr"`
+		} `xml:"players"`
+		Map struct {
+			Name   string `xml:"name,attr"`
+			Author string `xml:"author,attr"`
+			Width  int    `xml:"width,attr"`
+			Height int    `xml:"height,attr"`
+		} `xml:"map"`
+		NPCs struct {
+			Total int `xml:"total,attr"`
+		} `xml:"npcs"`
+		Monsters struct {
+			Total int `xml:"total,attr"`
+		} `xml:"monsters"`
+		ServerInfo struct {
+			Uptime     string `xml:"uptime,attr"`
+			Location   string `xml:"location,attr"`
+			URL        string `xml:"url,attr"`
+			Client     string `xml:"client,attr"`
+			Server     string `xml:"server,attr"`
+			ServerName string `xml:"serverName,attr"`
+			IP         string `xml:"ip,attr"`
+		} `xml:"serverinfo"`
+		MOTD string `xml:"motd"`
+	}
+
+	err = xml.Unmarshal(answer, &response)
+	if err != nil {
+		fmt.Println("Error unmarshalling XML:", err)
+		return status
+	}
+
+	status.IsOnline = true
+	status.PlayersCount = response.Players.Online
+	status.PlayersMaxCount = response.Players.Max
+	status.PlayersPeakCount = response.Players.Peak
+	status.MapName = response.Map.Name
+	status.MapAuthor = response.Map.Author
+	status.MapWidth = response.Map.Width
+	status.MapHeight = response.Map.Height
+	status.NPCs = response.NPCs.Total
+	status.Monsters = response.Monsters.Total
+	status.Uptime = response.ServerInfo.Uptime
+	status.Location = response.ServerInfo.Location
+	status.URL = response.ServerInfo.URL
+	status.Client = response.ServerInfo.Client
+	status.Server = response.ServerInfo.Server
+	status.ServerName = response.ServerInfo.ServerName
+	status.ServerIP = response.ServerInfo.IP
+	status.MOTD = response.MOTD
+
+	return status
+
 }
