@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"net/http"
 
 	"github.com/Mau005/KrayAccOpenTibia/config"
@@ -16,11 +16,28 @@ func main() {
 	if err != nil {
 		utils.ErrorFatal(err.Error())
 	}
-	err = db.ConnectionMysql("root", "12345", "127.0.0.1", "tfs", 3306, true)
+	err = db.ConnectionMysql(config.VarEnviroment.DB.UserName, config.VarEnviroment.DB.DBPassword, config.VarEnviroment.DB.Host, config.VarEnviroment.DB.DataBase, config.VarEnviroment.DB.Port, config.VarEnviroment.ServerWeb.Debug)
 	if err != nil {
 		utils.ErrorFatal(err.Error())
 	}
 
+	configureIP := fmt.Sprintf("%s:%d", config.VarEnviroment.ServerWeb.IP, config.VarEnviroment.ServerWeb.Port)
 	r := router.NewRouter()
-	log.Fatalln(http.ListenAndServe(":7575", r))
+
+	if config.VarEnviroment.Certificate.ProtolTLS {
+		utils.InfoBlue(fmt.Sprintf("[HTTPS] Starting the HTTPS server: https://%s/", configureIP))
+		server := &http.Server{
+			Addr:    configureIP,
+			Handler: r,
+		}
+		if err := server.ListenAndServeTLS(config.VarEnviroment.Certificate.Chain, config.VarEnviroment.Certificate.PrivKey); err != nil {
+			utils.ErrorFatal("Error starting TLS server: " + err.Error())
+		}
+	} else {
+		utils.Warn("TLS is recommended for processing HTTPS protected routes")
+		utils.InfoBlue(fmt.Sprintf("[HTTP] Starting the HTTP server: http://%s/", configureIP))
+		if err := http.ListenAndServe(configureIP, r); err != nil {
+			utils.ErrorFatal("Error starting HTTP server: " + err.Error())
+		}
+	}
 }

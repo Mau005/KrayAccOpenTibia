@@ -1,18 +1,22 @@
-MySQL:
-  Host: 127.0.0.1
-  Port: 3306
-  UserName: root
-  DBPassword: 12345
-  DataBase: tfs
+#These variables will be used as long as EnvironmentVariables is defined as false 
+# MySQL:
+#   Host: 127.0.0.1
+#   Port: 3306
+#   UserName: root
+#   DBPassword: 12345
+#   DataBase: krayacc
 ServerWeb:
   IP: 0.0.0.0 #generic ip local 
-  Port: 8080 #port webserive active
+  Port: 8000 #port webserive active
   Debug: true #log debug db other errors details
-  ApiMode: false #If enabled, it will not display the web, and will only leave the endpoints for connections through servers
+  ApiMode: false #If enabled, it disables all web routes, but the API will always work
   LengthSecurity: 128 #len security generate token active
+  EnvironmentVariables: true
+  UrlItemView: https://item-images.ots.me/1285/
+  UrlOutfitsView: https://outfit-images.ots.me/1285/
 Certificate:
 # If you activate the certificate, the web will enter secure mode 
 # and activate cookie securite True, it will only work with https requests
-  ProtocolHTTPS: false #certification ssl for https in webservice
+  ProtolTLS: false #certification ssl for https in webservice
   Chain: /etc/letsencrypt/live/tibiakray.info/fullchain.pem
   PrivKey: /etc/letsencrypt/live/tibiakray.info/privkey.pem

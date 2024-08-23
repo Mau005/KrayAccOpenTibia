@@ -6,6 +6,7 @@ import (
 	"log"
 	"math/big"
 	"os"
+	"strconv"
 
 	"github.com/Mau005/KrayAccOpenTibia/utils"
 	"github.com/go-yaml/yaml"
@@ -23,25 +24,28 @@ ____  __.                      _____
    `
 
 type ServerWeb struct {
-	IP             string `yaml:"IP"`
-	Port           string `yaml:"Port"`
-	Debug          bool   `yaml:"Debug"`
-	ApiMode        bool   `yaml:"ApiMode"`
-	LengthSecurity int    `yaml:"LengthSecurity"`
+	IP                   string `yaml:"IP"`
+	Port                 uint16 `yaml:"Port"`
+	Debug                bool   `yaml:"Debug"`
+	ApiMode              bool   `yaml:"ApiMode"`
+	LengthSecurity       int    `yaml:"LengthSecurity"`
+	EnvironmentVariables bool   `yaml:"EnvironmentVariables"`
+	UrlItemView          string `yaml:"UrlItemView"`
+	UrlOutfitsView       string `yaml:"UrlOutfitsView"`
 }
 
 type MySQL struct {
 	Host       string `yaml:"Host"`
-	Port       uint   `yaml:"Port"`
+	Port       uint16 `yaml:"Port"`
 	UserName   string `yaml:"UserName"`
 	DBPassword string `yaml:"DBPassword"`
 	DataBase   string `yaml:"DataBase"`
 }
 
 type Certificate struct {
-	ProtocolHTTPS bool   `yaml:"ProtocolHTTPS"`
-	Chain         string `yaml:"Chain"`
-	PrivKey       string `yaml:"PrivKey"`
+	ProtolTLS bool   `yaml:"ProtocolHTTPS"`
+	Chain     string `yaml:"Chain"`
+	PrivKey   string `yaml:"PrivKey"`
 }
 
 type Configuration struct {
@@ -76,9 +80,27 @@ func Load(filename string) error {
 	} else {
 		utils.Info(fmt.Sprintf("Security Active %d\n", VarEnviroment.ServerWeb.LengthSecurity))
 	}
+	if VarEnviroment.ServerWeb.EnvironmentVariables {
+		utils.Info("MySQL variables are loaded from environment")
+		VarEnviroment.DB.Host = os.Getenv("MYSQL_HOST")
+		VarEnviroment.DB.Port = parseEnvUint(os.Getenv("MYSQL_PORT"), 3306)
+		VarEnviroment.DB.UserName = os.Getenv("MYSQL_USER")
+		VarEnviroment.DB.DBPassword = os.Getenv("MYSQL_PASSWORD")
+		VarEnviroment.DB.DataBase = os.Getenv("MYSQL_DATABASE")
+	} else {
+		utils.Info("MySQL variables are loaded to config.yml")
+	}
 	utils.Info("Environment variables are added OK")
 
 	return nil
+}
+func parseEnvUint(key string, defaultValue uint16) uint16 {
+	if value, exists := os.LookupEnv(key); exists {
+		if parsedValue, err := strconv.ParseUint(value, 10, 16); err == nil {
+			return uint16(parsedValue)
+		}
+	}
+	return defaultValue
 }
 
 func generateRandomCharacter(charset string) string {
