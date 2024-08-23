@@ -15,6 +15,8 @@ var DB *gorm.DB
 func AutoMigrate(DB *gorm.DB) {
 	DB.AutoMigrate(&models.Account{})
 	DB.AutoMigrate(&models.Player{})
+	DB.AutoMigrate(&models.NewsTicker{})
+	DB.AutoMigrate(&models.Towns{})
 	utils.Info("Update MySQL")
 }
 

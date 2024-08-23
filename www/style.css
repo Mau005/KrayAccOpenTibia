@@ -279,9 +279,17 @@ footer {
     font-size: 24px;
 }
 
+
 table {
     width: 100%;
     border-collapse: collapse;
+}
+td img {
+    /*max-width: 200%;  Limita el ancho máximo de la imagen al 100% del contenedor td */
+    height: auto; /* Mantiene la proporción de la imagen */
+    display: block; /* Evita el espacio extra debajo de la imagen */
+    margin-left: -24px; /* Ajusta el margen izquierdo para desplazar la imagen hacia la izquierda */
+    margin-top: -24px;
 }
 
 thead {

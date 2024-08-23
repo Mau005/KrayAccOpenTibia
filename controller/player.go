@@ -7,7 +7,7 @@ import (
 
 type PlayerController struct{}
 
-func (pc *PlayerController) GetPlayerWithAccountID(accountID uint) []models.Player {
+func (pc *PlayerController) GetPlayerWithAccountID(accountID int) []models.Player {
 	var player []models.Player
 	if err := db.DB.Where("account_id = ?", accountID).Find(&player).Error; err != nil {
 		return player

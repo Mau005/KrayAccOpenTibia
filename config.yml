@@ -12,8 +12,8 @@ ServerWeb:
   ApiMode: false #If enabled, it disables all web routes, but the API will always work
   LengthSecurity: 128 #len security generate token active
   EnvironmentVariables: true
-  UrlItemView: https://item-images.ots.me/1285/
-  UrlOutfitsView: https://outfit-images.ots.me/1285/
+  UrlItemView: https://item-images.ots.me/1285
+  UrlOutfitsView: https://outfit-images.ots.me/1285 #animoutfit.php?id=128&addons=3&head=123&body=12&legs=23&feet=31&mount=0&direction=2
 Certificate:
 # If you activate the certificate, the web will enter secure mode 
 # and activate cookie securite True, it will only work with https requests

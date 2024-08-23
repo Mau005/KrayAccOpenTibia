@@ -38,13 +38,13 @@ type ClientCharacters struct {
 	Name                             string `json:"name"`
 	IsMale                           bool   `json:"ismale"`
 	Tutorial                         bool   `json:"tutorial"`
-	Level                            uint16 `json:"level"`
-	Vocation                         uint8  `json:"vocation"`
-	OutfitID                         uint16 `json:"outfitid"`
-	HeadColor                        uint16 `json:"headcolor"`
-	TorsoColor                       uint16 `json:"torsocolor"`
-	LegsColor                        uint16 `json:"legscolor"`
-	DetailColor                      uint16 `json:"detailcolor"`
+	Level                            int    `json:"level"`
+	Vocation                         int    `json:"vocation"`
+	OutfitID                         int    `json:"outfitid"`
+	HeadColor                        int    `json:"headcolor"`
+	TorsoColor                       int    `json:"torsocolor"`
+	LegsColor                        int    `json:"legscolor"`
+	DetailColor                      int    `json:"detailcolor"`
 	AddonsFlags                      uint8  `json:"addonsflags"`
 	IsHidden                         bool   `json:"ishidden"`
 	IsTournamentParticipant          bool   `json:"istournamentparticipant"`
