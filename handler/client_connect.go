@@ -114,7 +114,7 @@ func (hcc *HandlerClientConnect) loginHandler(answerExpected models.AnswerExpect
 	world.ExternalAddRessUnProtected = "127.0.0.1"
 	world.ExternalAddress = "127.0.0.1"
 	world.ExternalAddressProtected = "127.0.0.1"
-	world.ExternalPort = 7171
+	world.ExternalPort = 7172
 	world.ID = 0
 	world.PvpType = 1
 	world.Location = "CL"

@@ -47,9 +47,6 @@ body {
 }
 
 
-
-
-
 nav a {
     color: #fff;
     text-decoration: none;
@@ -139,6 +136,9 @@ nav a {
     border-radius: 5px;
     border: none;
     outline: none;
+}
+.card input:hover{
+    background-color: #282c34;
 }
 
 .card input[type="submit"] {
@@ -272,13 +272,14 @@ footer {
 .table-header {
     background-color: #61dafb;
     padding: 15px;
+    height: 10px;
     text-align: center;
 }
 
 .table-header h2 {
     margin: 0;
     color: #282c34;
-    font-size: 24px;
+    font-size: 16px;
 }
 
 
@@ -286,13 +287,7 @@ table {
     width: 100%;
     border-collapse: collapse;
 }
-td img {
-    /*max-width: 200%;  Limita el ancho máximo de la imagen al 100% del contenedor td */
-    height: auto; /* Mantiene la proporción de la imagen */
-    display: block; /* Evita el espacio extra debajo de la imagen */
-    margin-left: -24px; /* Ajusta el margen izquierdo para desplazar la imagen hacia la izquierda */
-    margin-top: -24px;
-}
+
 
 thead {
     background-color: #20232a;
@@ -391,8 +386,8 @@ tbody td:nth-child(1) {
 }
 
 .image-cell {
-    width: 30px; /* Ajusta el ancho según sea necesario */
-    height: 10px; /* Ajusta la altura según sea necesario */
+    width: 40px; /* Ajusta el ancho según sea necesario */
+    height: 40px; /* Ajusta la altura según sea necesario */
     padding: 0;
     margin: 0;
     text-align: center; /* Centra el contenido horizontalmente */

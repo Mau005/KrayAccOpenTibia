@@ -42,14 +42,14 @@
             </tr>
           </thead>
           <tbody>
-          {{range .NewsTicket}}
+            {{range .NewsTicket}}
           
-            <tr>
-              <td class="image-cell">
-                <img src="www/img/{{.Icon}}" alt="Imagen" class="table-icon">
-            </td>
-              <td>{{.Ticket}} by {{.ByCharacter}}</td>
-            </tr>
+              <tr>
+                <td class="image-cell">
+                  <img src="www/img/{{.Icon}}" alt="Imagen" class="table-icon">
+                </td>
+                <td>{{.Ticket}}. by {{.ByCharacter}}</td>
+              </tr>
             {{end}}
 
           </tbody>
@@ -58,12 +58,19 @@
     </div>
     <aside class="sidebar">
       <div class="card">
+        {{if .Authentication}}
+        <h2>Welcome Mamá esta presa</h2>
+        
+        {{else}}
         <h2>Login</h2>
-        <form action="#" method="post">
-          <input type="text" name="username" placeholder="Nombre de usuario">
-          <input type="password" name="password" placeholder="Contraseña">
-          <input type="submit" value="Iniciar sesión">
-        </form>
+        <div>
+          <input type="text" id="user" placeholder="Nombre de usuario">
+            <input type="password" id="password" placeholder="Contraseña">
+            <input onclick="loginUser()" type="submit" value="Iniciar sesión">
+        </div>
+        {{end}}
+        
+        
       </div>
       <div class="card">
         <div class="announcement-table">
@@ -98,5 +105,32 @@
     <p>&copy; 2024 AinhoSoft. Todos los derechos reservados.</p>
   </footer>
 </body>
+<script src="/www/js/promise.js"></script>
+<script>
+  function loginUser(){
+    let user = document.getElementById("user").value;
+    let password = document.getElementById("password").value;
+
+    if (password == "" || user == ""){
+      document.getElementById("spanlogin").innerHTML= "Credenciales incorrectas"
+    }
+
+    sendRequest("/login", "POST", {
+      "user":user,
+      "password": password
+    }).then(response => {
+      location.reload();
+      
+
+    }).catch(error => {
+
+      console.log(error)
+
+    });
+
+
+
+  }
+</script>
 
 </html>

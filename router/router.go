@@ -1,9 +1,6 @@
 package router
 
 import (
-	"fmt"
-	"io"
-	"log"
 	"net/http"
 
 	"github.com/Mau005/KrayAccOpenTibia/config"
@@ -19,25 +16,29 @@ func NewRouter() *mux.Router {
 	fs := http.FileServer(http.Dir("./www"))
 
 	r := mux.NewRouter()
+	r.Use(middleware.AuthPathPublicMiddleware)
+	r.HandleFunc("/get_news_ticket", NewsTickerHandler.GetTicket).Methods("GET") //API PUBLIC
+	s := r.PathPrefix("/auth").Subrouter()
+	s.Use(middleware.AuthMiddleware)
 	if !config.VarEnviroment.ServerWeb.ApiMode {
 		r.PathPrefix("/www/").Handler(http.StripPrefix("/www/", fs))
 
 		var homeHandler handler.HomeHandler
-		r.HandleFunc("/", homeHandler.GetHome).Methods("GET")
+		r.HandleFunc("/", homeHandler.GetHome).Methods("GET") //Public
+		s.HandleFunc("/", homeHandler.GetHome).Methods("GET") //Authenticate
 		//Not Found
-		r.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			//check posible enter web
-			bodyResponde, err := io.ReadAll(r.Body)
-			if err != nil {
-				log.Println("error io read", err)
-				return
-			}
-			fmt.Println(string(bodyResponde))
-		})
+		// r.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// 	bodyResponde, err := io.ReadAll(r.Body)
+		// 	if err != nil {
+		// 		log.Println("error io read", err)
+		// 		return
+		// 	}
+		// 	fmt.Println(string(bodyResponde))
+		// })
 
 		r.HandleFunc("/login", handlerAccount.Authentication).Methods("POST")
+
 	}
-	r.HandleFunc("/get_news_ticket", NewsTickerHandler.GetTicket).Methods("GET") //API PUBLIC
 
 	// Router client connections
 	ctl := r.PathPrefix("/client").Subrouter()
@@ -48,9 +49,6 @@ func NewRouter() *mux.Router {
 	ctl.HandleFunc("/eventschedule", handlerClientConnect.EventScheduleHandler)
 	ctl.HandleFunc("/boostedcreature", handlerClientConnect.BoostedCreatureHandler)
 	ctl.HandleFunc("/login", handlerClientConnect.PreparingHanlderClient)
-
-	s := r.PathPrefix("/auth").Subrouter()
-	s.Use(middleware.AuthMiddleware)
 
 	s.HandleFunc("/create_news_ticket", NewsTickerHandler.CreateTicket).Methods("POST")
 
