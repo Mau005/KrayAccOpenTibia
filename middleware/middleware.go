@@ -38,7 +38,9 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		}
 		context.Set(r, utils.CtxAccountName, claims.AccountName)
 		context.Set(r, utils.CtxAccountEmail, claims.Email)
-		context.Set(r, utils.CtxAccountID, claims.IDAccount)
+		context.Set(r, utils.CtxAccountID, claims.AccountID)
+		context.Set(r, utils.CtxTypeAccount, claims.TypeAccess)
+		context.Set(r, utils.CtxClaim, *claims)
 		next.ServeHTTP(w, r)
 	})
 }

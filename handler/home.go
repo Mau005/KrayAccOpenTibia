@@ -6,7 +6,7 @@ import (
 	"text/template"
 
 	"github.com/Mau005/KrayAccOpenTibia/config"
-	"github.com/Mau005/KrayAccOpenTibia/db"
+	"github.com/Mau005/KrayAccOpenTibia/controller"
 	"github.com/Mau005/KrayAccOpenTibia/models"
 )
 
@@ -18,14 +18,35 @@ func (hh *HomeHandler) GetHome(w http.ResponseWriter, r *http.Request) {
 		log.Println("error create template", err)
 		return
 	}
+	type ResponseTicket struct {
+		Icon        string
+		Ticket      string
+		ByCharacter string
+	}
 
-	type home struct {
+	type Home struct {
 		Players        []models.Player
 		UrlOutfitsView string
+		NewsTicket     []ResponseTicket
 	}
-	var player []models.Player
-	db.DB.Find(&player)
-	response := home{Players: player, UrlOutfitsView: config.VarEnviroment.ServerWeb.UrlOutfitsView}
+	var newsTicketCtl controller.NewsTickerController
+
+	var responseTicket []ResponseTicket
+
+	tickets, _ := newsTicketCtl.GetTickerLimited(5)
+
+	for _, value := range tickets {
+		responseTicket = append(responseTicket, ResponseTicket{
+			Icon:        value.Icon,
+			Ticket:      value.Ticket,
+			ByCharacter: value.Player.Name,
+		})
+	}
+	response := Home{
+		Players:        []models.Player{},
+		UrlOutfitsView: config.VarEnviroment.ServerWeb.UrlOutfitsView,
+		NewsTicket:     responseTicket,
+	}
 	err = templ.Execute(w, response)
 	if err != nil {
 		log.Println("error execute template", err)

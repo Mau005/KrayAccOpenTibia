@@ -2,9 +2,11 @@ package models
 
 import "gorm.io/gorm"
 
-type NewsTicker struct {
+type NewsTicket struct {
 	gorm.Model
-	Icon        string
-	Tickets     string
-	ByCharacter string
+	Icon     string
+	IconID   uint8
+	Ticket   string
+	PlayerID uint
+	Player   Player `gorm:"foreignKey:ID"`
 }

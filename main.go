@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/Mau005/KrayAccOpenTibia/config"
+	"github.com/Mau005/KrayAccOpenTibia/controller"
 	"github.com/Mau005/KrayAccOpenTibia/db"
 	"github.com/Mau005/KrayAccOpenTibia/router"
 	"github.com/Mau005/KrayAccOpenTibia/utils"
@@ -24,6 +26,18 @@ func main() {
 	configureIP := fmt.Sprintf("%s:%d", config.VarEnviroment.ServerWeb.IP, config.VarEnviroment.ServerWeb.Port)
 	r := router.NewRouter()
 
+	test := controller.NewExecuteServerController(config.VarEnviroment.ServerWeb.TargetServer)
+	err = test.StartServer()
+	if err != nil {
+		utils.Error(err.Error())
+	}
+
+	var apiCtl controller.ApiController
+	test2, err := apiCtl.CheckOnlineServer(config.VarEnviroment.ServerWeb.IP, config.VarEnviroment.ServerWeb.Port)
+	log.Println(test2.ServerInfo)
+	if err != nil {
+		log.Println(err)
+	}
 	if config.VarEnviroment.Certificate.ProtolTLS {
 		utils.InfoBlue(fmt.Sprintf("[HTTPS] Starting the HTTPS server: https://%s/", configureIP))
 		server := &http.Server{

@@ -3,9 +3,9 @@ package models
 import "github.com/dgrijalva/jwt-go"
 
 type Claim struct {
-	IDAccount   int    `json:"id"`
+	AccountID   int    `json:"id"`
 	AccountName string `json:"username"`
 	Email       string `json:"Email"`
-	TypeAccess  uint   `json:"typeaccess"`
+	TypeAccess  int    `json:"typeaccess"`
 	jwt.StandardClaims
 }

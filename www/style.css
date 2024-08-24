@@ -48,6 +48,8 @@ body {
 
 
 
+
+
 nav a {
     color: #fff;
     text-decoration: none;
@@ -386,4 +388,29 @@ tbody td:nth-child(1) {
     transform-origin: bottom left;
     bottom: 8px;
     left: 22px;
+}
+
+.image-cell {
+    width: 30px; /* Ajusta el ancho según sea necesario */
+    height: 10px; /* Ajusta la altura según sea necesario */
+    padding: 0;
+    margin: 0;
+    text-align: center; /* Centra el contenido horizontalmente */
+    vertical-align: middle; /* Centra el contenido verticalmente */
+    background-color: #f0f0f0; /* Opcional: fondo de la celda */
+    overflow: hidden; /* Oculta el desbordamiento si la imagen es más grande */
+    position: relative;
+}
+
+/* Estilos para la imagen dentro de la celda */
+.table-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Asegura que la imagen cubra completamente la celda */
+    display: block;
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

@@ -1,11 +1,13 @@
 package controller
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
 	"os/exec"
-	"os/signal"
+	"runtime"
+	"strings"
 	"syscall"
 
 	"github.com/Mau005/KrayAccOpenTibia/utils"
@@ -22,53 +24,41 @@ func NewExecuteServerController(path string) (execute ExecuteServerController) {
 }
 
 // Iniciar el servidor
-func (esc *ExecuteServerController) StartServer(path string) (*exec.Cmd, error) {
-	cmd := exec.Command(path)
+func (esc *ExecuteServerController) StartServer() error {
+	if esc.PathServer == "." {
+		return errors.New("not use")
+	}
+	checkOS := runtime.GOOS
+	targetExecute := ""
+	targetPath := ""
+	switch checkOS {
+
+	case "windows":
+		slicePath := strings.Split(esc.PathServer, "\\")
+		targetExecute = fmt.Sprintf("%s.exe", slicePath[len(slicePath)-1])
+		targetPath = strings.Join(slicePath[:len(slicePath)-1], "\\")
+
+	default:
+		slicePath := strings.Split(esc.PathServer, "/")
+		targetExecute = fmt.Sprintf("./%s", slicePath[len(slicePath)-1])
+		targetPath = strings.Join(slicePath[:len(slicePath)-1], "/")
+	}
+
+	cmd := exec.Command(fmt.Sprintf("./%s", targetExecute))
+	cmd.Dir = targetPath
 
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
 	err := cmd.Start()
 	if err != nil {
-		return nil, err
+		return err
 	}
+
 	utils.Info(fmt.Sprintf("server starting on PID: %d", cmd.Process.Pid))
+
 	esc.CMD = cmd
-	return cmd, nil
-}
-
-// Monitorear el servidor
-func (esc *ExecuteServerController) MonitorServer() {
-	// Canal para recibir señales
-	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP, syscall.SIGUSR1)
-
-	go func() {
-		for sig := range sigChan {
-			switch sig {
-			case syscall.SIGINT:
-				utils.Info("Recibido SIGINT. Cerrando el servidor.")
-				esc.StopServer()
-			case syscall.SIGTERM:
-				utils.Info("Recibido SIGTERM. Cerrando el servidor.")
-				esc.StopServer()
-			case syscall.SIGHUP:
-				utils.Info("Recibido SIGHUP. Recargando configuración.")
-				esc.ReloadConfig()
-			case syscall.SIGUSR1:
-				utils.Info("Recibido SIGUSR1. Guardando estado del juego.")
-				esc.SaveGameState()
-			}
-		}
-	}()
-
-	// Esperar a que el proceso del servidor termine
-	err := esc.CMD.Wait()
-	if err != nil {
-		log.Println("Servidor C++ terminó con error:", err)
-	} else {
-		log.Println("Servidor C++ terminó correctamente.")
-	}
+	return nil
 }
 
 // Cerrar el servidor

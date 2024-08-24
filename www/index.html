@@ -42,11 +42,15 @@
             </tr>
           </thead>
           <tbody>
+          {{range .NewsTicket}}
+          
             <tr>
-              <td>1</td>
-              <td>GM Krayno</td>
-              <td>55</td>
+              <td class="image-cell">
+                <img src="www/img/{{.Icon}}" alt="Imagen" class="table-icon">
+            </td>
+              <td>{{.Ticket}} by {{.ByCharacter}}</td>
             </tr>
+            {{end}}
 
           </tbody>
         </table>

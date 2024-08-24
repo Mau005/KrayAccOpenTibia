@@ -24,6 +24,8 @@ const (
 	CtxAccountID = iota + 1
 	CtxAccountEmail
 	CtxAccountName
+	CtxTypeAccount
+	CtxClaim
 )
 
 const (
@@ -33,3 +35,32 @@ const (
 	Digits    = "0123456789"
 	Special   = "!@#$%^&*()_-+=[]{}|;:,.<>?~"
 )
+
+const (
+	IconNewsTicketCommunity uint8 = iota + 1
+	IconNewsTicketDevelopment
+	IconNewsTicketSupport
+	IconNewsTicketTechnical
+)
+
+// Path Icon Target
+const (
+	PathIconNewsTicketCommunity   = "newsicon_community_small.png"
+	PathIconNewsTicketDevelopment = "newsicon_development_small"
+	PathIconNewsTicketSupport     = "newsicon_support_small"
+	PathIconNewsTicketTechnical   = "newsicon_technical_small"
+)
+
+// Privileges User
+// player == account privileges ID
+const (
+	UserPlayer int = iota + 1
+	UserTutor
+	UserSeniorTutor
+	UserGameMaster
+	UserCommunityManager
+	UserGod
+)
+
+// privbi
+const ()

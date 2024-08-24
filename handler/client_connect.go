@@ -97,7 +97,7 @@ func (hcc *HandlerClientConnect) loginHandler(answerExpected models.AnswerExpect
 	}
 
 	var playerCtl controller.PlayerController
-	player := playerCtl.GetPlayerWithAccountID(account.ID)
+	player := playerCtl.GetPlayersWithAccountID(account.ID)
 
 	var session models.ClientSession
 	session.IsPremium = true

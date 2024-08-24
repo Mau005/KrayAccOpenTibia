@@ -6,6 +6,8 @@ import (
 	"github.com/fatih/color"
 )
 
+var ListLogInfo []string
+
 func Info(msg string) {
 	infoColor := color.New(color.FgGreen).SprintFunc()
 	log.Println(infoColor("[OK] " + msg))
@@ -14,6 +16,11 @@ func Info(msg string) {
 func Warn(msg string) {
 	warnColor := color.New(color.FgHiYellow).SprintFunc()
 	log.Println(warnColor("[WARNING] " + msg))
+}
+
+func WarnLog(msg string) {
+	warnColor := color.New(color.FgHiYellow).SprintFunc()
+	log.Println(warnColor("[ALERT SECURITY] " + msg))
 }
 
 func Error(msg string) {

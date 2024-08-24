@@ -8,10 +8,12 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/Mau005/KrayAccOpenTibia/controller"
 	"github.com/Mau005/KrayAccOpenTibia/utils"
 	"github.com/go-yaml/yaml"
 )
 
+var Server *controller.ExecuteServerController
 var VarEnviroment *Configuration
 var SecretPassword []byte
 var Welcome string = `
@@ -32,6 +34,7 @@ type ServerWeb struct {
 	EnvironmentVariables bool   `yaml:"EnvironmentVariables"`
 	UrlItemView          string `yaml:"UrlItemView"`
 	UrlOutfitsView       string `yaml:"UrlOutfitsView"`
+	TargetServer         string `yaml:"TargetServer"`
 }
 
 type MySQL struct {
