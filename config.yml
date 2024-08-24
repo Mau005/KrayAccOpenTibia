@@ -5,6 +5,7 @@
 #   UserName: root
 #   DBPassword: 12345
 #   DataBase: krayacc
+
 ServerWeb:
   IP: 0.0.0.0 #generic ip local 
   Port: 8000 #port webserive active
@@ -12,8 +13,10 @@ ServerWeb:
   ApiMode: false #If enabled, it disables all web routes, but the API will always work
   LengthSecurity: 128 #len security generate token active
   EnvironmentVariables: true
+  TargetServer: . #/home/mauro/Proyect/KrayAcc/Server/tfs #Default . if server not runing api web
   UrlItemView: https://item-images.ots.me/1285
   UrlOutfitsView: https://outfit-images.ots.me/1285 #animoutfit.php?id=128&addons=3&head=123&body=12&legs=23&feet=31&mount=0&direction=2
+
 Certificate:
 # If you activate the certificate, the web will enter secure mode 
 # and activate cookie securite True, it will only work with https requests
