@@ -215,17 +215,7 @@
                         <h4>Server Save: 23:44:00</h4>
                         <hr>
                         <h4>Jugadores Online: <a href="#"  class="btn btn-primary">0</a></h4>
-                        <hr>
-                        <h4>Top Jugadores</h4>
-                        <ul class="list-group">
-                            {{range .Players}}
-                            <li class="list-group-item">
-                                <img src="{{$.UrlOutfitsView}}/animoutfit.php?id={{.LookType}}&addons={{.LookAddons}}&head={{.LookHead}}&body={{.LookBody}}&legs={{.LookLegs}}&feet={{.LookFeet}}&mount=0&direction=3"
-                                    alt="Jugador 1">
-                                {{.Name}} - Nivel {{.Level}}
-                            </li>
-                            {{end}}
-                        </ul>
+                        
                         <hr>
                         {{if .NavWeb.Authentication}}
                         <ul class="list-group">
@@ -273,6 +263,17 @@
                             <button type="submit" onclick="loginUser()" class="btn btn-primary">Ingresar</button>
                         </form>
                         {{end}}
+                        <hr>
+                        <h4>Top Jugadores</h4>
+                        <ul class="list-group">
+                            {{range .Players}}
+                            <li class="list-group-item">
+                                <img src="{{$.UrlOutfitsView}}/animoutfit.php?id={{.LookType}}&addons={{.LookAddons}}&head={{.LookHead}}&body={{.LookBody}}&legs={{.LookLegs}}&feet={{.LookFeet}}&mount=0&direction=3"
+                                    alt="Jugador 1">
+                                {{.Name}} - Nivel {{.Level}}
+                            </li>
+                            {{end}}
+                        </ul>
                     </div>
                 </div>
 
