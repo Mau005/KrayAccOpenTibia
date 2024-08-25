@@ -4,9 +4,8 @@ import "gorm.io/gorm"
 
 type NewsTicket struct {
 	gorm.Model
-	Icon     string
-	IconID   uint8
-	Ticket   string
-	PlayerID uint
-	Player   Player `gorm:"foreignKey:ID"`
+	IconID    uint8
+	Ticket    string
+	PlayersID int
+	Player    Players `gorm:"foreignKey:ID;references:PlayersID"`
 }

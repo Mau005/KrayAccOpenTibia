@@ -1,6 +1,9 @@
 package utils
 
 const (
+	LimitRecordFive = 5
+)
+const (
 	//ACCOUNT
 	ErrorPasswordEquals = "different password"
 	ErrorEmailOrUser    = "user or email not found"
@@ -46,9 +49,9 @@ const (
 // Path Icon Target
 const (
 	PathIconNewsTicketCommunity   = "newsicon_community_small.png"
-	PathIconNewsTicketDevelopment = "newsicon_development_small"
-	PathIconNewsTicketSupport     = "newsicon_support_small"
-	PathIconNewsTicketTechnical   = "newsicon_technical_small"
+	PathIconNewsTicketDevelopment = "newsicon_development_small.png"
+	PathIconNewsTicketSupport     = "newsicon_support_small.png"
+	PathIconNewsTicketTechnical   = "newsicon_technical_small.png"
 )
 
 // Privileges User

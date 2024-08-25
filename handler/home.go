@@ -17,7 +17,6 @@ type HomeHandler struct{}
 
 func (hh *HomeHandler) GetHome(w http.ResponseWriter, r *http.Request) {
 	claim, _ := context.Get(r, utils.CtxClaim).(models.Claim)
-	fmt.Println(claim)
 	Authentication := false
 	if claim.TypeAccess > 0 {
 		Authentication = true
@@ -32,10 +31,11 @@ func (hh *HomeHandler) GetHome(w http.ResponseWriter, r *http.Request) {
 		Icon        string
 		Ticket      string
 		ByCharacter string
+		IDCharacter int
 	}
 
 	type Home struct {
-		Players        []models.Player
+		Players        []models.Players
 		UrlOutfitsView string
 		NewsTicket     []ResponseTicket
 		Authentication bool
@@ -44,17 +44,20 @@ func (hh *HomeHandler) GetHome(w http.ResponseWriter, r *http.Request) {
 
 	var responseTicket []ResponseTicket
 
-	tickets, _ := newsTicketCtl.GetTickerLimited(5)
-
+	tickets, _ := newsTicketCtl.GetTickerLimited(utils.LimitRecordFive)
 	for _, value := range tickets {
+		fmt.Println(value.PlayersID)
 		responseTicket = append(responseTicket, ResponseTicket{
-			Icon:        value.Icon,
+			Icon:        newsTicketCtl.GetIconID(value.IconID),
 			Ticket:      value.Ticket,
+			IDCharacter: value.PlayersID,
 			ByCharacter: value.Player.Name,
 		})
 	}
+	var playerCtl controller.PlayerController
+	players := playerCtl.GetPlayerLimits(5)
 	response := Home{
-		Players:        []models.Player{},
+		Players:        players,
 		UrlOutfitsView: config.VarEnviroment.ServerWeb.UrlOutfitsView,
 		NewsTicket:     responseTicket,
 		Authentication: Authentication,

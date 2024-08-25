@@ -1,6 +1,6 @@
 package models
 
-type Player struct {
+type Players struct {
 	ID                   int     `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
 	Name                 string  `gorm:"column:name;size:255" json:"name"`
 	GroupID              int     `gorm:"column:group_id;default:1" json:"group_id"`
@@ -65,6 +65,6 @@ type Player struct {
 	Account              Account `gorm:"foreignKey:AccountID" json:"account"`
 }
 
-func (Player) TableName() string {
+func (Players) TableName() string {
 	return "players"
 }

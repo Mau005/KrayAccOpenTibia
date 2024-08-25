@@ -6,7 +6,6 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io"
-	"log"
 	"net"
 	"time"
 
@@ -23,7 +22,7 @@ func (ac *ApiController) ConvertSha1(password string) string {
 	return hex.EncodeToString(preparaing.Sum(nil))
 }
 
-func (ac *ApiController) PreparingCharacter(players []models.Player) []models.ClientCharacters {
+func (ac *ApiController) PreparingCharacter(players []models.Players) []models.ClientCharacters {
 	var characters []models.ClientCharacters
 
 	for _, player := range players {
@@ -76,7 +75,6 @@ func (ac *ApiController) PreparingCharacter(players []models.Player) []models.Cl
 		// 	"istournamentparticipant":          false,
 		// 	"remainingdailytournamentplaytime": 0,
 		// })
-		log.Println(characters)
 	}
 	return characters
 }
@@ -107,8 +105,8 @@ func (ac *ApiController) CheckOnlineServer(ip string, port uint16) (*models.Serv
 
 	conn, err := net.DialTimeout("tcp", net.JoinHostPort("127.0.0.1", "7171"), 1*time.Second)
 	if err != nil {
-		utils.Error("Error connecting:" + err.Error())
-		return nil, err
+		utils.Warn("Error connecting server:" + err.Error())
+		return nil, nil
 	}
 
 	defer conn.Close()

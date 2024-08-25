@@ -66,8 +66,9 @@ func (ntc *NewsTicketHandler) GetTicket(w http.ResponseWriter, r *http.Request) 
 	tickets, _ := newsTicketCtl.GetTickerLimited(5)
 
 	for _, value := range tickets {
+		fmt.Println(value.Player.Name)
 		response = append(response, Response{
-			Icon:        value.Icon,
+			Icon:        newsTicketCtl.GetIconID(value.IconID),
 			Ticket:      value.Ticket,
 			ByCharacter: value.Player.Name,
 		})

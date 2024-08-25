@@ -33,8 +33,7 @@ func main() {
 	}
 
 	var apiCtl controller.ApiController
-	test2, err := apiCtl.CheckOnlineServer(config.VarEnviroment.ServerWeb.IP, config.VarEnviroment.ServerWeb.Port)
-	log.Println(test2.ServerInfo)
+	_, err = apiCtl.CheckOnlineServer(config.VarEnviroment.ServerWeb.IP, config.VarEnviroment.ServerWeb.Port)
 	if err != nil {
 		log.Println(err)
 	}

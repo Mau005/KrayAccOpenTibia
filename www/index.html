@@ -1,136 +1,276 @@
-<!DOCTYPE html>
-<html lang="es">
+    <!DOCTYPE html>
+    <html lang="es">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Last Rookgard</title>
-  <link rel="stylesheet" href="/www/style.css">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Mi Tibia Oscuro</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- <link rel="stylesheet" href="/www/style.css"> -->
+        <link rel="stylesheet" href="www/style.css">
+    </head>
 
-<body>
-  <header class="header-top">
-    <div class="logo">
-      <img onload="this.style.opacity='1';" src="www/img/icon.png" alt="Logo del Juego">
-      <div class="search-bar">
-        <input type="text" placeholder="Buscar personaje...">
-      </div>
-      <button class="boton-lupa" aria-label="Buscar"></button>
-    </div>
-    <nav class="navbar">
-      <a href="#inicio" class="enlace">Inicio</a>
-      <a href="#sobre" class="enlace">Galeria</a>
-      <a href="#descargar" class="enlace">Descargas</a>
-      <a href="#foro" class="Soporte">Soporte</a>
-      <a href="#contacto" class="enlace">Registate!</a>
-    </nav>
-  </header>
-  <div class="container">
-    <h1>
-      <img onload="this.style.opacity='1';" class="big-logo" src="www/img/logo.png" alt="logoIcon">
-    </h1>
-  </div>
-  <div class="container">
-    <div class="main-content">
-      <div class="announcement-table">
-        <div class="table-header">
-          <h2>Noticias de Entrada</h2>
-        </div>
-        <table>
-          <thead>
-            <tr>
-            </tr>
-          </thead>
-          <tbody>
-            {{range .NewsTicket}}
-          
-              <tr>
-                <td class="image-cell">
-                  <img src="www/img/{{.Icon}}" alt="Imagen" class="table-icon">
-                </td>
-                <td>{{.Ticket}}. by {{.ByCharacter}}</td>
-              </tr>
-            {{end}}
+    <body>
 
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <aside class="sidebar">
-      <div class="card">
-        {{if .Authentication}}
-        <h2>Welcome Mamá esta presa</h2>
+        <!-- Navegación -->
+        <nav class="navbar navbar-expand-lg fixed-top">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="www/img/icon.png" alt="Logo">
+                </a>
         
-        {{else}}
-        <h2>Login</h2>
-        <div>
-          <input type="text" id="user" placeholder="Nombre de usuario">
-            <input type="password" id="password" placeholder="Contraseña">
-            <input onclick="loginUser()" type="submit" value="Iniciar sesión">
-        </div>
-        {{end}}
+                <!-- Input para buscar personajes -->
+                <form class="d-flex ms-2" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Buscar personaje" aria-label="Buscar">
+                    <button class="btn btn-outline-light" type="submit">Buscar</button>
+                </form>
         
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Guías</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Biblioteca</a>
+                        </li>
+                        
+                        <!-- Menú desplegable para Comunidad -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownComunidad" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Comunidad
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownComunidad">
+                                <li><a class="dropdown-item" href="#">Buscar personaje</a></li>
+                                <li><a class="dropdown-item" href="#">Foro</a></li>
+                                <li><a class="dropdown-item" href="#">Lista de monstruos</a></li>
+                            </ul>
+                        </li>
         
-      </div>
-      <div class="card">
-        <div class="announcement-table">
-          <div class="table-header">
-            <h2>Top Jugadores</h2>
-          </div>
-          <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Nombre</th>
-                <th>Level</th>
-              </tr>
-            </thead>
-            <tbody>
-              {{range .Players}}
-              <tr>
-                <td><img src="{{$.UrlOutfitsView}}/animoutfit.php?id={{.LookType}}&addons={{.LookAddons}}&head={{.LookHead}}&body={{.LookBody}}&legs={{.LookLegs}}&feet={{.LookFeet}}&mount=0&direction=3"></td>
-                <td>{{.Name}}</td>
-                <td>{{.Level}}</td>
-              </tr>
-              {{end}}
+                        <!-- Menú desplegable para Cuentas -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCuentas" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Cuentas
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownCuentas">
+                                <li><a class="dropdown-item" href="#">Recuperar cuenta</a></li>
+                                <li><a class="dropdown-item" href="#">Cambiar contraseña</a></li>
+                            </ul>
+                        </li>
+        
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Support</a>
+                        </li>
+                        <button type="button" class="btn-glow" data-bs-toggle="modal" data-bs-target="#registerModal">
+                            Registrarse
+                        </button>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
 
-            </tbody>
-          </table>
+        <!-- Contenido Principal -->
+        <div class="container">
+            <h1>
+                <img onload="this.style.opacity='1';" class="big-logo" src="www/img/logo.png" alt="logoIcon">
+            </h1>
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="main-content">
+                        <h1>Noticias Breves</h1>
+                    
+                        <!-- Componente de Noticias Previas -->
+                        {{range .NewsTicket}}
+                        <div class="news-item">
+                            <img src="www/img/{{.Icon}}" alt="Imagen de Noticia">
+                            <p>{{.Ticket}}.</p>
+                            {{if $.Authentication}}
+                            <button class="btn btn-primary">Del</button>
+                            {{else}}
+                            <h6>By {{.ByCharacter}}</h6>
+                            {{end}}
+                        </div>
+                        {{end}}
+                        <!-- Agrega más noticias aquí -->
+                    
+                        <hr>
+                    
+                        <!-- Sección de Noticias -->
+                        <h2>Últimas Noticias</h2>
+                        <div class="news-item">
+                            <img src="www/img/news2.jpg" alt="Imagen de Noticia">
+                            <p>Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat...</p>
+                            <button class="btn btn-primary">Leer más</button>
+                        </div>
+                        <!-- Agrega más noticias aquí -->
+                    
+                        <!-- Nueva Sección de Noticias -->
+                        <div class="card mb-4">
+                            <img src="www/img/dark_wall.png" class="card-img-top" alt="Últimas Noticias">
+                            <div class="card-body">
+                                <h5 class="card-title">Última Noticia</h5>
+                                <p class="card-text">Esta es una breve descripción de la última noticia en el juego. Mantente al tanto de las novedades y actualizaciones.</p>
+                                <a href="#" class="btn btn-primary">Leer más</a>
+                            </div>
+                        </div>
+                    
+                        <!-- Tabla de Lista de Personajes -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                Lista de Personajes
+                            </div>
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Nombre</th>
+                                            <th scope="col">Nivel</th>
+                                            <th scope="col">Experiencia</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Personaje 1</td>
+                                            <td>50</td>
+                                            <td>500,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Personaje 2</td>
+                                            <td>45</td>
+                                            <td>450,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Personaje 3</td>
+                                            <td>40</td>
+                                            <td>400,000</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    
+                        <!-- Acordeón -->
+                        <div class="accordion mb-4" id="accordionExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        Información Adicional
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        Aquí puedes encontrar información adicional sobre el juego, como guías, tutoriales, y más.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <!-- Panel de Búsqueda -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                Buscar por Habilidades o Mundo
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="searchWorld" class="form-label">Buscar por Mundo</label>
+                                        <input type="text" class="form-control" id="searchWorld" placeholder="Ingresa el nombre del mundo">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="searchSkill" class="form-label">Buscar por Habilidad</label>
+                                        <select class="form-select" id="searchSkill">
+                                            <option selected>Selecciona una habilidad...</option>
+                                            <option value="1">Espada</option>
+                                            <option value="2">Hacha</option>
+                                            <option value="3">Magia</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Buscar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <div class="sidebar">
+                        <h4>Top Jugadores</h4>
+                        <ul class="list-group">
+                            {{range .Players}}
+                            <li class="list-group-item">
+                                <img src="{{$.UrlOutfitsView}}/animoutfit.php?id={{.LookType}}&addons={{.LookAddons}}&head={{.LookHead}}&body={{.LookBody}}&legs={{.LookLegs}}&feet={{.LookFeet}}&mount=0&direction=3"
+                                    alt="Jugador 1">
+                                {{.Name}} - Nivel {{.Level}}
+                            </li>
+                            {{end}}
+                        </ul>
+                        <hr>
+                        <h4>Iniciar Sesión</h4>
+                        <form>
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Usuario</label>
+                                <input type="text" class="form-control" id="username" >
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Contraseña</label>
+                                <input type="password" class="form-control" id="password" >
+                            </div>
+                            <button type="submit" class="btn btn-primary">Ingresar</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
-      </div>
+        <!-- Modal -->
+        <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="registerModalLabel">Registro de Usuario</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="regUsername" class="form-label">Nombre de Usuario</label>
+                                <input type="text" class="form-control" id="regUsername" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Correo Electrónico</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="regPassword" class="form-label">Contraseña</label>
+                                <input type="password" class="form-control" id="regPassword" placeholder="Contraseña" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">Repetir Contraseña</label>
+                                <input type="password" class="form-control" id="confirmPassword" required>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input type="checkbox" class="form-check-input" id="terms" required>
+                                <label class="form-check-label" for="terms">Aceptar políticas de servicio</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Registrar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    </aside>
-  </div>
-  <footer>
-    <p>&copy; 2024 AinhoSoft. Todos los derechos reservados.</p>
-  </footer>
-</body>
-<script src="/www/js/promise.js"></script>
-<script>
-  function loginUser(){
-    let user = document.getElementById("user").value;
-    let password = document.getElementById("password").value;
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
 
-    if (password == "" || user == ""){
-      document.getElementById("spanlogin").innerHTML= "Credenciales incorrectas"
-    }
-
-    sendRequest("/login", "POST", {
-      "user":user,
-      "password": password
-    }).then(response => {
-      location.reload();
-      
-
-    }).catch(error => {
-
-      console.log(error)
-
-    });
-
-
-
-  }
-</script>
-
-</html>
+    </html>

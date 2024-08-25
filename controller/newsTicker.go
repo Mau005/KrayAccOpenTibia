@@ -11,9 +11,7 @@ import (
 type NewsTickerController struct{}
 
 func (ntc *NewsTickerController) GetTickerLimited(count int) (ticker []models.NewsTicket, err error) {
-	if err = db.DB.Preload("Player").Find(&ticker).Limit(count).Error; err != nil {
-		return
-	}
+	db.DB.Preload("Player").Limit(count).Order("created_at DESC").Find(&ticker)
 	return
 }
 
@@ -43,9 +41,6 @@ func (ntc *NewsTickerController) RulesTicker(ticket models.NewsTicket) (models.N
 		err = errors.New("icon not found")
 		return ticket, err
 	}
-
-	ticket.Icon = ntc.GetIconID(ticket.IconID)
-
 	return ticket, nil
 }
 
@@ -56,7 +51,7 @@ func (ntc *NewsTickerController) CreateTicker(ticket models.NewsTicket, accountI
 	}
 
 	var playerCtl PlayerController
-	if !playerCtl.GetPropertiesPlayer(accountID, int(ticket.PlayerID)) {
+	if !playerCtl.GetPropertiesPlayer(accountID, int(ticket.PlayersID)) {
 		err = errors.New("this character does not belong to you")
 		return ticket, err
 	}
@@ -83,10 +78,6 @@ func (ntc *NewsTickerController) PutTicker(ticker models.NewsTicket) (models.New
 		return ticker, err
 	}
 	// TODO: add fix configure edit ticker
-
-	if tickerOld.Icon != ticker.Icon {
-		tickerOld.Icon = ticker.Icon
-	}
 	tickerOld.IconID = ticker.IconID
 
 	tickerOld.Ticket = ticker.Ticket
