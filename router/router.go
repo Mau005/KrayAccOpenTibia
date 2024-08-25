@@ -20,13 +20,13 @@ func NewRouter() *mux.Router {
 	r.HandleFunc("/get_news_ticket", NewsTickerHandler.GetTicket).Methods("GET") //API PUBLIC
 	s := r.PathPrefix("/auth").Subrouter()
 	s.Use(middleware.AuthMiddleware)
+
 	if !config.VarEnviroment.ServerWeb.ApiMode {
+		//WEB Active!
 		r.PathPrefix("/www/").Handler(http.StripPrefix("/www/", fs))
 
 		var homeHandler handler.HomeHandler
 		r.HandleFunc("/", homeHandler.GetHome).Methods("GET") //Public
-		r.HandleFunc("/create_account", handlerAccount.CreateAccount).Methods("POST")
-		s.HandleFunc("/create_character", handlerAccount.CreateCharacter).Methods("POST")
 
 		//Not Found
 		// r.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -40,8 +40,11 @@ func NewRouter() *mux.Router {
 
 		r.HandleFunc("/login", handlerAccount.Authentication).Methods("POST")
 		r.HandleFunc("/logout", handlerAccount.Desconnected).Methods("GET")
-
 	}
+
+	r.HandleFunc("/login", handlerAccount.Authentication).Methods("POST")
+	r.HandleFunc("/create_account", handlerAccount.CreateAccount).Methods("POST")
+	s.HandleFunc("/create_character", handlerAccount.CreateCharacter).Methods("POST")
 
 	// Router client connections
 	ctl := r.PathPrefix("/client").Subrouter()

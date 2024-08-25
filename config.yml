@@ -17,6 +17,7 @@ ServerWeb:
   UrlItemView: https://item-images.ots.me/1285
   UrlOutfitsView: https://outfit-images.ots.me/1285 #animoutfit.php?id=128&addons=3&head=123&body=12&legs=23&feet=31&mount=0&direction=2
   LimitCreateCharacter: 5
+  
 Certificate:
 # If you activate the certificate, the web will enter secure mode 
 # and activate cookie securite True, it will only work with https requests

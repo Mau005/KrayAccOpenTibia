@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/Mau005/KrayAccOpenTibia/config"
@@ -34,7 +33,7 @@ func main() {
 	var apiCtl controller.ApiController
 	_, err = apiCtl.CheckOnlineServer(config.VarEnviroment.ServerWeb.IP, config.VarEnviroment.ServerWeb.Port)
 	if err != nil {
-		log.Println(err)
+		utils.Warn(err.Error())
 	}
 	if config.VarEnviroment.Certificate.ProtolTLS {
 		utils.InfoBlue(fmt.Sprintf("[HTTPS] Starting the HTTPS server: https://%s/", configureIP))

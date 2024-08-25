@@ -12,6 +12,7 @@ import (
 	"github.com/Mau005/KrayAccOpenTibia/controller"
 	"github.com/Mau005/KrayAccOpenTibia/db"
 	"github.com/Mau005/KrayAccOpenTibia/models"
+	"github.com/Mau005/KrayAccOpenTibia/utils"
 )
 
 type HandlerClientConnect struct{}
@@ -84,29 +85,37 @@ func (hcc *HandlerClientConnect) loginHandler(answerExpected models.AnswerExpect
 
 	account, err := accountCtl.GetAccountEmail(answerExpected.Email)
 	if err != nil {
-		log.Println("error get account", err)
-		return
+		utils.Warn("error get account", err.Error())
+		err = errors.New("incorrect credentials")
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"errorCode":    3,
+			"errorMessage": err.Error(),
+		})
 	}
 
 	var apiCtl controller.ApiController
 	passSha := apiCtl.ConvertSha1(answerExpected.Password)
 	if passSha != account.Password {
-		log.Println("error equals password", err)
-		err = errors.New("email or password is not correct")
+		err = errors.New("incorrect credentials")
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"errorCode":    3,
+			"errorMessage": err.Error(),
+		})
 		return
 	}
 
 	var playerCtl controller.PlayerController
 	player := playerCtl.GetPlayersWithAccountID(account.ID)
+	nowTime := time.Now().Unix()
 
 	var session models.ClientSession
-	session.IsPremium = true
+	session.IsPremium = uint32(account.PremiumEndsAt) > uint32(nowTime)
 	session.LastLoginTime = uint32(time.Now().Unix())
-	session.PremiumUntil = uint64(time.Now().Unix())
+	session.PremiumUntil = uint64(time.Now().Add(4 * time.Hour).Unix())
 	session.OptionTracking = false
 	session.SessionKey = fmt.Sprintf("%s\n%s\n%s\n%d", answerExpected.Email, answerExpected.Password, answerExpected.Token, time.Now().Add(30*time.Minute).Unix())
 	session.Status = "active"
-	session.IsReturner = false
+	session.IsReturner = true
 	session.ShowRewardNews = false
 
 	var world models.ClientWorld
@@ -119,7 +128,7 @@ func (hcc *HandlerClientConnect) loginHandler(answerExpected models.AnswerExpect
 	world.PvpType = 1
 	world.Location = "CL"
 	world.Name = "TheLastRookgard"
-	world.PreviewState = 0
+	world.PreviewState = 1
 	world.ExternalPortProtected = 7172
 	world.ExternalPortUnprotected = 7171
 	world.CurrentTournamentPhase = 2
@@ -134,7 +143,7 @@ func (hcc *HandlerClientConnect) loginHandler(answerExpected models.AnswerExpect
 
 	w.Header().Set("Content-Type", "application/json")
 	if err = json.NewEncoder(w).Encode(responseData); err != nil {
-		log.Println("error encode response", err)
+		utils.Warn("error encode response", err.Error())
 		return
 	}
 	return

@@ -25,8 +25,8 @@ func NewExecuteServerController(path string) (execute ExecuteServerController) {
 
 // Iniciar el servidor
 func (esc *ExecuteServerController) StartServer() error {
-	if esc.PathServer == "." {
-		return errors.New("not use")
+	if esc.PathServer == "" {
+		return errors.New("server not active")
 	}
 	checkOS := runtime.GOOS
 	targetExecute := ""

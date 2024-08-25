@@ -32,7 +32,7 @@ type Players struct {
 	PosX                 int     `gorm:"column:posx;default:0" json:"posx"`
 	PosY                 int     `gorm:"column:posy;default:0" json:"posy"`
 	PosZ                 int     `gorm:"column:posz;default:0" json:"posz"`
-	Conditions           *string `gorm:"column:conditions" json:"conditions"` // Utilizar puntero para permitir valores NULL
+	Conditions           *[]byte `gorm:"column:conditions;type:blob" json:"conditions"` // Utilizar puntero para permitir valores NULL
 	Cap                  int     `gorm:"column:cap;default:400" json:"cap"`
 	Sex                  int     `gorm:"column:sex;default:0" json:"sex"`
 	LastLogin            uint64  `gorm:"column:lastlogin;default:0" json:"lastlogin"`
