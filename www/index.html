@@ -49,7 +49,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownComunidad">
                                 <li><a class="dropdown-item" href="#">Buscar personaje</a></li>
-                                <li><a class="dropdown-item" href="#">Foro</a></li>
+                                <li><a class="dropdown-item" href="#">Buscar Guilds</a></li>
                                 <li><a class="dropdown-item" href="#">Lista de monstruos</a></li>
                             </ul>
                         </li>
@@ -215,6 +215,9 @@
                             {{end}}
                         </ul>
                         <hr>
+                        {{if .Authentication}}
+
+                        {{else}}
                         <h4>Iniciar Sesión</h4>
                         <form>
                             <div class="mb-3">
@@ -227,6 +230,7 @@
                             </div>
                             <button type="submit" class="btn btn-primary">Ingresar</button>
                         </form>
+                        {{end}}
                     </div>
                 </div>
 

@@ -39,6 +39,13 @@ body {
     color: var(--highlight-color);
 }
 
+.dropdown-menu {
+    background-color: var(--card-bg-color);
+    
+}
+.dropdown-item {
+    color: var(--primary-text-color);
+}
 .container {
     margin-top: 80px;
     opacity: 0.9;
@@ -93,8 +100,8 @@ body {
 }
 
 .news-item img {
-    height: 100px;
-    width: 100px;
+    height: 40px;
+    width: 40px;
     object-fit: cover;
     margin-right: 15px;
     border-radius: 8px;
