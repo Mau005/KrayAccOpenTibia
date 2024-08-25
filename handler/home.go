@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"text/template"
@@ -16,11 +15,7 @@ import (
 type HomeHandler struct{}
 
 func (hh *HomeHandler) GetHome(w http.ResponseWriter, r *http.Request) {
-	claim, _ := context.Get(r, utils.CtxClaim).(models.Claim)
-	Authentication := false
-	if claim.TypeAccess > 0 {
-		Authentication = true
-	}
+	navWeb, _ := context.Get(r, utils.CtxNavWeb).(models.NavWeb)
 
 	templ, err := template.New("index.html").ParseFiles("www/index.html")
 	if err != nil {
@@ -34,19 +29,11 @@ func (hh *HomeHandler) GetHome(w http.ResponseWriter, r *http.Request) {
 		IDCharacter int
 	}
 
-	type Home struct {
-		Players        []models.Players
-		UrlOutfitsView string
-		NewsTicket     []ResponseTicket
-		Authentication bool
-	}
 	var newsTicketCtl controller.NewsTickerController
-
 	var responseTicket []ResponseTicket
 
 	tickets, _ := newsTicketCtl.GetTickerLimited(utils.LimitRecordFive)
 	for _, value := range tickets {
-		fmt.Println(value.PlayersID)
 		responseTicket = append(responseTicket, ResponseTicket{
 			Icon:        newsTicketCtl.GetIconID(value.IconID),
 			Ticket:      value.Ticket,
@@ -55,12 +42,18 @@ func (hh *HomeHandler) GetHome(w http.ResponseWriter, r *http.Request) {
 		})
 	}
 	var playerCtl controller.PlayerController
-	players := playerCtl.GetPlayerLimits(5)
+
+	type Home struct {
+		Players        []models.Players
+		UrlOutfitsView string
+		NewsTicket     []ResponseTicket
+		NavWeb         models.NavWeb
+	}
 	response := Home{
-		Players:        players,
+		Players:        playerCtl.GetPlayerLimits(5),
 		UrlOutfitsView: config.VarEnviroment.ServerWeb.UrlOutfitsView,
 		NewsTicket:     responseTicket,
-		Authentication: Authentication,
+		NavWeb:         navWeb,
 	}
 	err = templ.Execute(w, response)
 	if err != nil {

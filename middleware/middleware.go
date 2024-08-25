@@ -1,9 +1,12 @@
 package middleware
 
 import (
+	"log"
 	"net/http"
 	"strings"
+	"time"
 
+	"github.com/Mau005/KrayAccOpenTibia/controller"
 	"github.com/Mau005/KrayAccOpenTibia/models"
 	"github.com/Mau005/KrayAccOpenTibia/utils"
 	"github.com/dgrijalva/jwt-go"
@@ -35,10 +38,20 @@ func AuthPathPublicMiddleware(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 			return
 		}
-		context.Set(r, utils.CtxAccountName, claims.AccountName)
-		context.Set(r, utils.CtxAccountEmail, claims.Email)
-		context.Set(r, utils.CtxAccountID, claims.AccountID)
-		context.Set(r, utils.CtxTypeAccount, claims.TypeAccess)
+		var navWeb models.NavWeb
+		if claims.AccountID > 0 && claims.TypeAccess > 0 {
+			//if accountID != 0 == account!
+			var accountCtl controller.AccountController
+			acc, err := accountCtl.GetAccountWithPlayer(claims.AccountID)
+			if err != nil {
+				log.Println(err)
+			}
+			navWeb.TypeAccess = claims.TypeAccess
+			navWeb.MyPlayers = acc.Players
+			navWeb.IsPremmium = int64(acc.PremiumEndsAt) > time.Now().Unix()
+			navWeb.Authentication = true
+		}
+		context.Set(r, utils.CtxNavWeb, navWeb)
 		context.Set(r, utils.CtxClaim, *claims)
 		next.ServeHTTP(w, r)
 	})

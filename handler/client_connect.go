@@ -147,7 +147,6 @@ func (hcc *HandlerClientConnect) PreparingHanlderClient(w http.ResponseWriter, r
 	if err != nil {
 		log.Println("error decode body", err)
 	}
-	log.Println(answer.Type)
 
 	switch answer.Type {
 	case "login":

@@ -13,7 +13,6 @@ import (
 )
 
 func main() {
-
 	err := config.Load("config.yml")
 	if err != nil {
 		utils.ErrorFatal(err.Error())

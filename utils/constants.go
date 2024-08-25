@@ -29,6 +29,7 @@ const (
 	CtxAccountName
 	CtxTypeAccount
 	CtxClaim
+	CtxNavWeb
 )
 
 const (

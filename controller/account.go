@@ -10,17 +10,31 @@ import (
 
 type AccountController struct{}
 
+func (ac *AccountController) GetAccountWithPlayer(accountID int) (account models.Account, err error) {
+
+	if err = db.DB.Preload("Players").Where("id = ?", accountID).First(&account).Error; err != nil {
+		return
+	}
+	return
+}
+
 func (ac *AccountController) GetAccountEmail(email string) (account models.Account, err error) {
 
 	if err = db.DB.Where("email = ?", email).First(&account).Error; err != nil {
 		return
 	}
 	return
-
 }
 
 func (ac *AccountController) GetAccountName(name string) (account models.Account, err error) {
 	if err = db.DB.Where("name = ?", name).First(&account).Error; err != nil {
+		return
+	}
+	return
+}
+
+func (ac *AccountController) GetAccountID(id int) (account models.Account, err error) {
+	if err = db.DB.Where("id = ?", id).First(&account).Error; err != nil {
 		return
 	}
 	return
@@ -45,19 +59,11 @@ func (ac *AccountController) AuthenticationAccount(userOrEmail, password string)
 	return
 }
 
-func (ac *AccountController) CreateAccount(userOrEmail, password, passwordTwo string) (account models.Account, err error) {
-	if password != passwordTwo {
-		err = errors.New(utils.ErrorPasswordEquals)
-		return
+func (ac *AccountController) CreateAccount(account models.Account) (models.Account, error) {
+	var api ApiController
+	account.Password = api.ConvertSha1(account.Password)
+	if err := db.DB.Create(&account).Error; err != nil {
+		return account, err
 	}
-
-	account, err = ac.GetAccountEmail(userOrEmail)
-	if err != nil {
-		account, err = ac.GetAccountName(userOrEmail)
-		if err != nil {
-			err = errors.New(utils.ErrorEmailOrUser)
-			return
-		}
-	}
-	return
+	return account, nil
 }

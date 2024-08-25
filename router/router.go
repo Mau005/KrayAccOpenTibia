@@ -25,7 +25,9 @@ func NewRouter() *mux.Router {
 
 		var homeHandler handler.HomeHandler
 		r.HandleFunc("/", homeHandler.GetHome).Methods("GET") //Public
-		s.HandleFunc("/", homeHandler.GetHome).Methods("GET") //Authenticate
+		r.HandleFunc("/create_account", handlerAccount.CreateAccount).Methods("POST")
+		s.HandleFunc("/create_character", handlerAccount.CreateCharacter).Methods("POST")
+
 		//Not Found
 		// r.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// 	bodyResponde, err := io.ReadAll(r.Body)
@@ -37,6 +39,7 @@ func NewRouter() *mux.Router {
 		// })
 
 		r.HandleFunc("/login", handlerAccount.Authentication).Methods("POST")
+		r.HandleFunc("/logout", handlerAccount.Desconnected).Methods("GET")
 
 	}
 

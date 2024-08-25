@@ -35,6 +35,7 @@ type ServerWeb struct {
 	UrlItemView          string `yaml:"UrlItemView"`
 	UrlOutfitsView       string `yaml:"UrlOutfitsView"`
 	TargetServer         string `yaml:"TargetServer"`
+	LimitCreateCharacter uint8  `yaml:"LimitCreateCharacter"`
 }
 
 type MySQL struct {

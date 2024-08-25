@@ -77,6 +77,17 @@ body {
     height: 40px;
     margin-right: 10px;
 }
+.list-group-button { 
+    color: var(--primary-text-color);
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.list-group-button:hover {
+    background-color: var(--btn-hover-color) /* Color de hover */
+}
 
 .btn-primary {
     background-color: var(--highlight-color);

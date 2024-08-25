@@ -27,3 +27,10 @@ func (pc *PlayerController) GetPlayerLimits(count int) (player []models.Players)
 	db.DB.Find(&player).Limit(count).Order("asc level")
 	return
 }
+
+func (pc *PlayerController) CreatePlayer(player models.Players) (models.Players, error) {
+	if err := db.DB.Create(&player).Error; err != nil {
+		return player, err
+	}
+	return player, nil
+}

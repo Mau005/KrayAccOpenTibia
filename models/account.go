@@ -7,7 +7,7 @@ type Account struct {
 	Secret        *string   `gorm:"column:secret;size:16" json:"secret"` // Utilizar puntero para permitir valores NULL
 	Type          int       `gorm:"column:type;default:1" json:"type"`
 	PremiumEndsAt uint      `gorm:"column:premium_ends_at;default:0" json:"premium_ends_at"`
-	Email         string    `gorm:"column:email;size:255;default:''" json:"email"`
+	Email         string    `gorm:"column:email;not null;unique;size:255;default:''" json:"email"`
 	Creation      int       `gorm:"column:creation;default:0" json:"creation"`
 	Players       []Players `gorm:"foreignKey:AccountID" json:"players"`
 }
