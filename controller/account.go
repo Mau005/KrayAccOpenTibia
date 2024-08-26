@@ -2,6 +2,7 @@ package controller
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/Mau005/KrayAccOpenTibia/db"
 	"github.com/Mau005/KrayAccOpenTibia/models"
@@ -61,6 +62,8 @@ func (ac *AccountController) AuthenticationAccount(userOrEmail, password string)
 
 func (ac *AccountController) CreateAccount(account models.Account) (models.Account, error) {
 	var api ApiController
+	account.Email = strings.ToLower(account.Email)
+	account.Name = strings.ToLower(account.Name)
 	account.Password = api.ConvertSha1(account.Password)
 	if err := db.DB.Create(&account).Error; err != nil {
 		return account, err
