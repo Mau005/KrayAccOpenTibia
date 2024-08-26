@@ -1,17 +1,33 @@
+
 services:
   mysql:
     image: mariadb:latest
     container_name: mysql_container
     environment:
       MYSQL_ROOT_PASSWORD: 12345
-      MYSQL_DATABASE: tfs 
+      MYSQL_DATABASE: tfs
     ports:
       - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - db_network
 
   phpmyadmin:
-    image: phpmyadmin
+    image: phpmyadmin:latest 
     container_name: phpmyadmin_container
     environment:
       PMA_HOST: mysql
+      UPLOAD_LIMIT: 64M 
     ports:
-      - "8080:80"
+      - "8081:80"
+    depends_on:
+      - mysql
+    networks:
+      - db_network
+
+volumes:
+  mysql_data:  # Volumen para almacenar los datos de MySQL
+
+networks:
+  db_network:  # Red interna para los servicios
