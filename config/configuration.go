@@ -6,15 +6,18 @@ import (
 	"log"
 	"math/big"
 	"os"
+	"runtime"
 	"strconv"
+	"strings"
 
-	"github.com/Mau005/KrayAccOpenTibia/controller"
+	"github.com/Mau005/KrayAccOpenTibia/db"
 	"github.com/Mau005/KrayAccOpenTibia/models"
 	"github.com/Mau005/KrayAccOpenTibia/utils"
 	"github.com/go-yaml/yaml"
+	lua "github.com/yuin/gopher-lua"
 )
 
-var Server *controller.ExecuteServerController
+var Server ExecuteServer
 var VarEnviroment *Configuration
 var SecretPassword []byte
 var Welcome string = `
@@ -38,7 +41,6 @@ type ServerWeb struct {
 	TargetServer         string `yaml:"TargetServer"`
 	LimitCreateCharacter uint8  `yaml:"LimitCreateCharacter"`
 }
-
 type MySQL struct {
 	Host       string `yaml:"Host"`
 	Port       uint16 `yaml:"Port"`
@@ -96,9 +98,30 @@ func Load(filename string) error {
 	} else {
 		utils.Info("MySQL variables are loaded to config.yml")
 	}
+	Server, err = LoadConfigLua(VarEnviroment.ServerWeb.TargetServer)
+	if err != nil {
+		utils.ErrorFatal(err.Error())
+	}
+	err = loadMySQL()
+	if err != nil {
+		utils.ErrorFatal(err.Error())
+	}
+
 	utils.Info("Environment variables are added OK")
 	return nil
 }
+
+func loadMySQL() error {
+	return db.ConnectionMysql(
+		VarEnviroment.DB.UserName,
+		VarEnviroment.DB.DBPassword,
+		VarEnviroment.DB.DataBase,
+		VarEnviroment.DB.Host,
+		VarEnviroment.DB.Port,
+		VarEnviroment.ServerWeb.Debug,
+	)
+}
+
 func parseEnvUint(key string, defaultValue uint16) uint16 {
 	if value, exists := os.LookupEnv(key); exists {
 		if parsedValue, err := strconv.ParseUint(value, 10, 16); err == nil {
@@ -124,4 +147,96 @@ func GenerateRandomPassword(length int) string {
 		password += randomChar
 	}
 	return password
+}
+
+func LoadConfigLua(targetServer string) (preConfigServer ExecuteServer, err error) {
+	checkOS := runtime.GOOS
+	targetExecute := ""
+	targetPath := ""
+	switch checkOS {
+
+	case "windows":
+		slicePath := strings.Split(targetServer, "\\")
+		targetExecute = fmt.Sprintf("%s.exe", slicePath[len(slicePath)-1])
+		targetPath = strings.Join(slicePath[:len(slicePath)-1], "\\")
+
+	default:
+		slicePath := strings.Split(targetServer, "/")
+		targetExecute = fmt.Sprintf("./%s", slicePath[len(slicePath)-1])
+		targetPath = strings.Join(slicePath[:len(slicePath)-1], "/")
+	}
+
+	preConfigServer.PathServer = targetPath
+	preConfigServer.NameExecute = targetExecute
+
+	L := lua.NewState()
+	defer L.Close()
+
+	if err := L.DoFile("config.lua"); err != nil {
+		log.Fatalf("error executing Lua script: %v", err)
+	}
+	switch L.GetGlobal("worldType").String() {
+	case "pvp":
+		preConfigServer.Server.WorldType = 0
+	case "no-pvp":
+		preConfigServer.Server.WorldType = 1
+	case "pvp-enforced":
+		preConfigServer.Server.WorldType = 2
+	default:
+		preConfigServer.Server.WorldType = 0
+	}
+	preConfigServer.Server.IPServer = L.GetGlobal("ip").String()
+	LoginProtocolPort, err := strconv.ParseUint(L.GetGlobal("loginProtocolPort").String(), 10, 16)
+	if err != nil {
+		return
+	}
+	preConfigServer.Server.LoginProtocolPort = uint16(LoginProtocolPort)
+
+	gameProtocolPort, err := strconv.ParseUint(L.GetGlobal("gameProtocolPort").String(), 10, 16)
+	if err != nil {
+		return
+	}
+	preConfigServer.Server.GameProtocolPort = uint16(gameProtocolPort)
+
+	statusProtocolPort, err := strconv.ParseUint(L.GetGlobal("statusProtocolPort").String(), 10, 16)
+	if err != nil {
+		return
+	}
+	preConfigServer.Server.StatusProtocolPort = uint16(statusProtocolPort)
+
+	preConfigServer.NameServer = L.GetGlobal("serverName").String()
+	preConfigServer.Server.HouseRentPeriod = L.GetGlobal("houseRentPeriod").String()
+
+	rateExp, err := strconv.ParseUint(L.GetGlobal("rateExp").String(), 10, 16)
+	if err != nil {
+		return
+	}
+	preConfigServer.RateServer.RateExp = uint16(rateExp)
+
+	rateSkill, err := strconv.ParseUint(L.GetGlobal("rateSkill").String(), 10, 16)
+	if err != nil {
+		return
+	}
+	preConfigServer.RateServer.RateSkill = uint16(rateSkill)
+
+	rateLoot, err := strconv.ParseUint(L.GetGlobal("rateLoot").String(), 10, 16)
+	if err != nil {
+		return
+	}
+	preConfigServer.RateServer.RateLoot = uint16(rateLoot)
+
+	RateMagic, err := strconv.ParseUint(L.GetGlobal("rateMagic").String(), 10, 16)
+	if err != nil {
+		return
+	}
+	preConfigServer.RateServer.RateMagic = uint16(RateMagic)
+
+	rateSpawn, err := strconv.ParseUint(L.GetGlobal("rateSpawn").String(), 10, 16)
+	if err != nil {
+		return
+	}
+	preConfigServer.RateServer.RateSpawn = uint16(rateSpawn)
+
+	utils.Info("loaded config.lua")
+	return
 }

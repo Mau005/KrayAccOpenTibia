@@ -8,6 +8,7 @@ require (
 	github.com/go-yaml/yaml v2.1.0+incompatible
 	github.com/gorilla/context v1.1.2
 	github.com/gorilla/mux v1.8.1
+	github.com/yuin/gopher-lua v1.1.1
 	gorm.io/driver/mysql v1.5.7
 	gorm.io/gorm v1.25.11
 )
