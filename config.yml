@@ -7,17 +7,26 @@ MySQL:
   DataBase: tfs
 
 ServerWeb:
-  IP: 0.0.0.0 #generic ip local 
+  IP: 0.0.0.0 #generic ip local or global
   Port: 8000 #port webserive active
   Debug: true #log debug db other errors details
-  ApiMode: false #If enabled, it disables all web routes, but the API will always work
+  ApiMode: false # enable kray api to connect with other kray api and simulate multi world
   LengthSecurity: 128 #len security generate token active
   EnvironmentVariables: false
-  TargetServer: . #/home/mauro/Proyect/KrayAcc/Server/tfs #Default . if server not runing api web
+  TargetServer:  #/home/mauro/Proyect/KrayAcc/Server/tfs #Default case . pathNow
   UrlItemView: https://item-images.ots.me/1285
   UrlOutfitsView: https://outfit-images.ots.me/1285 #animoutfit.php?id=128&addons=3&head=123&body=12&legs=23&feet=31&mount=0&direction=2
   LimitCreateCharacter: 5
-  
+
+#APiMODE!
+ApiConnectionPool:
+  - IpWebApi: http://tibiakray.info/ # Case online connect other web api KrayAcc
+    PortApi: 8000 # Case online connect other web api KrayAcc
+    Token: aws
+  - IpWebApi: http://thelastrookgard.cl # Case online connect other web api KrayAcc
+    PortApi: 8000 # Case online connect other web api KrayAcc
+    Token: aws
+
 Certificate:
 # If you activate the certificate, the web will enter secure mode 
 # and activate cookie securite True, it will only work with https requests
