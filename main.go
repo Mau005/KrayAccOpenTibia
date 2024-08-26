@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/Mau005/KrayAccOpenTibia/config"
+	"github.com/Mau005/KrayAccOpenTibia/controller"
 	"github.com/Mau005/KrayAccOpenTibia/router"
 	"github.com/Mau005/KrayAccOpenTibia/utils"
 )
@@ -15,10 +16,14 @@ func main() {
 		utils.ErrorFatal(err.Error())
 	}
 
+	err = controller.LoadTemporaryData()
+	if err != nil {
+		utils.ErrorFatal(err.Error())
+	}
 	configureIP := fmt.Sprintf("%s:%d", config.VarEnviroment.ServerWeb.IP, config.VarEnviroment.ServerWeb.Port)
 
 	r := router.NewRouter()
-	if config.VarEnviroment.Certificate.ProtolTLS {
+	if config.VarEnviroment.Certificate.ProtocolTLS {
 		utils.InfoBlue(fmt.Sprintf("[HTTPS] Starting the HTTPS server: https://%s/", configureIP))
 		server := &http.Server{
 			Addr:    configureIP,

@@ -4,7 +4,6 @@ import (
 	"crypto/sha1"
 	"encoding/hex"
 	"encoding/xml"
-	"fmt"
 	"io"
 	"net"
 	"time"
@@ -57,24 +56,6 @@ func (ac *ApiController) PreparingCharacter(players []models.Players) []models.C
 			IsTournamentParticipant:          false,
 			RemainIngDailyTournamentPlayTime: 2,
 		})
-
-		// characters = append(characters, map[string]interface{}{
-		// 	"worldid":                          0,
-		// 	"name":                             player.Name,
-		// 	"ismale":                           1,
-		// 	"tutorial":                         false,
-		// 	"level":                            player.Level,
-		// 	"vocation":                         player.Vocation,
-		// 	"outfitid":                         player.LookType,
-		// 	"headcolor":                        player.LookHead,
-		// 	"torsocolor":                       player.LookBody,
-		// 	"legscolor":                        player.LookLegs,
-		// 	"detailcolor":                      player.LookFeet,
-		// 	"addonsflags":                      player.LookAddons,
-		// 	"ishidden":                         0,
-		// 	"istournamentparticipant":          false,
-		// 	"remainingdailytournamentplaytime": 0,
-		// })
 	}
 	return characters
 }
@@ -99,14 +80,14 @@ func (ac *ApiController) GenerateJWT(account models.Account) (string, error) {
 	return tokenString, nil
 }
 
-func (ac *ApiController) CheckOnlineServer(ip string, port uint16) (*models.ServerStatus, error) {
-
+func (ac *ApiController) CheckOnlineServer(ip, port string) (models.ServerStatus, error) {
+	var serverStatus models.ServerStatus
 	packet := []byte{6, 0, 255, 255, 'i', 'n', 'f', 'o'}
 
-	conn, err := net.DialTimeout("tcp", net.JoinHostPort("127.0.0.1", "7171"), 1*time.Second)
+	conn, err := net.DialTimeout("tcp", net.JoinHostPort(ip, port), 1*time.Second)
 	if err != nil {
 		utils.Warn("Error connecting server:" + err.Error())
-		return nil, nil
+		return serverStatus, nil
 	}
 
 	defer conn.Close()
@@ -114,25 +95,25 @@ func (ac *ApiController) CheckOnlineServer(ip string, port uint16) (*models.Serv
 	_, err = conn.Write(packet)
 	if err != nil {
 		utils.Error("Error  writing packet:" + err.Error())
-		return nil, err
+		return serverStatus, err
 	}
 
 	answer, err := io.ReadAll(conn)
 	if err != nil {
 		utils.Error("Error  reading response:" + err.Error())
-		return nil, err
+		return serverStatus, err
 	}
 
 	if len(answer) == 0 {
-		return nil, err
-	}
-	var status *models.ServerStatus
-	err = xml.Unmarshal(answer, &status)
-	if err != nil {
-		fmt.Println("Error:", err)
-		return nil, err
+		return serverStatus, err
 	}
 
-	return status, err
+	err = xml.Unmarshal(answer, &serverStatus)
+	if err != nil {
+		utils.Error(err.Error())
+		return serverStatus, err
+	}
+
+	return serverStatus, err
 
 }

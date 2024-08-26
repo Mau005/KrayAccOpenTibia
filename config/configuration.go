@@ -50,9 +50,9 @@ type MySQL struct {
 }
 
 type Certificate struct {
-	ProtolTLS bool   `yaml:"ProtocolHTTPS"`
-	Chain     string `yaml:"Chain"`
-	PrivKey   string `yaml:"PrivKey"`
+	ProtocolTLS bool   `yaml:"ProtocolHTTPS"`
+	Chain       string `yaml:"Chain"`
+	PrivKey     string `yaml:"PrivKey"`
 }
 
 type Configuration struct {
@@ -172,7 +172,6 @@ func LoadConfigLua(targetServer string) (preConfigServer ExecuteServer, err erro
 	L := lua.NewState()
 	defer L.Close()
 	path_new := fmt.Sprintf("%s/%s", targetPath, "config.lua")
-	fmt.Println(path_new)
 	if err := L.DoFile(path_new); err != nil {
 		utils.ErrorFatal("error executing Lua script:", err.Error())
 	}

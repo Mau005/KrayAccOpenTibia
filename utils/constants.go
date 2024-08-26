@@ -1,7 +1,8 @@
 package utils
 
 const (
-	LimitRecordFive = 5
+	LimitRecordFive     = 5
+	TimeCheckInfoServer = 1 //minutes
 )
 const (
 	//ACCOUNT

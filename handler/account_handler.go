@@ -45,7 +45,7 @@ func (ah *AccountHandler) Authentication(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	secure := config.VarEnviroment.Certificate.ProtolTLS
+	secure := config.VarEnviroment.Certificate.ProtocolTLS
 
 	if !config.VarEnviroment.ServerWeb.ApiMode {
 		http.SetCookie(w, &http.Cookie{

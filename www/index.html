@@ -112,26 +112,21 @@
                         <hr>
                     
                         <!-- Sección de Noticias -->
-                        <h2>Últimas Noticias</h2>
-                        <div class="news-item">
-                            <img src="www/img/icon.png" alt="Imagen de Noticia">
-                            <p>Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat...</p>
-                            <button class="btn btn-primary">Leer más</button>
-                        </div>
+                        <hr>
                         <!-- Agrega más noticias aquí -->
                     
                         <!-- Nueva Sección de Noticias -->
-                        <div class="card mb-4">
+                        <!-- <div class="card mb-4">
                             <img src="www/img/dark_wall.png" class="card-img-top" alt="Últimas Noticias">
                             <div class="card-body">
                                 <h5 class="card-title">Última Noticia</h5>
                                 <p class="card-text">Esta es una breve descripción de la última noticia en el juego. Mantente al tanto de las novedades y actualizaciones.</p>
                                 <a href="#" class="btn btn-primary">Leer más</a>
                             </div>
-                        </div>
+                        </div> -->
                     
                         <!-- Tabla de Lista de Personajes -->
-                        <div class="card mb-4">
+                        <!-- <div class="card mb-4">
                             <div class="card-header">
                                 Lista de Personajes
                             </div>
@@ -163,10 +158,10 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div> -->
                     
                         <!-- Acordeón -->
-                        <div class="accordion mb-4" id="accordionExample">
+                        <!-- <div class="accordion mb-4" id="accordionExample">
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="headingOne">
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -179,10 +174,10 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     
                         <!-- Panel de Búsqueda -->
-                        <div class="card mb-4">
+                        <!-- <div class="card mb-4">
                             <div class="card-header">
                                 Buscar por Habilidades o Mundo
                             </div>
@@ -204,7 +199,7 @@
                                     <button type="submit" class="btn btn-primary">Buscar</button>
                                 </form>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     
                 </div>
@@ -212,9 +207,34 @@
                 <!-- Sidebar -->
                 <div class="col-lg-4">
                     <div class="sidebar">
-                        <h4>Server Save: 23:44:00</h4>
+                        <h4>Menus</h4>
                         <hr>
-                        <h4>Jugadores Online: <a href="#"  class="btn btn-primary">0</a></h4>
+                        <ul class="custom-list">
+                            <li class="custom-list-item">
+                                <span class="item-message">Jugadores Online: </span>
+                                <span class="item-quantity">{{.ServerStatus.Players.Online}}</span>
+                            </li>
+                            <li class="custom-list-item">
+                                <span class="item-message">Creaturas</span>
+                                <span class="item-quantity">{{.ServerStatus.Monsters.Total}}</span>
+                            </li>
+                            <li class="custom-list-item">
+                                <span class="item-message">NPCs:</span>
+                                <span class="item-quantity">{{.ServerStatus.NPCs.Total}}</span>
+                            </li>
+                            <li class="custom-list-item">
+                                <span class="item-message">Tiempo Online: </span>
+                                <span id="counter" class="item-quantity">Server OFF</span>
+                            </li>
+                        </ul>
+                        <hr>
+                        <ul class="list-group">
+                            <h4>Rates</h4>
+                            <li class="list-group-item">Experiencia: {{.ServerStatus.Rates.Experience}}</li>
+                            <li class="list-group-item">Skills: {{.ServerStatus.Rates.Skill}}</li>
+                            <li class="list-group-item">Loot: {{.ServerStatus.Rates.Loot}}</li>
+                            <li class="list-group-item">Magic: {{.ServerStatus.Rates.Magic}}</li>
+                        </ul>
                         
                         <hr>
                         {{if .NavWeb.Authentication}}
@@ -356,6 +376,10 @@
         {{end}}
         
         <script src="/www/js/promise.js"></script>
+        <script src="/www/js/uptime.js"></script>
+        <script>
+            startCounter('{{.ServerStatus.ServerInfo.Uptime}}')
+        </script>
         <script src="/www/js/login_home.js"></script>
         <script src="/www/js/create_character.js"></script>
         <script src="/www/js/register_account.js"></script>

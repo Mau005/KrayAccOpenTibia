@@ -48,12 +48,14 @@ func (hh *HomeHandler) GetHome(w http.ResponseWriter, r *http.Request) {
 		UrlOutfitsView string
 		NewsTicket     []ResponseTicket
 		NavWeb         models.NavWeb
+		ServerStatus   models.ServerStatus
 	}
 	response := Home{
 		Players:        playerCtl.GetPlayerLimits(5),
 		UrlOutfitsView: config.VarEnviroment.ServerWeb.UrlOutfitsView,
 		NewsTicket:     responseTicket,
 		NavWeb:         navWeb,
+		ServerStatus:   controller.TempData.ServerStatus,
 	}
 	err = templ.Execute(w, response)
 	if err != nil {

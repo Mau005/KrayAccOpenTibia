@@ -66,25 +66,6 @@ body {
 }
 
 
-.list-group-item {
-    background-color: var(--card-bg-color);
-    color: var(--primary-text-color);
-    display: flex;
-    align-items: center;
-}
-
-.list-group-item img {
-    height: 40px;
-    margin-right: 10px;
-}
-.list-group-button { 
-    color: var(--primary-text-color);
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
 .list-group-button:hover {
     background-color: var(--btn-hover-color) /* Color de hover */
 }
@@ -213,6 +194,65 @@ body {
     color: var(--highlight-color);
 }
 
+.custom-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 400px;
+    background-color: #333;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.custom-list-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    color: #e4e4e4;
+    border-bottom: 1px solid #444;
+}
+
+.custom-list-item:last-child {
+    border-bottom: none;
+}
+
+.item-message {
+    font-weight: bold;
+    font-size: 16px;
+    color: #d4af37; /* Color dorado para destacar */
+}
+
+.item-quantity {
+    background-color: #555;
+    padding: 5px 10px;
+    border-radius: 12px;
+    color: #e4e4e4;
+    font-size: 14px;
+    text-align: center;
+    min-width: 40px;
+}
+
+.list-group-item {
+    background-color: var(--card-bg-color);
+    color: var(--primary-text-color);
+    display: flex;
+    align-items: center;
+}
+
+.list-group-item img {
+    height: 40px;
+    margin-right: 10px;
+}
+.list-group-button { 
+    color: var(--primary-text-color);
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .sidebar .list-group-item {
     background-color: var(--card-bg-color);
     color: var(--primary-text-color);
@@ -318,3 +358,5 @@ body {
         transform: rotate(360deg);
     }
 }
+
+

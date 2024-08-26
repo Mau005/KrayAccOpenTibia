@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"log"
 	"net/http"
 	"time"
@@ -20,13 +19,6 @@ type HandlerClientConnect struct{}
 
 // Define your handlers
 func (hcc *HandlerClientConnect) CacheInfoHandler(w http.ResponseWriter, r *http.Request) {
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-
-	}
-	fmt.Println(string(body))
 	var playersonline int
 	db.DB.Raw("SELECT COUNT(*) FROM players_online").Scan(&playersonline)
 
@@ -41,13 +33,6 @@ func (hcc *HandlerClientConnect) CacheInfoHandler(w http.ResponseWriter, r *http
 }
 
 func (hcc *HandlerClientConnect) EventScheduleHandler(w http.ResponseWriter, r *http.Request) {
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-
-	}
-	fmt.Println(string(body))
 	// Placehcclder XML parsing, replace with your own logic
 	eventList := []map[string]interface{}{} // Populate this with actual data
 
@@ -59,13 +44,6 @@ func (hcc *HandlerClientConnect) EventScheduleHandler(w http.ResponseWriter, r *
 }
 
 func (hcc *HandlerClientConnect) BoostedCreatureHandler(w http.ResponseWriter, r *http.Request) {
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-
-	}
-	fmt.Println(string(body))
 	var boostedCreature struct {
 		RaceID int
 	}
