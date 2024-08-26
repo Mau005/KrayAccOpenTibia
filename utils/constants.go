@@ -21,6 +21,7 @@ const (
 
 const (
 	NameCookieToken = "auth_token"
+	NameAuthAPI     = "AuthorizationAPI"
 )
 
 const (
