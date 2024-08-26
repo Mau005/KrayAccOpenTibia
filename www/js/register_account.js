@@ -26,7 +26,7 @@ function registerAccount() {
     }
 
     sendRequest("/create_account", "POST", {
-        "IsTerms": user,
+        "UserName": user,
         "Password": password,
         "IsTerms": terms,
         "PasswordTwo": passwordtwo,
