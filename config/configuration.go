@@ -9,6 +9,7 @@ import (
 	"strconv"
 
 	"github.com/Mau005/KrayAccOpenTibia/controller"
+	"github.com/Mau005/KrayAccOpenTibia/models"
 	"github.com/Mau005/KrayAccOpenTibia/utils"
 	"github.com/go-yaml/yaml"
 )
@@ -53,9 +54,10 @@ type Certificate struct {
 }
 
 type Configuration struct {
-	DB          MySQL       `yaml:"MySQL"`
-	ServerWeb   ServerWeb   `yaml:"ServerWeb"`
-	Certificate Certificate `yaml:"Certificate"`
+	DB                   MySQL                         `yaml:"MySQL"`
+	ServerWeb            ServerWeb                     `yaml:"ServerWeb"`
+	Certificate          Certificate                   `yaml:"Certificate"`
+	ServerConnectKrayAcc []models.ServerConnectKrayAcc `yaml:"ApiConnectionPool"`
 }
 
 func Load(filename string) error {
@@ -95,7 +97,6 @@ func Load(filename string) error {
 		utils.Info("MySQL variables are loaded to config.yml")
 	}
 	utils.Info("Environment variables are added OK")
-
 	return nil
 }
 func parseEnvUint(key string, defaultValue uint16) uint16 {
