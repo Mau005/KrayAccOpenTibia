@@ -12,18 +12,14 @@ import (
 func NewRouter() *mux.Router {
 	var NewsTickerHandler handler.NewsTicketHandler
 	var handlerAccount handler.AccountHandler
+	r := mux.NewRouter()
 
 	fs := http.FileServer(http.Dir("./www"))
-
-	r := mux.NewRouter()
-	r.Use(middleware.AuthPathPublicMiddleware)
-	r.HandleFunc("/get_news_ticket", NewsTickerHandler.GetTicket).Methods("GET") //API PUBLIC
-	s := r.PathPrefix("/auth").Subrouter()
-	s.Use(middleware.AuthMiddleware)
-
 	if !config.VarEnviroment.ServerWeb.ApiMode {
+		r.Use(middleware.AuthPathPublicMiddleware)
 		//WEB Active!
 		r.PathPrefix("/www/").Handler(http.StripPrefix("/www/", fs))
+		r.HandleFunc("/get_news_ticket", NewsTickerHandler.GetTicket).Methods("GET") //API PUBLIC
 
 		var homeHandler handler.HomeHandler
 		r.HandleFunc("/", homeHandler.GetHome).Methods("GET") //Public
@@ -40,11 +36,17 @@ func NewRouter() *mux.Router {
 
 		r.HandleFunc("/login", handlerAccount.Authentication).Methods("POST")
 		r.HandleFunc("/logout", handlerAccount.Desconnected).Methods("GET")
-	}
+		r.HandleFunc("/create_account", handlerAccount.CreateAccount).Methods("POST")
 
-	r.HandleFunc("/login", handlerAccount.Authentication).Methods("POST")
-	r.HandleFunc("/create_account", handlerAccount.CreateAccount).Methods("POST")
-	s.HandleFunc("/create_character", handlerAccount.CreateCharacter).Methods("POST")
+		//SecurityPath
+		s := r.PathPrefix("/auth").Subrouter()
+		s.Use(middleware.AuthMiddleware)
+		s.HandleFunc("/create_character", handlerAccount.CreateCharacter).Methods("POST")
+		s.HandleFunc("/create_news_ticket", NewsTickerHandler.CreateTicket).Methods("POST")
+	} else {
+		//APIMODE
+
+	}
 
 	// Router client connections
 	ctl := r.PathPrefix("/client").Subrouter()
@@ -55,8 +57,6 @@ func NewRouter() *mux.Router {
 	ctl.HandleFunc("/eventschedule", handlerClientConnect.EventScheduleHandler)
 	ctl.HandleFunc("/boostedcreature", handlerClientConnect.BoostedCreatureHandler)
 	ctl.HandleFunc("/login", handlerClientConnect.PreparingHanlderClient)
-
-	s.HandleFunc("/create_news_ticket", NewsTickerHandler.CreateTicket).Methods("POST")
 
 	return r
 }
