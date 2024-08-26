@@ -20,9 +20,9 @@ func AutoMigrate(DB *gorm.DB) {
 	utils.Info("Update MySQL")
 }
 
-func ConnectionMysql(user, password, host, name string, port uint16, debugMode bool) error {
+func ConnectionMysql(user, password, host, nameDB string, port uint16, debugMode bool) error {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		user, password, host, port, name)
+		user, password, host, port, nameDB)
 
 	logDebug := logger.Silent
 	if debugMode {

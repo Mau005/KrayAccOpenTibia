@@ -115,8 +115,8 @@ func loadMySQL() error {
 	return db.ConnectionMysql(
 		VarEnviroment.DB.UserName,
 		VarEnviroment.DB.DBPassword,
-		VarEnviroment.DB.DataBase,
 		VarEnviroment.DB.Host,
+		VarEnviroment.DB.DataBase,
 		VarEnviroment.DB.Port,
 		VarEnviroment.ServerWeb.Debug,
 	)
@@ -171,9 +171,10 @@ func LoadConfigLua(targetServer string) (preConfigServer ExecuteServer, err erro
 
 	L := lua.NewState()
 	defer L.Close()
-
-	if err := L.DoFile("config.lua"); err != nil {
-		log.Fatalf("error executing Lua script: %v", err)
+	path_new := fmt.Sprintf("%s/%s", targetPath, "config.lua")
+	fmt.Println(path_new)
+	if err := L.DoFile(path_new); err != nil {
+		utils.ErrorFatal("error executing Lua script:", err.Error())
 	}
 	switch L.GetGlobal("worldType").String() {
 	case "pvp":

@@ -100,7 +100,7 @@
                         <div class="news-item">
                             <img src="www/img/{{.Icon}}" alt="Imagen de Noticia">
                             <p>{{.Ticket}}.</p>
-                            {{if $.NavWeb.Authentication}} 
+                            {{if ge $.NavWeb.TypeAccess 5}} 
                             <button class="btn btn-primary">Delete</button>
                             {{else}}
                             <h6>By {{.ByCharacter}}</h6>
@@ -249,7 +249,7 @@
 
                         {{else}}
                         <h4>Iniciar Sesión</h4>
-                        <form action="#">
+                        
                             <div class="mb-3">
                                 <label for="username" class="form-label">Usuario</label>
                                 <input type="text" class="form-control" id="username" >
@@ -261,7 +261,7 @@
                             </div>
                             
                             <button type="submit" onclick="loginUser()" class="btn btn-primary">Ingresar</button>
-                        </form>
+                        
                         {{end}}
                         <hr>
                         <h4>Top Jugadores</h4>

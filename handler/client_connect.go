@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Mau005/KrayAccOpenTibia/config"
 	"github.com/Mau005/KrayAccOpenTibia/controller"
 	"github.com/Mau005/KrayAccOpenTibia/db"
 	"github.com/Mau005/KrayAccOpenTibia/models"
@@ -120,17 +121,17 @@ func (hcc *HandlerClientConnect) loginHandler(answerExpected models.AnswerExpect
 
 	var world models.ClientWorld
 	world.AntiCheatProtection = false
-	world.ExternalAddRessUnProtected = "127.0.0.1"
-	world.ExternalAddress = "127.0.0.1"
-	world.ExternalAddressProtected = "127.0.0.1"
-	world.ExternalPort = 7172
+	world.ExternalAddRessUnProtected = config.Server.Server.IPServer
+	world.ExternalAddress = config.Server.Server.IPServer
+	world.ExternalAddressProtected = config.Server.Server.IPServer
+	world.ExternalPort = config.Server.Server.GameProtocolPort
 	world.ID = 0
-	world.PvpType = 1
+	world.PvpType = config.Server.Server.WorldType
 	world.Location = "CL"
-	world.Name = "TheLastRookgard"
+	world.Name = config.Server.NameServer
 	world.PreviewState = 1
-	world.ExternalPortProtected = 7172
-	world.ExternalPortUnprotected = 7171
+	world.ExternalPortProtected = config.Server.Server.GameProtocolPort
+	world.ExternalPortUnprotected = config.Server.Server.LoginProtocolPort
 	world.CurrentTournamentPhase = 2
 
 	var playdata models.PlayData
