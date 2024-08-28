@@ -3,7 +3,7 @@ MySQL:
   Host: 127.0.0.1
   Port: 3306
   UserName: root
-  DBPassword: 12345
+  DBPassword: fcua29hd
   DataBase: tfs
 
 ServerWeb:

@@ -50,6 +50,7 @@ func (hh *HomeHandler) GetHome(w http.ResponseWriter, r *http.Request) {
 		NavWeb         models.NavWeb
 		ServerStatus   models.ServerStatus
 	}
+
 	response := Home{
 		Players:        playerCtl.GetPlayerLimits(5),
 		UrlOutfitsView: config.VarEnviroment.ServerWeb.UrlOutfitsView,

@@ -1,3 +1,4 @@
+
 function registerAccount() {
     let user = document.getElementById("regUsername").value;
     let email = document.getElementById("email").value;

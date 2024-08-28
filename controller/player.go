@@ -24,7 +24,7 @@ func (pc *PlayerController) GetPropertiesPlayer(accountID, playerID int) bool {
 }
 
 func (pc *PlayerController) GetPlayerLimits(count int) (player []models.Players) {
-	db.DB.Find(&player).Limit(count).Order("asc level")
+	db.DB.Find(&player).Limit(count).Order("desc level")
 	return
 }
 
@@ -33,4 +33,16 @@ func (pc *PlayerController) CreatePlayer(player models.Players) (models.Players,
 		return player, err
 	}
 	return player, nil
+}
+
+func (pc *PlayerController) GetPlayerOnline() (players []models.Players) {
+	//TODO: corregir maun del futuro
+	var playerOn []models.PlayersOnline
+	db.DB.Find(&playerOn)
+	for _, value := range playerOn {
+		var playerTarget models.Players
+		db.DB.Where("id = ?", value.PlayerID).First(&playerTarget)
+		players = append(players, playerTarget)
+	}
+	return
 }

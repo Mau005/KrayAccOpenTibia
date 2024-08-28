@@ -107,43 +107,7 @@
                 
                 <div class="col-lg-8">
                     <div class="main-content">
-                        <h1>Noticias Breves</h1>
-                    
-                        <!-- Componente de Noticias Previas -->
-                        {{range .NewsTicket}}
-                        <div class="news-item">
-                            <img src="www/img/{{.Icon}}" alt="Imagen de Noticia">
-                            <p>{{.Ticket}}</p>
-                            {{if ge $.NavWeb.TypeAccess 5}} 
-                            <button class="btn btn-primary">Delete</button>
-                            {{else}}
-                            <h6>By {{.ByCharacter}}</h6>
-                            {{end}}
-                        </div>
-                        {{end}}
-                        <!-- Agrega más noticias aquí -->
-                    
-                        <hr>
-                    
-                        <!-- Sección de Noticias -->
-                        <h2>Últimas Noticias</h2>
-                        <div class="news-item">
-                            <img src="www/img/icon.png" alt="Imagen de Noticia">
-                            <p>Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat...</p>
-                            <button class="btn btn-primary">Leer más</button>
-                        </div>
-                        <!-- Agrega más noticias aquí -->
-                    
-                        <!-- Nueva Sección de Noticias -->
-                        <div class="card mb-4">
-                            <img src="www/img/dark_wall.png" class="card-img-top" alt="Últimas Noticias">
-                            <div class="card-body">
-                                <h5 class="card-title">Última Noticia</h5>
-                                <p class="card-text">Esta es una breve descripción de la última noticia en el juego. Mantente al tanto de las novedades y actualizaciones.</p>
-                                <a href="#" class="btn btn-primary">Leer más</a>
-                            </div>
-                        </div>
-                    
+                        <h1>Quien esta Online?</h1>
                         <!-- Tabla de Lista de Personajes -->
                         <div class="card mb-4">
                             <div class="card-header">
@@ -153,70 +117,25 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
+                                            <th scope="col">Outfits</th>
                                             <th scope="col">Nombre</th>
                                             <th scope="col">Nivel</th>
                                             <th scope="col">Experiencia</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {{range .Players}}
                                         <tr>
-                                            <td>Personaje 1</td>
-                                            <td>50</td>
-                                            <td>500,000</td>
+                                            <td><img src="{{$.UrlOutfitsView}}/animoutfit.php?id={{.LookType}}&addons={{.LookAddons}}&head={{.LookHead}}&body={{.LookBody}}&legs={{.LookLegs}}&feet={{.LookFeet}}&mount=0&direction=3"
+                                                alt="Jugador {{.ID}}"></td>
+                                            <td>{{.Name}}</td>
+                                            <td>{{.Level}}</td>
+                                            <td>{{.Experience}}</td>
                                         </tr>
-                                        <tr>
-                                            <td>Personaje 2</td>
-                                            <td>45</td>
-                                            <td>450,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Personaje 3</td>
-                                            <td>40</td>
-                                            <td>400,000</td>
-                                        </tr>
+                                        {{end}}
+                                        
                                     </tbody>
                                 </table>
-                            </div>
-                        </div>
-                    
-                        <!-- Acordeón -->
-                        <div class="accordion mb-4" id="accordionExample">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingOne">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        Información Adicional
-                                    </button>
-                                </h2>
-                                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body">
-                                        Aquí puedes encontrar información adicional sobre el juego, como guías, tutoriales, y más.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <!-- Panel de Búsqueda -->
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                Buscar por Habilidades o Mundo
-                            </div>
-                            <div class="card-body">
-                                <form>
-                                    <div class="mb-3">
-                                        <label for="searchWorld" class="form-label">Buscar por Mundo</label>
-                                        <input type="text" class="form-control" id="searchWorld" placeholder="Ingresa el nombre del mundo">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="searchSkill" class="form-label">Buscar por Habilidad</label>
-                                        <select class="form-select" id="searchSkill">
-                                            <option selected>Selecciona una habilidad...</option>
-                                            <option value="1">Espada</option>
-                                            <option value="2">Hacha</option>
-                                            <option value="3">Magia</option>
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Buscar</button>
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -305,7 +224,7 @@
                         <hr>
                         <h4>Top Jugadores</h4>
                         <ul class="list-group">
-                            {{range .Players}}
+                            {{range .TopPlayers}}
                             <li class="list-group-item">
                                 <img src="{{$.UrlOutfitsView}}/animoutfit.php?id={{.LookType}}&addons={{.LookAddons}}&head={{.LookHead}}&body={{.LookBody}}&legs={{.LookLegs}}&feet={{.LookFeet}}&mount=0&direction=3"
                                     alt="Jugador 1">

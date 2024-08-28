@@ -16,13 +16,16 @@ func NewRouter() *mux.Router {
 
 	fs := http.FileServer(http.Dir("./www"))
 	if !config.VarEnviroment.ServerWeb.ApiMode {
-		r.Use(middleware.AuthPathPublicMiddleware)
 		//WEB Active!
+		r.Use(middleware.AuthPathPublicMiddleware)
 		r.PathPrefix("/www/").Handler(http.StripPrefix("/www/", fs))
 		r.HandleFunc("/get_news_ticket", NewsTickerHandler.GetTicket).Methods("GET") //API PUBLIC
 
 		var homeHandler handler.HomeHandler
 		r.HandleFunc("/", homeHandler.GetHome).Methods("GET") //Public
+
+		var whoPlayer handler.WhoOnlineHandler
+		r.HandleFunc("/who_online", whoPlayer.GetViewPlayer).Methods("GET")
 
 		//Not Found
 		// r.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
