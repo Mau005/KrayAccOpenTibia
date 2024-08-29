@@ -62,8 +62,6 @@ function createCharacter() {
     if (isMale) {
         sex = 1;
     }
-    alert("paso lo filtros");
-    return
     sendRequest("/auth/create_character", "POST", {
         "namecharacter": nameCharacter,
         "ismale": sex
