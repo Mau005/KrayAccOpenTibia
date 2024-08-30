@@ -98,10 +98,14 @@ func Load(filename string) error {
 	} else {
 		utils.Info("MySQL variables are loaded to config.yml")
 	}
-	Server, err = LoadConfigLua(VarEnviroment.ServerWeb.TargetServer)
-	if err != nil {
-		utils.ErrorFatal(err.Error())
+
+	if VarEnviroment.ServerWeb.TargetServer != "" {
+		Server, err = LoadConfigLua(VarEnviroment.ServerWeb.TargetServer)
+		if err != nil {
+			utils.ErrorFatal(err.Error())
+		}
 	}
+
 	err = loadMySQL()
 	if err != nil {
 		utils.ErrorFatal(err.Error())
