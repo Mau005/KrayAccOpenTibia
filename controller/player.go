@@ -24,7 +24,7 @@ func (pc *PlayerController) GetPropertiesPlayer(accountID, playerID int) bool {
 }
 
 func (pc *PlayerController) GetPlayerLimits(count int) (player []models.Players) {
-	db.DB.Find(&player).Limit(count).Order("desc level")
+	db.DB.Order("level desc").Limit(count).Find(&player)
 	return
 }
 
