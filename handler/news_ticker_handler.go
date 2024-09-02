@@ -63,7 +63,7 @@ func (ntc *NewsTicketHandler) GetTicket(w http.ResponseWriter, r *http.Request) 
 
 	var response []Response
 
-	tickets, _ := newsTicketCtl.GetTickerLimited(5)
+	tickets := newsTicketCtl.GetTickerLimited(5)
 
 	for _, value := range tickets {
 		response = append(response, Response{

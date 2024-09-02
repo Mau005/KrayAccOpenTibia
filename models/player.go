@@ -1,7 +1,7 @@
 package models
 
 type Players struct {
-	ID                   int     `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+	ID                   int     `gorm:"column:id;type:int(11);primaryKey;autoIncrement" json:"id"`
 	Name                 string  `gorm:"column:name;size:255" json:"name"`
 	GroupID              int     `gorm:"column:group_id;default:1" json:"group_id"`
 	AccountID            int     `gorm:"column:account_id;default:0" json:"account_id"`

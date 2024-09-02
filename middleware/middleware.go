@@ -57,6 +57,36 @@ func AuthPathPublicMiddleware(next http.Handler) http.Handler {
 	})
 }
 
+func AuthPoolConnection(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var tokenString string
+
+		tokenString = r.Header.Get("Authorization")
+
+		tokenString = strings.TrimPrefix(tokenString, "Bearer ")
+
+		if tokenString == "" {
+			http.Error(w, "Missing or invalid token", http.StatusUnauthorized)
+			return
+		}
+
+		claims := &models.Claim{}
+		token, err := jwt.ParseWithClaims(tokenString, claims, func(t *jwt.Token) (interface{}, error) {
+			return []byte(utils.PasswordSecurityDefaul), nil
+		})
+		if err != nil || !token.Valid {
+			http.Error(w, utils.ErrorInvalidToken, http.StatusUnauthorized)
+			return
+		}
+		context.Set(r, utils.CtxAccountName, claims.AccountName)
+		context.Set(r, utils.CtxAccountEmail, claims.Email)
+		context.Set(r, utils.CtxAccountID, claims.AccountID)
+		context.Set(r, utils.CtxTypeAccount, claims.TypeAccess)
+		context.Set(r, utils.CtxClaim, *claims)
+		next.ServeHTTP(w, r)
+	})
+}
+
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var tokenString string

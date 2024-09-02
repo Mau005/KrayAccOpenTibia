@@ -10,7 +10,7 @@ import (
 
 type NewsTickerController struct{}
 
-func (ntc *NewsTickerController) GetTickerLimited(count int) (ticker []models.NewsTicket, err error) {
+func (ntc *NewsTickerController) GetTickerLimited(count int) (ticker []models.NewsTicket) {
 	db.DB.Preload("Player").Limit(count).Order("created_at DESC").Find(&ticker)
 	return
 }

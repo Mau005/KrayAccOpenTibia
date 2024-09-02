@@ -10,20 +10,23 @@ import (
 	"github.com/gorilla/context"
 )
 
-type HomeHandler struct{}
+type PlayerDeathHandler struct{}
 
-func (hh *HomeHandler) GetHome(w http.ResponseWriter, r *http.Request) {
+func (pdh *PlayerDeathHandler) GetViewPlayerDeath(w http.ResponseWriter, r *http.Request) {
 	navWeb, _ := context.Get(r, utils.CtxNavWeb).(models.NavWeb)
 
-	templ, err := template.New("index.html").ParseFiles("www/index.html")
+	templ, err := template.New("death_player.html").ParseFiles("www/death_player.html")
 	if err != nil {
 		log.Println("error create template", err)
 		return
 	}
 	var Layouthandler Layouthandler
-	err = templ.Execute(w, Layouthandler.Generatelayout(navWeb, models.SolicitudeLayout{News: true, Login: true, ServerStatus: true, TopPlayers: true, Rates: true}))
+	ConditionalLayout := models.NewLayoutDefault()
+	ConditionalLayout.LastDeath = true
+	err = templ.Execute(w, Layouthandler.Generatelayout(navWeb, ConditionalLayout))
 	if err != nil {
 		log.Println("error execute template", err)
 		return
 	}
+
 }

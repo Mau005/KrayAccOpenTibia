@@ -27,6 +27,10 @@ func (pc *PlayerController) GetPlayerLimits(count int) (player []models.Players)
 	db.DB.Order("level desc").Limit(count).Find(&player)
 	return
 }
+func (pc *PlayerController) GetPlayerID(id int) (player models.Players) {
+	db.DB.Where("id = ?", id).First(&player)
+	return
+}
 
 func (pc *PlayerController) CreatePlayer(player models.Players) (models.Players, error) {
 	if err := db.DB.Create(&player).Error; err != nil {
@@ -44,5 +48,10 @@ func (pc *PlayerController) GetPlayerOnline() (players []models.Players) {
 		db.DB.Where("id = ?", value.PlayerID).First(&playerTarget)
 		players = append(players, playerTarget)
 	}
+	return
+}
+
+func (pc *PlayerController) GetPlayerDeath() (deaths []models.PlayerDeaths) {
+	db.DB.Preload("Player").Order("time desc").Limit(50).Find(&deaths)
 	return
 }

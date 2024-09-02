@@ -27,6 +27,9 @@ func NewRouter() *mux.Router {
 		var whoPlayer handler.WhoOnlineHandler
 		r.HandleFunc("/who_online", whoPlayer.GetViewPlayer).Methods("GET")
 
+		var killerhandler handler.PlayerDeathHandler
+		r.HandleFunc("/last_death", killerhandler.GetViewPlayerDeath).Methods("GET")
+
 		//Not Found
 		// r.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// 	bodyResponde, err := io.ReadAll(r.Body)
