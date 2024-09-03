@@ -50,8 +50,7 @@ func CreateNavbar(navweb models.NavWeb) string {
 							Biblioteca
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="navbarDropdownComunidad">
-							<li><a class="dropdown-item" href="#">Introduccion</a></li>
-							<li><a class="dropdown-item" href="#">Server Info</a></li>
+							<li><a class="dropdown-item" href="#">Introducción</a></li>
 							<li><a class="dropdown-item" href="#">Mapa del Mundo</a></li>
 							<li><a class="dropdown-item" href="#">Task Info</a></li>
 							<li><a class="dropdown-item" href="#">Descargas</a></li>
@@ -85,10 +84,7 @@ func CreateNavbar(navweb models.NavWeb) string {
 							
 						</ul>
 					</li>
-	
-					<li class="nav-item">
-						<a class="nav-link" href="#">Support</a>
-					</li>
+
 					%s
 				</ul>
 			</div>

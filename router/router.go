@@ -51,6 +51,8 @@ func NewRouter() *mux.Router {
 		s.HandleFunc("/create_news_ticket", NewsTickerHandler.CreateTicket).Methods("POST")
 	} else {
 		//APIMODE
+		api := r.PathPrefix("/api").Subrouter()
+		api.Use(middleware.AuthPoolConnection)
 
 	}
 

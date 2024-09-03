@@ -20,9 +20,11 @@ func main() {
 	if err != nil {
 		utils.ErrorFatal(err.Error())
 	}
+
 	configureIP := fmt.Sprintf("%s:%d", config.VarEnviroment.ServerWeb.IP, config.VarEnviroment.ServerWeb.Port)
 
 	r := router.NewRouter()
+
 	if config.VarEnviroment.Certificate.ProtocolTLS {
 		utils.InfoBlue(fmt.Sprintf("[HTTPS] Starting the HTTPS server: https://%s/", configureIP))
 		server := &http.Server{
