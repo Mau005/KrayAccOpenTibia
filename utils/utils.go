@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"log"
 	"strings"
 
@@ -37,6 +38,11 @@ func ErrorFatal(msg ...string) {
 func InfoBlue(msg ...string) {
 	errorColor := color.New(color.FgBlue).SprintFunc()
 	log.Println(errorColor(msg))
+}
+
+func InfoBlueNotLog(msg ...string) {
+	errorColor := color.New(color.FgBlue).SprintFunc()
+	fmt.Println(errorColor(msg))
 }
 
 func uniteText(target string, msg []string) string {

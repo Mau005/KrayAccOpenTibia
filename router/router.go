@@ -53,7 +53,6 @@ func NewRouter() *mux.Router {
 		//APIMODE
 		api := r.PathPrefix("/api").Subrouter()
 		api.Use(middleware.AuthPoolConnection)
-
 	}
 
 	// Router client connections

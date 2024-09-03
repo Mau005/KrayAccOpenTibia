@@ -3,7 +3,7 @@ MySQL:
   Host: 127.0.0.1
   Port: 3306
   UserName: root
-  DBPassword: fcua29hd
+  DBPassword: 12345
   DataBase: tfs
 
 ServerWeb:
@@ -13,18 +13,18 @@ ServerWeb:
   ApiMode: false # enable kray api to connect with other kray api and simulate multi world
   LengthSecurity: 128 #len security generate token active
   EnvironmentVariables: false
-  TargetServer: /home/mauro/Desktop/ProyectoOldRL/tfs2 #Default case . pathNow case "" empty not found
+  TargetServer:  #Default pathNow case "" empty not found
   UrlItemView: https://item-images.ots.me/1285
   UrlOutfitsView: https://outfit-images.ots.me/1285 #animoutfit.php?id=128&addons=3&head=123&body=12&legs=23&feet=31&mount=0&direction=2
   LimitCreateCharacter: 5
 
 #APiMODE!
 ApiConnectionPool:
-  - IpWebApi: http://tibiakray.info/ # Case online connect other web api KrayAcc
-    PortApi: 8000 # Case online connect other web api KrayAcc
+  - IpWebApi: http://tibiakray.info/ 
+    PortApi: 8000 
     Token: aws
-  - IpWebApi: http://thelastrookgard.cl # Case online connect other web api KrayAcc
-    PortApi: 8000 # Case online connect other web api KrayAcc
+  - IpWebApi: http://thelastrookgard.cl
+    PortApi: 8000
     Token: aws
 
 Certificate:

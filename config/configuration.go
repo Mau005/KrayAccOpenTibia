@@ -27,7 +27,7 @@ ____  __.                      _____
 |    |  \ |  | \// __ \\___  /    |    \  \__\  \___ 
 |____|__ \|__|  (____  / ____\____|__  /\___  >___  >
 	   \/           \/\/            \/     \/    \/ 
-   `
+Created By Krayno https://www.github.com/Mau005   `
 
 type ServerWeb struct {
 	IP                   string `yaml:"IP"`
@@ -75,7 +75,7 @@ func Load(filename string) error {
 		return err
 	}
 
-	utils.InfoBlue(Welcome)
+	utils.InfoBlueNotLog(Welcome)
 
 	SecretPassword = []byte(GenerateRandomPassword(VarEnviroment.ServerWeb.LengthSecurity))
 

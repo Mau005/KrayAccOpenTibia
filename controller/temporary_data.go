@@ -18,19 +18,21 @@ type TemporaryData struct {
 func LoadTemporaryData() error {
 	TempData = &TemporaryData{}
 
-	var api ApiController
-	go func() {
-		for {
-			serv, err := api.CheckOnlineServer(config.Server.Server.IPServer, fmt.Sprintf("%d", config.Server.Server.LoginProtocolPort))
-			if err != nil {
-				utils.Error("error check online server xml function, broken gorutine", err.Error())
-				break
-			}
+	if config.VarEnviroment.ServerWeb.TargetServer != "" {
+		var api ApiController
+		go func() {
+			for {
+				serv, err := api.CheckOnlineServer(config.Server.Server.IPServer, fmt.Sprintf("%d", config.Server.Server.LoginProtocolPort))
+				if err != nil {
+					utils.Error("error check online server xml function, broken gorutine", err.Error())
+					break
+				}
 
-			TempData.ServerStatus = serv
-			time.Sleep(utils.TimeCheckInfoServer * time.Minute)
-		}
-	}()
+				TempData.ServerStatus = serv
+				time.Sleep(utils.TimeCheckInfoServer * time.Minute)
+			}
+		}()
+	}
 
 	return nil
 }
