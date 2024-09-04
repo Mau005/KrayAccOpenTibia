@@ -45,9 +45,9 @@ func (ah *AccountHandler) Authentication(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	secure := config.VarEnviroment.Certificate.ProtocolTLS
+	secure := config.Global.Certificate.ProtocolTLS
 
-	if !config.VarEnviroment.ServerWeb.ApiMode {
+	if !config.Global.ServerWeb.ApiMode {
 		http.SetCookie(w, &http.Cookie{
 			Name:     utils.NameCookieToken,
 			Value:    token,
@@ -80,7 +80,7 @@ func (ah *AccountHandler) CreateCharacter(w http.ResponseWriter, r *http.Request
 		exceptCtl.Exeption(err.Error(), http.StatusFailedDependency, w)
 		return
 	}
-	if len(account.Players) >= int(config.VarEnviroment.ServerWeb.LimitCreateCharacter) {
+	if len(account.Players) >= int(config.Global.ServerWeb.LimitCreateCharacter) {
 		utils.Warn("account completed limite character")
 		exceptCtl.Exeption("complete limit character", http.StatusPreconditionRequired, w)
 		return

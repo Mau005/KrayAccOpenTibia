@@ -36,13 +36,13 @@ func (lh *Layouthandler) Generatelayout(navWeb models.NavWeb, condition models.S
 		`
 	}
 	if condition.ServerStatus {
-		layout.ServerStatus = components.CreateServerStatus(controller.TempData.ServerStatus)
+		layout.ServerStatus = components.CreateServerStatus(controller.TempData.ServStatusTotal)
 		layout.Scripts += fmt.Sprintf(`
         <script src="/www/js/uptime.js"></script>
         <script>
             startCounter('%s')
         </script>
-		`, controller.TempData.ServerStatus.ServerInfo.Uptime)
+		`, controller.TempData.ServStatusTotal.ServerInfo.Uptime)
 	}
 
 	if condition.WhoIsOnline {
@@ -56,7 +56,7 @@ func (lh *Layouthandler) Generatelayout(navWeb models.NavWeb, condition models.S
 		layout.TopPlayers = components.CreateTopPlayerComponent(utils.LimitRecordFive)
 	}
 	if condition.Rates {
-		layout.Rates = components.CreateRates(controller.TempData.ServerStatus)
+		layout.Rates = components.CreateRates(controller.TempData.ServStatusTotal)
 	}
 
 	//default:

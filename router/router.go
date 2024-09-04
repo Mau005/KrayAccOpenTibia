@@ -15,7 +15,7 @@ func NewRouter() *mux.Router {
 	r := mux.NewRouter()
 
 	fs := http.FileServer(http.Dir("./www"))
-	if !config.VarEnviroment.ServerWeb.ApiMode {
+	if !config.Global.ServerWeb.ApiMode {
 		//WEB Active!
 		r.Use(middleware.AuthPathPublicMiddleware)
 		r.PathPrefix("/www/").Handler(http.StripPrefix("/www/", fs))

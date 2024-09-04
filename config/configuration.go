@@ -17,8 +17,8 @@ import (
 	lua "github.com/yuin/gopher-lua"
 )
 
-var Server ExecuteServer
-var VarEnviroment *Configuration
+var PoolWorld []models.ClientWorld
+var Global *models.Configuration
 var SecretPassword []byte
 var Welcome string = `
 ____  __.                      _____                
@@ -27,80 +27,47 @@ ____  __.                      _____
 |    |  \ |  | \// __ \\___  /    |    \  \__\  \___ 
 |____|__ \|__|  (____  / ____\____|__  /\___  >___  >
 	   \/           \/\/            \/     \/    \/ 
-Created By Krayno https://www.github.com/Mau005   `
-
-type ServerWeb struct {
-	IP                   string `yaml:"IP"`
-	Port                 uint16 `yaml:"Port"`
-	Debug                bool   `yaml:"Debug"`
-	ApiMode              bool   `yaml:"ApiMode"`
-	LengthSecurity       int    `yaml:"LengthSecurity"`
-	EnvironmentVariables bool   `yaml:"EnvironmentVariables"`
-	UrlItemView          string `yaml:"UrlItemView"`
-	UrlOutfitsView       string `yaml:"UrlOutfitsView"`
-	TargetServer         string `yaml:"TargetServer"`
-	LimitCreateCharacter uint8  `yaml:"LimitCreateCharacter"`
-}
-type MySQL struct {
-	Host       string `yaml:"Host"`
-	Port       uint16 `yaml:"Port"`
-	UserName   string `yaml:"UserName"`
-	DBPassword string `yaml:"DBPassword"`
-	DataBase   string `yaml:"DataBase"`
-}
-
-type Certificate struct {
-	ProtocolTLS bool   `yaml:"ProtocolHTTPS"`
-	Chain       string `yaml:"Chain"`
-	PrivKey     string `yaml:"PrivKey"`
-}
-
-type Configuration struct {
-	DB                   MySQL                         `yaml:"MySQL"`
-	ServerWeb            ServerWeb                     `yaml:"ServerWeb"`
-	Certificate          Certificate                   `yaml:"Certificate"`
-	ServerConnectKrayAcc []models.ServerConnectKrayAcc `yaml:"ApiConnectionPool"`
-}
+Created By Krayno https://www.github.com/Mau005
+`
 
 func Load(filename string) error {
-
-	VarEnviroment = &Configuration{}
+	Global = &models.Configuration{}
 	content, err := os.ReadFile(filename)
 	if err != nil {
 		return err
 	}
 
-	err = yaml.Unmarshal(content, &VarEnviroment)
+	err = yaml.Unmarshal(content, &Global)
 	if err != nil {
 		return err
 	}
 
 	utils.InfoBlueNotLog(Welcome)
 
-	SecretPassword = []byte(GenerateRandomPassword(VarEnviroment.ServerWeb.LengthSecurity))
+	SecretPassword = []byte(GenerateRandomPassword(Global.ServerWeb.LengthSecurity))
 
 	//Cargo la configuracion
-	if VarEnviroment.ServerWeb.Debug {
+	if Global.ServerWeb.Debug {
 		log.SetFlags(log.LstdFlags | log.Lshortfile)
 		log.SetPrefix("DEBUG: ")
 		SecretPassword = []byte("debugging")
 		utils.Warn("Security mode Debug")
 	} else {
-		utils.Info(fmt.Sprintf("Security Active %d\n", VarEnviroment.ServerWeb.LengthSecurity))
+		utils.Info(fmt.Sprintf("Security Active %d\n", Global.ServerWeb.LengthSecurity))
 	}
-	if VarEnviroment.ServerWeb.EnvironmentVariables {
+	if Global.ServerWeb.EnvironmentVariables {
+		Global.DB.Host = os.Getenv("MYSQL_HOST")
+		Global.DB.Port = parseEnvUint(os.Getenv("MYSQL_PORT"), 3306)
+		Global.DB.UserName = os.Getenv("MYSQL_USER")
+		Global.DB.DBPassword = os.Getenv("MYSQL_PASSWORD")
+		Global.DB.DataBase = os.Getenv("MYSQL_DATABASE")
 		utils.Info("MySQL variables are loaded from environment")
-		VarEnviroment.DB.Host = os.Getenv("MYSQL_HOST")
-		VarEnviroment.DB.Port = parseEnvUint(os.Getenv("MYSQL_PORT"), 3306)
-		VarEnviroment.DB.UserName = os.Getenv("MYSQL_USER")
-		VarEnviroment.DB.DBPassword = os.Getenv("MYSQL_PASSWORD")
-		VarEnviroment.DB.DataBase = os.Getenv("MYSQL_DATABASE")
 	} else {
 		utils.Info("MySQL variables are loaded to config.yml")
 	}
 
-	if VarEnviroment.ServerWeb.TargetServer != "" {
-		Server, err = LoadConfigLua(VarEnviroment.ServerWeb.TargetServer)
+	if Global.ServerWeb.TargetServer != "" {
+		err = LoadConfigLua(Global.ServerWeb.TargetServer)
 		if err != nil {
 			utils.ErrorFatal(err.Error())
 		}
@@ -117,12 +84,12 @@ func Load(filename string) error {
 
 func loadMySQL() error {
 	return db.ConnectionMysql(
-		VarEnviroment.DB.UserName,
-		VarEnviroment.DB.DBPassword,
-		VarEnviroment.DB.Host,
-		VarEnviroment.DB.DataBase,
-		VarEnviroment.DB.Port,
-		VarEnviroment.ServerWeb.Debug,
+		Global.DB.UserName,
+		Global.DB.DBPassword,
+		Global.DB.Host,
+		Global.DB.DataBase,
+		Global.DB.Port,
+		Global.ServerWeb.Debug,
 	)
 }
 
@@ -153,25 +120,25 @@ func GenerateRandomPassword(length int) string {
 	return password
 }
 
-func LoadConfigLua(targetServer string) (preConfigServer ExecuteServer, err error) {
+func LoadConfigLua(targetServer string) (err error) {
 	checkOS := runtime.GOOS
-	targetExecute := ""
+	// targetExecute := ""
 	targetPath := ""
 	switch checkOS {
 
 	case "windows":
 		slicePath := strings.Split(targetServer, "\\")
-		targetExecute = fmt.Sprintf("%s.exe", slicePath[len(slicePath)-1])
+		// targetExecute = fmt.Sprintf("%s.exe", slicePath[len(slicePath)-1])
 		targetPath = strings.Join(slicePath[:len(slicePath)-1], "\\")
 
 	default:
 		slicePath := strings.Split(targetServer, "/")
-		targetExecute = fmt.Sprintf("./%s", slicePath[len(slicePath)-1])
+		// targetExecute = fmt.Sprintf("./%s", slicePath[len(slicePath)-1])
 		targetPath = strings.Join(slicePath[:len(slicePath)-1], "/")
 	}
 
-	preConfigServer.PathServer = targetPath
-	preConfigServer.NameExecute = targetExecute
+	// PathServer := targetPath
+	// NameExecute := targetExecute
 
 	L := lua.NewState()
 	defer L.Close()
@@ -179,68 +146,84 @@ func LoadConfigLua(targetServer string) (preConfigServer ExecuteServer, err erro
 	if err := L.DoFile(path_new); err != nil {
 		utils.ErrorFatal("error executing Lua script:", err.Error())
 	}
+	var WorldType int
 	switch L.GetGlobal("worldType").String() {
 	case "pvp":
-		preConfigServer.Server.WorldType = 0
+		WorldType = 0
 	case "no-pvp":
-		preConfigServer.Server.WorldType = 1
+		WorldType = 1
 	case "pvp-enforced":
-		preConfigServer.Server.WorldType = 2
+		WorldType = 2
 	default:
-		preConfigServer.Server.WorldType = 0
+		WorldType = 0
 	}
-	preConfigServer.Server.IPServer = L.GetGlobal("ip").String()
+	IPServer := L.GetGlobal("ip").String()
 	LoginProtocolPort, err := strconv.ParseUint(L.GetGlobal("loginProtocolPort").String(), 10, 16)
 	if err != nil {
 		return
 	}
-	preConfigServer.Server.LoginProtocolPort = uint16(LoginProtocolPort)
 
-	gameProtocolPort, err := strconv.ParseUint(L.GetGlobal("gameProtocolPort").String(), 10, 16)
+	GameProtocolPort, err := strconv.ParseUint(L.GetGlobal("gameProtocolPort").String(), 10, 16)
 	if err != nil {
 		return
 	}
-	preConfigServer.Server.GameProtocolPort = uint16(gameProtocolPort)
 
-	statusProtocolPort, err := strconv.ParseUint(L.GetGlobal("statusProtocolPort").String(), 10, 16)
+	StatusProtocolPort, err := strconv.ParseUint(L.GetGlobal("statusProtocolPort").String(), 10, 16)
 	if err != nil {
 		return
 	}
-	preConfigServer.Server.StatusProtocolPort = uint16(statusProtocolPort)
 
-	preConfigServer.NameServer = L.GetGlobal("serverName").String()
-	preConfigServer.Server.HouseRentPeriod = L.GetGlobal("houseRentPeriod").String()
+	Location := L.GetGlobal("location").String()
+	NameServer := L.GetGlobal("serverName").String()
+	//HouseRentPeriod := L.GetGlobal("houseRentPeriod").String()
 
 	rateExp, err := strconv.ParseUint(L.GetGlobal("rateExp").String(), 10, 16)
 	if err != nil {
 		return
 	}
-	preConfigServer.RateServer.RateExp = uint16(rateExp)
 
 	rateSkill, err := strconv.ParseUint(L.GetGlobal("rateSkill").String(), 10, 16)
 	if err != nil {
 		return
 	}
-	preConfigServer.RateServer.RateSkill = uint16(rateSkill)
 
 	rateLoot, err := strconv.ParseUint(L.GetGlobal("rateLoot").String(), 10, 16)
 	if err != nil {
 		return
 	}
-	preConfigServer.RateServer.RateLoot = uint16(rateLoot)
 
 	RateMagic, err := strconv.ParseUint(L.GetGlobal("rateMagic").String(), 10, 16)
 	if err != nil {
 		return
 	}
-	preConfigServer.RateServer.RateMagic = uint16(RateMagic)
 
 	rateSpawn, err := strconv.ParseUint(L.GetGlobal("rateSpawn").String(), 10, 16)
 	if err != nil {
 		return
 	}
-	preConfigServer.RateServer.RateSpawn = uint16(rateSpawn)
+	rate := models.RateServer{RateExp: uint16(rateExp),
+		RateSkill: uint16(rateSkill),
+		RateLoot:  uint16(rateLoot),
+		RateMagic: uint16(RateMagic),
+		RateSpawn: uint16(rateSpawn)}
 
+	World := models.ClientWorld{
+		ID:                         len(Global.PoolSerer),
+		AntiCheatProtection:        false,
+		ExternalAddRessUnProtected: IPServer,
+		ExternalAddress:            IPServer,
+		ExternalAddressProtected:   IPServer,
+		PvpType:                    uint8(WorldType),
+		Location:                   Location,
+		Name:                       NameServer,
+		PreviewState:               1,
+		ExternalPort:               uint16(StatusProtocolPort),
+		ExternalPortProtected:      uint16(GameProtocolPort),
+		ExternalPortUnprotected:    uint16(LoginProtocolPort),
+		CurrentTournamentPhase:     2,
+	}
+	Global.PoolSerer = append(Global.PoolSerer, models.PoolServer{World: World, RateServer: rate})
+	utils.Info("configure server local")
 	utils.Info("loaded config.lua")
 	return
 }

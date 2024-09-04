@@ -12,27 +12,45 @@ import (
 var TempData *TemporaryData
 
 type TemporaryData struct {
-	ServerStatus models.ServerStatus
+	ServStatusTotal models.ServerStatus
+	ServStatus      []models.ServerStatus
 }
 
 func LoadTemporaryData() error {
-	TempData = &TemporaryData{}
-
-	if config.VarEnviroment.ServerWeb.TargetServer != "" {
-		var api ApiController
-		go func() {
-			for {
-				serv, err := api.CheckOnlineServer(config.Server.Server.IPServer, fmt.Sprintf("%d", config.Server.Server.LoginProtocolPort))
+	TempData = &TemporaryData{ServStatusTotal: models.ServerStatus{}}
+	counTry := 0
+	var api ApiController
+	go func() {
+		for {
+			// TODO: server local check status
+			counTry += 1
+			// oldestUptime := 0
+			for _, value := range config.Global.PoolSerer {
+				serv, err := api.CheckOnlineServer(value.World.ExternalAddress, fmt.Sprintf("%d", value.World.ExternalPort))
 				if err != nil {
-					utils.Error("error check online server xml function, broken gorutine", err.Error())
-					break
+					utils.Error(fmt.Sprintf("error check online server xml function, %s", value.IpWebApi), err.Error())
+					continue
 				}
 
-				TempData.ServerStatus = serv
-				time.Sleep(utils.TimeCheckInfoServer * time.Minute)
+				TempData.ServStatusTotal.Players.Online += serv.Players.Online
+				TempData.ServStatusTotal.Monsters.Total += serv.Monsters.Total
+				TempData.ServStatusTotal.NPCs.Total += serv.NPCs.Total
+
+				//check rev old time server
+				// if serv.ServerInfo.Uptime >= oldestUptime {
+				// 	oldestUptime = serv.ServerInfo.Uptime
+				// }
+
+				TempData.ServStatus = append(TempData.ServStatus, serv) // check server
 			}
-		}()
-	}
+			// TempData.ServStatusTotal.ServerInfo.Uptime = oldestUptime
+
+			if counTry >= 3 {
+				return
+			}
+			time.Sleep(utils.TimeCheckInfoServer * time.Minute)
+		}
+	}()
 
 	return nil
 }

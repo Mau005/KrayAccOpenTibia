@@ -21,17 +21,17 @@ func main() {
 		utils.ErrorFatal(err.Error())
 	}
 
-	configureIP := fmt.Sprintf("%s:%d", config.VarEnviroment.ServerWeb.IP, config.VarEnviroment.ServerWeb.Port)
+	configureIP := fmt.Sprintf("%s:%d", config.Global.ServerWeb.IP, config.Global.ServerWeb.Port)
 
 	r := router.NewRouter()
 
-	if config.VarEnviroment.Certificate.ProtocolTLS {
+	if config.Global.Certificate.ProtocolTLS {
 		utils.InfoBlue(fmt.Sprintf("[HTTPS] Starting the HTTPS server: https://%s/", configureIP))
 		server := &http.Server{
 			Addr:    configureIP,
 			Handler: r,
 		}
-		if err := server.ListenAndServeTLS(config.VarEnviroment.Certificate.Chain, config.VarEnviroment.Certificate.PrivKey); err != nil {
+		if err := server.ListenAndServeTLS(config.Global.Certificate.Chain, config.Global.Certificate.PrivKey); err != nil {
 			utils.ErrorFatal("Error starting TLS server: " + err.Error())
 		}
 	} else {

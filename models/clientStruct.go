@@ -16,7 +16,7 @@ type ClientSession struct {
 }
 
 type ClientWorld struct {
-	ID                         uint8  `json:"id"`
+	ID                         int    `json:"id"`
 	Name                       string `json:"name"`
 	ExternalAddress            string `json:"externaladdress"`
 	ExternalPort               uint16 `json:"externalport"`

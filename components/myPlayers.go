@@ -12,7 +12,7 @@ func CreateMyPlayers(navWeb models.NavWeb) string {
 	components := ""
 	for _, player := range navWeb.MyPlayers {
 		urlImage := fmt.Sprintf("%s/animoutfit.php?id=%d&addons=%d&head=%d&body=%d&legs=%d&feet=%d&mount=0&direction=3",
-			config.VarEnviroment.ServerWeb.UrlOutfitsView, player.LookType, player.LookAddons, player.LookHead, player.LookBody, player.LookLegs, player.LookFeet)
+			config.Global.ServerWeb.UrlOutfitsView, player.LookType, player.LookAddons, player.LookHead, player.LookBody, player.LookLegs, player.LookFeet)
 		itemPlayers += fmt.Sprintf(`
 							<li class="list-group-item">
                                 %s
