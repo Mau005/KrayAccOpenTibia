@@ -62,9 +62,21 @@ function createCharacter() {
     if (isMale) {
         sex = 1;
     }
+    const selectedRadio = document.querySelector('input[name="world"]:checked');
+    const resultado = document.getElementById('resultado');
+
+    if ( !selectedRadio) {
+        // Si se encuentra un radio button seleccionado
+        const errorElement = document.getElementById("errorCreateCharacter");
+        errorCreateCharacter.innerHTML = "Tiene que un mundo a registrar";
+    } 
+
+    
+    return
     sendRequest("/auth/create_character", "POST", {
         "namecharacter": nameCharacter,
-        "ismale": sex
+        "ismale": sex,
+        "world": selectedRadio.value
     }).then(response => {
         location.reload();
 

@@ -1,5 +1,11 @@
 package components
 
+import (
+	"fmt"
+
+	"github.com/Mau005/KrayAccOpenTibia/config"
+)
+
 func CreateModalRegister() string {
 	return `
  		<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
@@ -40,8 +46,23 @@ func CreateModalRegister() string {
 }
 
 func CreateModalCreateCharacter() string {
+	worlds := ""
 
-	return `
+	for _, value := range config.Global.PoolServer {
+		if value.World.Name == "" {
+			continue
+		}
+		idName := fmt.Sprintf("%d-%s", value.World.ID, value.World.Name)
+		worlds += fmt.Sprintf(`
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="world" value="%s" id="%s">
+            <label class="form-check-label" for="%s">
+            %s, Exp %d
+            </label>
+        </div>
+        `, idName, idName, idName, value.World.Name, value.RateServer.RateExp)
+	}
+	return fmt.Sprintf(`
         <div class="modal fade" id="registerCharacter" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -50,7 +71,6 @@ func CreateModalCreateCharacter() string {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        
                             <div class="mb-3">
                                 <label for="nameCharacter" class="form-label">Nombre de Personaje</label>
                                 <input type="text" class="form-control" id="nameCharacter" required>
@@ -58,19 +78,20 @@ func CreateModalCreateCharacter() string {
                             <div class="mb-3">
                                 <label for="radioMale" class="form-label">Sexo del Personaje</label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" id="radioMale">
+                                    <input class="form-check-input" type="radio" name="sexo" id="radioMale" value="male">
                                     <label class="form-check-label" for="radioMale">
-                                      Hombre
+                                    Hombre
                                     </label>
-                                  </div>
-                                  <div class="form-check">
-                                    <input class="form-check-input" type="radio" id="radioFemale">
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="sexo" id="radioFemale" value="female">
                                     <label class="form-check-label" for="radioFemale">
-                                      Mujer
+                                    Mujer
                                     </label>
-                                  </div>
-                                  <span id="errorCreateCharacter"></span>
+                                </div>
+                                <span id="errorCreateCharacter"></span>
                             </div>
+                            %s
                             <button type="submit" class="btn btn-primary w-100" onclick="createCharacter()">Registrar Personaje</button>
                         
                     </div>
@@ -78,5 +99,11 @@ func CreateModalCreateCharacter() string {
             </div>
         </div>
 	
-	`
+	`, fmt.Sprintf(`
+    <label class="form-label">Mundos</label>
+    <div class="mb-3">
+    
+    %s
+    </div>
+    `, worlds))
 }
