@@ -89,9 +89,10 @@ func CreateModalCreateCharacter() string {
                                     Mujer
                                     </label>
                                 </div>
-                                <span id="errorCreateCharacter"></span>
+                              
                             </div>
                             %s
+                            <span id="errorCreateCharacter"></span>
                             <button type="submit" class="btn btn-primary w-100" onclick="createCharacter()">Registrar Personaje</button>
                         
                     </div>
