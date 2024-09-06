@@ -6,6 +6,7 @@ import (
 	"github.com/Mau005/KrayAccOpenTibia/config"
 	"github.com/Mau005/KrayAccOpenTibia/handler"
 	"github.com/Mau005/KrayAccOpenTibia/middleware"
+	"github.com/Mau005/KrayAccOpenTibia/utils"
 	"github.com/gorilla/mux"
 )
 
@@ -49,11 +50,18 @@ func NewRouter() *mux.Router {
 		s.Use(middleware.AuthMiddleware)
 		s.HandleFunc("/create_character", handlerAccount.CreateCharacter).Methods("POST")
 		s.HandleFunc("/create_news_ticket", NewsTickerHandler.CreateTicket).Methods("POST")
-	} else {
-		//APIMODE
-		api := r.PathPrefix("/api").Subrouter()
-		api.Use(middleware.AuthPoolConnection)
 	}
+
+	//APIMODE
+	api := r.PathPrefix(utils.ApiUrl).Subrouter()
+	api.Use(middleware.CommonMiddleware)
+	//api.Use(middleware.AuthPoolConnection)
+	var ApiConnection handler.ApiPoolConnectionHandler
+	api.HandleFunc(utils.ApiUrlGetPoolConnect, ApiConnection.GetPoolConnection).Methods("POST")
+	api.HandleFunc(utils.ApiUrlCreateAccount, ApiConnection.RegisterNewAccount).Methods("POST")
+	api.HandleFunc("/register_new_character", ApiConnection.RegisterNewCharacter).Methods("POST")
+
+	//api.HandleFunc("/connect_pool")
 
 	// Router client connections
 	ctl := r.PathPrefix("/client").Subrouter()
