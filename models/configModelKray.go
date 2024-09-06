@@ -1,16 +1,17 @@
 package models
 
 type ServerWeb struct {
-	IP                   string `yaml:"IP"`
-	Port                 uint16 `yaml:"Port"`
-	Debug                bool   `yaml:"Debug"`
-	ApiMode              bool   `yaml:"ApiMode"`
-	LengthSecurity       int    `yaml:"LengthSecurity"`
-	EnvironmentVariables bool   `yaml:"EnvironmentVariables"`
-	UrlItemView          string `yaml:"UrlItemView"`
-	UrlOutfitsView       string `yaml:"UrlOutfitsView"`
-	TargetServer         string `yaml:"TargetServer"`
-	LimitCreateCharacter uint8  `yaml:"LimitCreateCharacter"`
+	IP                   string  `yaml:"IP"`
+	Port                 uint16  `yaml:"Port"`
+	Debug                bool    `yaml:"Debug"`
+	ApiMode              bool    `yaml:"ApiMode"`
+	LengthSecurity       int     `yaml:"LengthSecurity"`
+	EnvironmentVariables bool    `yaml:"EnvironmentVariables"`
+	UrlItemView          string  `yaml:"UrlItemView"`
+	UrlOutfitsView       string  `yaml:"UrlOutfitsView"`
+	TargetServer         string  `yaml:"TargetServer"`
+	LimitCreateCharacter uint8   `yaml:"LimitCreateCharacter"`
+	DefaultPlayer        Players `yaml:"DefaultPlayer"`
 }
 
 type MySQL struct {
@@ -31,7 +32,7 @@ type Configuration struct {
 	DB          MySQL        `yaml:"MySQL"`
 	ServerWeb   ServerWeb    `yaml:"ServerWeb"`
 	Certificate Certificate  `yaml:"Certificate"`
-	PoolSerer   []PoolServer `yaml:"ApiConnectionPool"`
+	PoolServer  []PoolServer `yaml:"ApiConnectionPool"`
 }
 
 //Local Server
@@ -51,10 +52,8 @@ type RateServer struct {
 }
 
 type PoolServer struct {
-	IpWebApi        string `yaml:"IpWebApi" json:"ip_web_api"`
-	PortApi         uint   `yaml:"PortApi" json:"port_api"`
-	Token           string
-	World           ClientWorld
-	RateServer      RateServer
-	ExperienceStage ExperienceStage
+	IpWebApi   string `yaml:"IpWebApi"`
+	Token      string `yaml:"Token"`
+	World      ClientWorld
+	RateServer RateServer
 }

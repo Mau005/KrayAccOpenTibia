@@ -208,7 +208,7 @@ func LoadConfigLua(targetServer string) (err error) {
 		RateSpawn: uint16(rateSpawn)}
 
 	World := models.ClientWorld{
-		ID:                         len(Global.PoolSerer),
+		ID:                         len(Global.PoolServer),
 		AntiCheatProtection:        false,
 		ExternalAddRessUnProtected: IPServer,
 		ExternalAddress:            IPServer,
@@ -222,7 +222,8 @@ func LoadConfigLua(targetServer string) (err error) {
 		ExternalPortUnprotected:    uint16(LoginProtocolPort),
 		CurrentTournamentPhase:     2,
 	}
-	Global.PoolSerer = append(Global.PoolSerer, models.PoolServer{World: World, RateServer: rate})
+
+	Global.PoolServer = append(Global.PoolServer, models.PoolServer{World: World, RateServer: rate})
 	utils.Info("configure server local")
 	utils.Info("loaded config.lua")
 	return

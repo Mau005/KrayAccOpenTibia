@@ -22,6 +22,15 @@ func (ac *AccountController) GetAccountWithPlayer(accountID int) (account models
 	return
 }
 
+// create account valida web main, to connection to user server, sync preview
+func (ac *AccountController) CreateAccountAPI(account models.Account) (models.Account, error) {
+
+	if err := db.DB.Create(&account).Error; err != nil {
+		return account, err
+	}
+	return account, nil
+}
+
 func (ac *AccountController) GetAccountEmail(email string) (account models.Account, err error) {
 
 	if err = db.DB.Where("email = ?", email).First(&account).Error; err != nil {
@@ -101,7 +110,7 @@ func (ac *AccountController) LoginAccountClient(answerExpected models.AnswerExpe
 	session.ShowRewardNews = false
 
 	var worlds []models.ClientWorld
-	for _, value := range config.Global.PoolSerer {
+	for _, value := range config.Global.PoolServer {
 		worlds = append(worlds, value.World)
 	}
 	playData.World = worlds

@@ -60,13 +60,14 @@ func AuthPathPublicMiddleware(next http.Handler) http.Handler {
 func AuthPoolConnection(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var tokenString string
+		var errorException controller.ExceptionController
 
 		tokenString = r.Header.Get("Authorization")
 
 		tokenString = strings.TrimPrefix(tokenString, "Bearer ")
 
 		if tokenString == "" {
-			http.Error(w, "Missing or invalid token", http.StatusUnauthorized)
+			errorException.Exeption("error unhauthorized", http.StatusUnauthorized, w)
 			return
 		}
 
@@ -75,14 +76,9 @@ func AuthPoolConnection(next http.Handler) http.Handler {
 			return []byte(utils.PasswordSecurityDefaul), nil
 		})
 		if err != nil || !token.Valid {
-			http.Error(w, utils.ErrorInvalidToken, http.StatusUnauthorized)
+			errorException.Exeption("error invalid token", http.StatusUnauthorized, w)
 			return
 		}
-		context.Set(r, utils.CtxAccountName, claims.AccountName)
-		context.Set(r, utils.CtxAccountEmail, claims.Email)
-		context.Set(r, utils.CtxAccountID, claims.AccountID)
-		context.Set(r, utils.CtxTypeAccount, claims.TypeAccess)
-		context.Set(r, utils.CtxClaim, *claims)
 		next.ServeHTTP(w, r)
 	})
 }

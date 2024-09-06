@@ -18,6 +18,12 @@ type TemporaryData struct {
 
 func LoadTemporaryData() error {
 	TempData = &TemporaryData{ServStatusTotal: models.ServerStatus{}}
+	var poolCtl PoolConnectionController
+
+	if len(config.Global.PoolServer) > 1 {
+		poolCtl.GetWorldPool()
+	}
+
 	counTry := 0
 	var api ApiController
 	go func() {
@@ -25,7 +31,7 @@ func LoadTemporaryData() error {
 			// TODO: server local check status
 			counTry += 1
 			// oldestUptime := 0
-			for _, value := range config.Global.PoolSerer {
+			for _, value := range config.Global.PoolServer {
 				serv, err := api.CheckOnlineServer(value.World.ExternalAddress, fmt.Sprintf("%d", value.World.ExternalPort))
 				if err != nil {
 					utils.Error(fmt.Sprintf("error check online server xml function, %s", value.IpWebApi), err.Error())
