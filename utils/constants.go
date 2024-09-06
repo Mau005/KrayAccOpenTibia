@@ -68,5 +68,11 @@ const (
 	UserGod
 )
 
+const (
+	ApiUrl               = "/api"
+	ApiUrlCreateAccount  = "/register_new_account"
+	ApiUrlGetPoolConnect = "/get_pool"
+)
+
 // privbi
 const ()
