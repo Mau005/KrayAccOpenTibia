@@ -89,6 +89,7 @@ func (ah *AccountHandler) CreateCharacter(w http.ResponseWriter, r *http.Request
 	var request struct {
 		NameCharacter string
 		IsMale        int
+		World         string `json:"world"`
 	}
 	err = json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
@@ -100,9 +101,15 @@ func (ah *AccountHandler) CreateCharacter(w http.ResponseWriter, r *http.Request
 	player.AccountID = claim.AccountID
 	player.Name = request.NameCharacter
 	player.Sex = request.IsMale
-	player.Mana = 10
-	player.ManaMax = 10
-	player.TownID = 1
+	player.Level = config.Global.ServerWeb.DefaultPlayer.Level
+	player.Experience = config.Global.ServerWeb.DefaultPlayer.Experience
+	player.Health = config.Global.ServerWeb.DefaultPlayer.HealthMax
+	player.HealthMax = config.Global.ServerWeb.DefaultPlayer.HealthMax
+	player.Mana = config.Global.ServerWeb.DefaultPlayer.ManaMax
+	player.ManaMax = config.Global.ServerWeb.DefaultPlayer.ManaMax
+	player.Cap = config.Global.ServerWeb.DefaultPlayer.Cap
+	player.TownID = config.Global.ServerWeb.DefaultPlayer.TownID
+	player.Vocation = config.Global.ServerWeb.DefaultPlayer.Vocation
 
 	var playerCtl controller.PlayerController
 	player, err = playerCtl.CreatePlayer(player)
@@ -137,7 +144,7 @@ func (ah *AccountHandler) CreateAccount(w http.ResponseWriter, r *http.Request) 
 
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
-		utils.Warn("error decore request", err.Error())
+		utils.Warn("error decode request", err.Error())
 		exceptCtl.Exeption(err.Error(), http.StatusInternalServerError, w)
 		return
 	}
@@ -164,6 +171,11 @@ func (ah *AccountHandler) CreateAccount(w http.ResponseWriter, r *http.Request) 
 		exceptCtl.Exeption(err.Error(), http.StatusNotAcceptable, w)
 		return
 	}
+
+	//pool connections
+	var poolConnectionCTL controller.PoolConnectionController
+	go poolConnectionCTL.CreateAccountPool(account)
+
 	err = json.NewEncoder(w).Encode(&account)
 	if err != nil {
 		utils.Warn("error encoder", err.Error())
