@@ -55,8 +55,9 @@ func (hcc *HandlerClientConnect) loginHandler(answerExpected models.AnswerExpect
 
 	var PoolConnectionController controller.PoolConnectionController
 
-	responseData, err := PoolConnectionController.GeneratePool(answerExpected)
+	response, err := PoolConnectionController.CharacterLoginAccountPoolConnection(answerExpected)
 	if err != nil {
+		utils.Error(err.Error())
 		json.NewEncoder(w).Encode(map[string]interface{}{
 			"errorCode":    3,
 			"errorMessage": "incorrect credentials",
@@ -65,7 +66,8 @@ func (hcc *HandlerClientConnect) loginHandler(answerExpected models.AnswerExpect
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	if err = json.NewEncoder(w).Encode(responseData); err != nil {
+	if err = json.NewEncoder(w).Encode(&response); err != nil {
+		utils.Error(err.Error())
 		utils.Warn("error encode response", err.Error())
 		return
 	}
@@ -75,6 +77,7 @@ func (hcc *HandlerClientConnect) loginHandler(answerExpected models.AnswerExpect
 func (hcc *HandlerClientConnect) PreparingHanlderClient(w http.ResponseWriter, r *http.Request) {
 	var answer models.AnswerExpected
 	err := json.NewDecoder(r.Body).Decode(&answer)
+
 	if err != nil {
 		log.Println("error decode body", err)
 	}

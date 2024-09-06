@@ -2,7 +2,7 @@ package models
 
 type Players struct {
 	ID                   int     `gorm:"column:id;type:int(11);primaryKey;autoIncrement" json:"id"`
-	Name                 string  `gorm:"column:name;size:255" json:"name"`
+	Name                 string  `gorm:"column:name;unique;size:255" json:"name"`
 	GroupID              int     `gorm:"column:group_id;default:1" json:"group_id"`
 	AccountID            int     `gorm:"column:account_id;default:0" json:"account_id"`
 	Level                int     `gorm:"column:level;default:1" json:"level" yaml:"Level"`
@@ -28,7 +28,7 @@ type Players struct {
 	ManaMax              int     `gorm:"column:manamax;default:0" json:"manamax" yaml:"ManaMax"`
 	ManaSpent            uint64  `gorm:"column:manaspent;default:0" json:"manaspent"`
 	Soul                 uint    `gorm:"column:soul;default:0" json:"soul"`
-	TownID               int     `gorm:"column:town_id;default:1" json:"town_id" yaml:"TownID"`
+	TownID               int     `gorm:"column:town_id;type:int(20);default:1" json:"town_id" yaml:"TownID"`
 	PosX                 int     `gorm:"column:posx;default:0" json:"posx"`
 	PosY                 int     `gorm:"column:posy;default:0" json:"posy"`
 	PosZ                 int     `gorm:"column:posz;default:0" json:"posz"`

@@ -31,6 +31,10 @@ func (pc *PlayerController) GetPlayerID(id int) (player models.Players) {
 	db.DB.Where("id = ?", id).First(&player)
 	return
 }
+func (pc *PlayerController) GetAllPlayer() (player []models.Players) {
+	db.DB.Find(&player)
+	return
+}
 
 func (pc *PlayerController) CreatePlayer(player models.Players) (models.Players, error) {
 	if err := db.DB.Create(&player).Error; err != nil {

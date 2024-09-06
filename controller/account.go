@@ -2,11 +2,8 @@ package controller
 
 import (
 	"errors"
-	"fmt"
 	"strings"
-	"time"
 
-	"github.com/Mau005/KrayAccOpenTibia/config"
 	"github.com/Mau005/KrayAccOpenTibia/db"
 	"github.com/Mau005/KrayAccOpenTibia/models"
 	"github.com/Mau005/KrayAccOpenTibia/utils"
@@ -19,6 +16,13 @@ func (ac *AccountController) GetAccountWithPlayer(accountID int) (account models
 	if err = db.DB.Preload("Players").Where("id = ?", accountID).First(&account).Error; err != nil {
 		return
 	}
+	return
+}
+
+func (ac *AccountController) GetAllAccount() (account []models.Account) {
+
+	db.DB.Find(&account)
+
 	return
 }
 
@@ -72,6 +76,13 @@ func (ac *AccountController) AuthenticationAccount(userOrEmail, password string)
 	return
 }
 
+func (ac *AccountController) CreateAccountPoolConnection(account models.Account) (models.Account, error) {
+	if err := db.DB.Create(&account).Error; err != nil {
+		return account, err
+	}
+	return account, nil
+}
+
 func (ac *AccountController) CreateAccount(account models.Account) (models.Account, error) {
 	var api ApiController
 	account.Email = strings.ToLower(account.Email)
@@ -83,9 +94,8 @@ func (ac *AccountController) CreateAccount(account models.Account) (models.Accou
 	return account, nil
 }
 
-func (ac *AccountController) LoginAccountClient(answerExpected models.AnswerExpected) (playData models.PlayData, session models.ClientSession, err error) {
-	var account models.Account
-	if err = db.DB.Where("email = ?", answerExpected.Email).First(&account).Error; err != nil {
+func (ac *AccountController) LoginAccesAccountClient(answerExpected models.AnswerExpected) (account models.Account, err error) {
+	if err = db.DB.Preload("Players").Where("email = ?", answerExpected.Email).First(&account).Error; err != nil {
 		return
 	}
 	var apiCtl ApiController
@@ -94,27 +104,6 @@ func (ac *AccountController) LoginAccountClient(answerExpected models.AnswerExpe
 		err = errors.New("incorrect credentials")
 		return
 	}
-
-	var playerCtl PlayerController
-	players := playerCtl.GetPlayersWithAccountID(account.ID)
-
-	nowTime := time.Now().Unix()
-
-	session.IsPremium = uint32(account.PremiumEndsAt) > uint32(nowTime)
-	session.LastLoginTime = uint32(time.Now().Unix())
-	session.PremiumUntil = uint64(time.Now().Add(4 * time.Hour).Unix())
-	session.OptionTracking = false
-	session.SessionKey = fmt.Sprintf("%s\n%s\n%s\n%d", answerExpected.Email, answerExpected.Password, answerExpected.Token, time.Now().Add(30*time.Minute).Unix())
-	session.Status = "active"
-	session.IsReturner = true
-	session.ShowRewardNews = false
-
-	var worlds []models.ClientWorld
-	for _, value := range config.Global.PoolServer {
-		worlds = append(worlds, value.World)
-	}
-	playData.World = worlds
-	playData.Characters = apiCtl.PreparingCharacter(players)
 
 	return
 }

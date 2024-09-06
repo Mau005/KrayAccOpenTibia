@@ -80,6 +80,7 @@ func (ah *AccountHandler) CreateCharacter(w http.ResponseWriter, r *http.Request
 		exceptCtl.Exeption(err.Error(), http.StatusFailedDependency, w)
 		return
 	}
+
 	if len(account.Players) >= int(config.Global.ServerWeb.LimitCreateCharacter) {
 		utils.Warn("account completed limite character")
 		exceptCtl.Exeption("complete limit character", http.StatusPreconditionRequired, w)
@@ -97,31 +98,17 @@ func (ah *AccountHandler) CreateCharacter(w http.ResponseWriter, r *http.Request
 		exceptCtl.Exeption(err.Error(), http.StatusInternalServerError, w)
 		return
 	}
-	var player models.Players
-	player.AccountID = claim.AccountID
-	player.Name = request.NameCharacter
-	player.Sex = request.IsMale
-	player.Level = config.Global.ServerWeb.DefaultPlayer.Level
-	player.Experience = config.Global.ServerWeb.DefaultPlayer.Experience
-	player.Health = config.Global.ServerWeb.DefaultPlayer.HealthMax
-	player.HealthMax = config.Global.ServerWeb.DefaultPlayer.HealthMax
-	player.Mana = config.Global.ServerWeb.DefaultPlayer.ManaMax
-	player.ManaMax = config.Global.ServerWeb.DefaultPlayer.ManaMax
-	player.Cap = config.Global.ServerWeb.DefaultPlayer.Cap
-	player.TownID = config.Global.ServerWeb.DefaultPlayer.TownID
-	player.Vocation = config.Global.ServerWeb.DefaultPlayer.Vocation
 
-	var playerCtl controller.PlayerController
-	player, err = playerCtl.CreatePlayer(player)
+	var PoolConnectionController controller.PoolConnectionController
+	err = PoolConnectionController.CreateCharacter(request.NameCharacter, request.World, request.IsMale, claim.AccountID)
 	if err != nil {
 		utils.Warn("error create player ", err.Error())
 		exceptCtl.Exeption(err.Error(), http.StatusConflict, w)
 		return
 	}
-	err = json.NewEncoder(w).Encode(&player)
-	if err != nil {
-		utils.Warn("error encoder player", err.Error())
-	}
+
+	exceptCtl.MessageAproved("ok", w)
+
 }
 
 func (ah *AccountHandler) Desconnected(w http.ResponseWriter, r *http.Request) {

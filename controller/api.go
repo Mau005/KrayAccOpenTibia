@@ -21,7 +21,7 @@ func (ac *ApiController) ConvertSha1(password string) string {
 	return hex.EncodeToString(preparaing.Sum(nil))
 }
 
-func (ac *ApiController) PreparingCharacter(players []models.Players) []models.ClientCharacters {
+func (ac *ApiController) PreparingCharacter(players []models.Players, worldID uint) []models.ClientCharacters {
 	var characters []models.ClientCharacters
 
 	for _, player := range players {
@@ -40,7 +40,7 @@ func (ac *ApiController) PreparingCharacter(players []models.Players) []models.C
 			sex = true
 		}
 		characters = append(characters, models.ClientCharacters{
-			WorldID:                          0,
+			WorldID:                          worldID,
 			Name:                             player.Name,
 			IsMale:                           sex,
 			Tutorial:                         false,
@@ -51,7 +51,7 @@ func (ac *ApiController) PreparingCharacter(players []models.Players) []models.C
 			TorsoColor:                       player.LookBody,
 			LegsColor:                        player.LookLegs,
 			DetailColor:                      player.LookFeet,
-			AddonsFlags:                      1,
+			AddonsFlags:                      0,
 			IsHidden:                         false,
 			IsTournamentParticipant:          false,
 			RemainIngDailyTournamentPlayTime: 2,

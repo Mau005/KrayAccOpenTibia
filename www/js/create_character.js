@@ -71,8 +71,6 @@ function createCharacter() {
         errorCreateCharacter.innerHTML = "Tiene que un mundo a registrar";
     } 
 
-    
-    return
     sendRequest("/auth/create_character", "POST", {
         "namecharacter": nameCharacter,
         "ismale": sex,
@@ -82,6 +80,7 @@ function createCharacter() {
 
 
     }).catch(error => {
+        console.log(error)
         if (error.status == 409) {
             errorCreateCharacter.innerHTML = "Personaje ya existe en la BD"
         } else if (error.status == 428) {

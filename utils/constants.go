@@ -69,9 +69,15 @@ const (
 )
 
 const (
-	ApiUrl               = "/api"
-	ApiUrlCreateAccount  = "/register_new_account"
-	ApiUrlGetPoolConnect = "/get_pool"
+	ApiUrl                      = "/api"
+	ApiUrlCreateAccount         = "/register_new_account"
+	ApiUrlGetPoolConnect        = "/get_pool"
+	ApiUrlRegisterCharacter     = "/register_new_character"
+	ApiUrlLoginClientConnection = "/login_client_pool"
+	ApiUrlSynPoolAccount        = "/sync_pool_account"
+	ApiUrlMySyncAccount         = "/my_sync_account"
+	ApiUrlSyncPlayerName        = "/sync_player_name"
+	ApiUrlGetAllPlayers         = "/get_all_players"
 )
 
 // privbi

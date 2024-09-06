@@ -22,3 +22,14 @@ func (ec *ExceptionController) Exeption(msg string, statusCode int, w http.Respo
 		utils.ErrorFatal(err.Error())
 	}
 }
+
+func (ec *ExceptionController) MessageAproved(msg string, w http.ResponseWriter) {
+	var exp models.Exception
+	w.WriteHeader(http.StatusOK)
+	exp.Msg = msg
+	exp.TimeNow = time.Now()
+	err := json.NewEncoder(w).Encode(&exp)
+	if err != nil {
+		utils.ErrorFatal(err.Error())
+	}
+}

@@ -59,7 +59,12 @@ func NewRouter() *mux.Router {
 	var ApiConnection handler.ApiPoolConnectionHandler
 	api.HandleFunc(utils.ApiUrlGetPoolConnect, ApiConnection.GetPoolConnection).Methods("POST")
 	api.HandleFunc(utils.ApiUrlCreateAccount, ApiConnection.RegisterNewAccount).Methods("POST")
-	api.HandleFunc("/register_new_character", ApiConnection.RegisterNewCharacter).Methods("POST")
+	api.HandleFunc(utils.ApiUrlRegisterCharacter, ApiConnection.RegisterNewCharacter).Methods("POST")
+	api.HandleFunc(utils.ApiUrlLoginClientConnection, ApiConnection.LoginAccountPoolConnection).Methods("POST")
+	api.HandleFunc(utils.ApiUrlSynPoolAccount, ApiConnection.SyncAccountPoolConnection).Methods("POST")
+	api.HandleFunc(utils.ApiUrlMySyncAccount, ApiConnection.MySyncAccountData).Methods("POST")
+	api.HandleFunc(utils.ApiUrlSyncPlayerName, ApiConnection.SynPlayerName).Methods("POST")
+	api.HandleFunc(utils.ApiUrlGetAllPlayers, ApiConnection.GetAllPlayer).Methods("POST")
 
 	//api.HandleFunc("/connect_pool")
 
