@@ -13,18 +13,25 @@ ServerWeb:
   ApiMode: false # enable kray api to connect with other kray api and simulate multi world
   LengthSecurity: 128 #len security generate token active
   EnvironmentVariables: false
-  TargetServer: C:\Users\mpino\OneDrive\Escritorio\ProyectoOldRL\thelastrookgard-x64 #Default pathNow case "" empty not found
+  TargetServer: C:\Users\mpino\OneDrive\Escritorio\Arkino\tfs #Default pathNow case "" empty not found
   UrlItemView: https://item-images.ots.me/1285
   UrlOutfitsView: https://outfit-images.ots.me/1285 #animoutfit.php?id=128&addons=3&head=123&body=12&legs=23&feet=31&mount=0&direction=2
   LimitCreateCharacter: 5
+  DefaultPlayer:
+    Level: 1
+    Experience: 0
+    HealthMax: 150
+    ManaMax: 10
+    Cap: 400
+    TownID: 1
+    Vocation: 0
+
 
 #APiMODE!
 ApiConnectionPool:
-  # - IpWebApi: http://tibiakray.info/ 
-  #   PortApi: 8000 
-  #   Token: aws
+  - IpWebApi: http://127.0.0.1:8005
+    Token: 123123123
   # - IpWebApi: http://thelastrookgard.cl
-  #   PortApi: 8000
   #   Token: aws
 
 Certificate:
