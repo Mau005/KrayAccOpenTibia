@@ -1,0 +1,229 @@
+{
+	"info": {
+		"_postman_id": "6afcd045-2c13-443d-a63a-ca121b535d95",
+		"name": "KrayAcc",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24704020",
+		"_collection_link": "https://www.postman.com/warped-space-528364/workspace/ainhosoft/collection/24704020-6afcd045-2c13-443d-a63a-ca121b535d95?action=share&source=collection_link&creator=24704020"
+	},
+	"item": [
+		{
+			"name": "get_pool_connection",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/get_pool",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"get_pool"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create_account",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "// register web API\r\n{\r\n    \"IsTerms\": true,\r\n    \"UserName\": \"mamáestapresa\",\r\n    \"Password\": \"passwordtuhermana\",\r\n    \"PasswordTwo\": \"passwordtuhermana\",\r\n    \"Email\": \"email@email\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/create_account",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"create_account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sync_database",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "// register web API\r\n{\r\n    \"IsTerms\": true,\r\n    \"UserName\": \"mamáestapresa\",\r\n    \"Password\": \"passwordtuhermana\",\r\n    \"PasswordTwo\": \"passwordtuhermana\",\r\n    \"Email\": \"email@email\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/sync_pool_account",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"sync_pool_account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_all_player",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "// register web API\r\n{\r\n    \"IsTerms\": true,\r\n    \"UserName\": \"mamáestapresa\",\r\n    \"Password\": \"passwordtuhermana\",\r\n    \"PasswordTwo\": \"passwordtuhermana\",\r\n    \"Email\": \"email@email\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/get_all_players",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"get_all_players"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sync_player_name",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "// register web API\r\n{\r\n    \"IsTerms\": true,\r\n    \"UserName\": \"mamáestapresa\",\r\n    \"Password\": \"passwordtuhermana\",\r\n    \"PasswordTwo\": \"passwordtuhermana\",\r\n    \"Email\": \"email@email\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/sync_player_name",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"sync_player_name"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login_client_pool",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "// register web API\r\n{\r\n    \"email\": \"a@a\",\r\n    \"password\": \"fcua29hd\",\r\n    \"type\": \"login\",\r\n    \"token\": \"yuyuy\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8005/client/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8005",
+					"path": [
+						"client",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
