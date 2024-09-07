@@ -99,13 +99,17 @@ func (pc *PoolConnectionController) CharacterLoginAccountPoolConnection(answerEx
 				continue
 			}
 			req, err := http.NewRequest("POST", fmt.Sprintf("%s%s%s", pool.IpWebApi, utils.ApiUrl, utils.ApiUrlLoginClientConnection), bytes.NewBuffer(jsonBody))
-
+			if err != nil {
+				utils.Error("not create solcitiude", pool.IpWebApi)
+				continue
+			}
 			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", pool.Token))
 
 			client := &http.Client{}
 			resp, err := client.Do(req)
 			if err != nil {
-				utils.Error("error send session")
+				utils.Error("error send session", err.Error())
+				continue
 			}
 			err = json.NewDecoder(resp.Body).Decode(&account)
 			if err != nil {
