@@ -20,6 +20,7 @@ import (
 
 var PoolWorld []models.ClientWorld
 var Global *models.Configuration
+var SecurityPoolConnection string
 var SecretPassword []byte
 var Welcome string = `
 ____  __.                      _____                
@@ -67,6 +68,13 @@ func Load(filename string) error {
 		utils.Info("MySQL variables are loaded to config.yml")
 	}
 
+	//securityToken
+	SecurityPoolConnection = os.Getenv("KRAY_PASSWORD")
+	if SecurityPoolConnection == "" {
+		//If there is no API token, it will generate a random token of 500 length so that it cannot be accessed by anyone.
+		SecurityPoolConnection = GenerateRandomPassword(500)
+	}
+	fmt.Println(SecurityPoolConnection)
 	for _, value := range Global.PoolServer {
 		if value.IpWebApi == "" || value.Token == "" {
 			return errors.New("error pool server no empty string, configure in config.yml")

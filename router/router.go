@@ -55,7 +55,7 @@ func NewRouter() *mux.Router {
 	//APIMODE
 	api := r.PathPrefix(utils.ApiUrl).Subrouter()
 	api.Use(middleware.CommonMiddleware)
-	//api.Use(middleware.AuthPoolConnection)
+	api.Use(middleware.AuthPoolConnection)
 	var ApiConnection handler.ApiPoolConnectionHandler
 	api.HandleFunc(utils.ApiUrlGetPoolConnect, ApiConnection.GetPoolConnection).Methods("POST")
 	api.HandleFunc(utils.ApiUrlCreateAccount, ApiConnection.RegisterNewAccount).Methods("POST")

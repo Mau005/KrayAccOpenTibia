@@ -80,6 +80,23 @@ func (ac *ApiController) GenerateJWT(account models.Account) (string, error) {
 	return tokenString, nil
 }
 
+func (ac *ApiController) GenerateJWTPoolConnection(securityPassword string) (string, error) {
+	claims := &models.Claim{
+		AccountName: "admin",
+		TypeAccess:  6,
+		StandardClaims: jwt.StandardClaims{
+			Issuer:   "KrayAccAdmin",
+			IssuedAt: time.Now().Unix(),
+		},
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS512, claims)
+	tokenString, err := token.SignedString([]byte(securityPassword))
+	if err != nil {
+		return "", err
+	}
+	return tokenString, nil
+}
+
 func (ac *ApiController) CheckOnlineServer(ip, port string) (models.ServerStatus, error) {
 	var serverStatus models.ServerStatus
 	packet := []byte{6, 0, 255, 255, 'i', 'n', 'f', 'o'}

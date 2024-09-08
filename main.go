@@ -1,8 +1,10 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/Mau005/KrayAccOpenTibia/config"
 	"github.com/Mau005/KrayAccOpenTibia/controller"
@@ -11,6 +13,15 @@ import (
 )
 
 func main() {
+	preparing := flag.Bool("security", false, "Security Pool Connection ")
+	flag.Parse()
+	if *preparing {
+		security()
+	} else {
+		// Maneja otros argumentos o comportamientos predeterminados aquí
+		fmt.Println("No valid arguments provided.")
+	}
+
 	err := config.Load("config.yml")
 	if err != nil {
 		utils.ErrorFatal(err.Error())
@@ -41,4 +52,32 @@ func main() {
 			utils.ErrorFatal("Error starting HTTP server: " + err.Error())
 		}
 	}
+}
+
+func security() {
+
+	var pressContinue string
+	fmt.Println("Welcome to the connection pool configuration for multiple APIs")
+	fmt.Println("The token is generated from the environment password 'KRAY_PASSWORD', if you do not configure this attribute this command will not be executed.")
+	varPass := os.Getenv("KRAY_PASSWORD")
+
+	if varPass == "" {
+		utils.ErrorFatal("set the password in your work environment as export KRAY_PASSWORD=YOUR_PASSWORD")
+	}
+	fmt.Println("Press a key to continue...")
+	_, err := fmt.Scanln(&pressContinue)
+	if err != nil {
+	}
+
+	var apiCtl controller.ApiController
+	token, err := apiCtl.GenerateJWTPoolConnection(varPass)
+	if err != nil {
+		utils.ErrorFatal(err.Error())
+	}
+	utils.Info("has been generated successfully")
+	utils.Info("Token:")
+	utils.InfoSuccess(token)
+
+	os.Exit(0)
+
 }

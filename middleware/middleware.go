@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Mau005/KrayAccOpenTibia/config"
 	"github.com/Mau005/KrayAccOpenTibia/controller"
 	"github.com/Mau005/KrayAccOpenTibia/models"
 	"github.com/Mau005/KrayAccOpenTibia/utils"
@@ -73,9 +74,10 @@ func AuthPoolConnection(next http.Handler) http.Handler {
 
 		claims := &models.Claim{}
 		token, err := jwt.ParseWithClaims(tokenString, claims, func(t *jwt.Token) (interface{}, error) {
-			return []byte(utils.PasswordSecurityDefaul), nil
+			return []byte(config.SecurityPoolConnection), nil
 		})
 		if err != nil || !token.Valid {
+			utils.WarnLog("trying to access the api in the connection pool with invalid token", err.Error())
 			errorException.Exeption("error invalid token", http.StatusUnauthorized, w)
 			return
 		}

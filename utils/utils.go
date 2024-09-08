@@ -40,6 +40,10 @@ func InfoBlue(msg ...string) {
 	log.Println(errorColor(msg))
 }
 
+func InfoSuccess(msg string) {
+	errorColor := color.New(color.FgHiCyan).SprintFunc()
+	log.Println(errorColor(msg))
+}
 func InfoBlueNotLog(msg ...string) {
 	errorColor := color.New(color.FgBlue).SprintFunc()
 	fmt.Println(errorColor(msg))
