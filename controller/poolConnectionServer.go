@@ -149,7 +149,8 @@ func (pc *PoolConnectionController) CreateCharacter(nameCharacter, idWorld strin
 	}
 
 	if len(config.Global.PoolServer) < int(idIndexWorld) {
-		utils.Error("Error ")
+		utils.Error("out of the world index", fmt.Sprintf("%d", idIndexWorld))
+		return errors.New("out of the world index")
 	}
 
 	var player models.Players
@@ -161,11 +162,6 @@ func (pc *PoolConnectionController) CreateCharacter(nameCharacter, idWorld strin
 	db.DB.Where("name = ?", player.Name).Find(&models.PlayersNames{}).Count(&count)
 	if count > 0 {
 		return errors.New("error character clone name")
-	}
-
-	if len(config.Global.PoolServer) > int(idIndexWorld) {
-		utils.Error("out of the world index")
-		return errors.New("out of the world index")
 	}
 
 	if config.Global.PoolServer[idIndexWorld].IpWebApi == "" {
