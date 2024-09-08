@@ -56,6 +56,7 @@ func LoadTemporaryData() error {
 	go func() {
 		// Normalice database init proyect
 		var PoolConnectionController PoolConnectionController
+		PoolConnectionController.GetWorldPool()
 		PoolConnectionController.SyncAccountPool()
 		PoolConnectionController.SyncPlayerNamePoolConnection()
 	}()

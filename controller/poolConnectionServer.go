@@ -285,6 +285,7 @@ func (pc *PoolConnectionController) SyncPlayerNamePoolConnection() {
 				}
 				continue
 			}
+			fmt.Println(fmt.Sprintf("%s%s%s", pool.IpWebApi, utils.ApiUrl, utils.ApiUrlGetAllPlayers))
 
 			req, err := http.NewRequest("POST", fmt.Sprintf("%s%s%s", pool.IpWebApi, utils.ApiUrl, utils.ApiUrlGetAllPlayers), nil)
 			if err != nil {
@@ -297,7 +298,7 @@ func (pc *PoolConnectionController) SyncPlayerNamePoolConnection() {
 			client := &http.Client{}
 			resp, err := client.Do(req)
 			if err != nil {
-				utils.Error("error send solicitude", pool.IpWebApi)
+				utils.Error("poolConnectionServer 300", "error send solicitude", pool.IpWebApi)
 				continue
 			}
 			defer resp.Body.Close()
@@ -306,7 +307,7 @@ func (pc *PoolConnectionController) SyncPlayerNamePoolConnection() {
 
 			err = json.NewDecoder(resp.Body).Decode(&players)
 			if err != nil {
-				utils.Error("error send solicitude", pool.IpWebApi)
+				utils.Error("poolConnectionServer 309", "error send solicitude", pool.IpWebApi)
 				continue
 			}
 
@@ -350,7 +351,7 @@ func (pc *PoolConnectionController) parallelSynAccount(pool models.PoolServer, b
 			utils.Error("error decode captured exception")
 			return
 		}
-		utils.Error("error connection", exp.Msg)
+		utils.Error("error poolConnectionServer 354", "error connection", exp.Msg)
 	} else {
 		var msg []string
 		err = json.NewDecoder(resp.Body).Decode(&msg)

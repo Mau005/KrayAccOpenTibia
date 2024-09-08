@@ -74,7 +74,7 @@ func Load(filename string) error {
 		//If there is no API token, it will generate a random token of 500 length so that it cannot be accessed by anyone.
 		SecurityPoolConnection = GenerateRandomPassword(500)
 	}
-	fmt.Println(SecurityPoolConnection)
+
 	for _, value := range Global.PoolServer {
 		if value.IpWebApi == "" || value.Token == "" {
 			return errors.New("error pool server no empty string, configure in config.yml")
