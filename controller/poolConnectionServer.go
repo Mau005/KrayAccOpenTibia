@@ -163,13 +163,17 @@ func (pc *PoolConnectionController) CreateCharacter(nameCharacter, idWorld strin
 		return errors.New("error character clone name")
 	}
 
+	if len(config.Global.PoolServer) > int(idIndexWorld) {
+		utils.Error("out of the world index")
+		return errors.New("out of the world index")
+	}
+
 	if config.Global.PoolServer[idIndexWorld].IpWebApi == "" {
 		var playerCtl PlayerController
 		player, err = playerCtl.CreatePlayer(player)
 		if err != nil {
 			return err
 		}
-		return err
 	} else {
 		playerJson, err := json.Marshal(player)
 		if err != nil {
@@ -249,7 +253,7 @@ func (pc *PoolConnectionController) CreateAccountPool(account models.Account) {
 
 }
 
-func (pc *PoolConnectionController) SyncAccountPool(w http.ResponseWriter) {
+func (pc *PoolConnectionController) SyncAccountPool() {
 	var accountCtl AccountController
 	account := accountCtl.GetAllAccount()
 	accountCtl.GetAllAccount()
@@ -269,7 +273,6 @@ func (pc *PoolConnectionController) SyncPlayerNamePoolConnection() {
 	go func() {
 
 		for _, pool := range config.Global.PoolServer {
-
 			if pool.IpWebApi == "" {
 				var playerCtl PlayerController
 				players := playerCtl.GetAllPlayer()
@@ -295,7 +298,7 @@ func (pc *PoolConnectionController) SyncPlayerNamePoolConnection() {
 			resp, err := client.Do(req)
 			if err != nil {
 				utils.Error("error send solicitude", pool.IpWebApi)
-				return
+				continue
 			}
 			defer resp.Body.Close()
 
@@ -304,7 +307,7 @@ func (pc *PoolConnectionController) SyncPlayerNamePoolConnection() {
 			err = json.NewDecoder(resp.Body).Decode(&players)
 			if err != nil {
 				utils.Error("error send solicitude", pool.IpWebApi)
-				return
+				continue
 			}
 
 			for _, player := range players {

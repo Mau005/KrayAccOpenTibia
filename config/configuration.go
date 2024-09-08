@@ -2,6 +2,7 @@ package config
 
 import (
 	"crypto/rand"
+	"errors"
 	"fmt"
 	"log"
 	"math/big"
@@ -66,24 +67,20 @@ func Load(filename string) error {
 		utils.Info("MySQL variables are loaded to config.yml")
 	}
 
-	if Global.ServerWeb.TargetServer != "" {
-		err = LoadConfigLua(Global.ServerWeb.TargetServer)
-		if err != nil {
-			utils.ErrorFatal(err.Error())
+	for _, value := range Global.PoolServer {
+		if value.IpWebApi == "" || value.Token == "" {
+			return errors.New("error pool server no empty string, configure in config.yml")
 		}
 	}
 
-	err = loadMySQL()
-	if err != nil {
-		utils.ErrorFatal(err.Error())
+	if Global.ServerWeb.TargetServer != "" {
+		err = LoadConfigLua(Global.ServerWeb.TargetServer)
+		if err != nil {
+			return err
+		}
 	}
 
-	utils.Info("Environment variables are added OK")
-	return nil
-}
-
-func loadMySQL() error {
-	return db.ConnectionMysql(
+	err = db.ConnectionMysql(
 		Global.DB.UserName,
 		Global.DB.DBPassword,
 		Global.DB.Host,
@@ -91,8 +88,13 @@ func loadMySQL() error {
 		Global.DB.Port,
 		Global.ServerWeb.Debug,
 	)
-}
+	if err != nil {
+		return err
+	}
 
+	utils.Info("Environment variables are added OK")
+	return nil
+}
 func parseEnvUint(key string, defaultValue uint16) uint16 {
 	if value, exists := os.LookupEnv(key); exists {
 		if parsedValue, err := strconv.ParseUint(value, 10, 16); err == nil {

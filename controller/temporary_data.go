@@ -18,11 +18,6 @@ type TemporaryData struct {
 
 func LoadTemporaryData() error {
 	TempData = &TemporaryData{ServStatusTotal: models.ServerStatus{}}
-	var poolCtl PoolConnectionController
-
-	if len(config.Global.PoolServer) > 1 {
-		poolCtl.GetWorldPool()
-	}
 
 	counTry := 0
 	var api ApiController
@@ -58,5 +53,11 @@ func LoadTemporaryData() error {
 		}
 	}()
 
+	go func() {
+		// Normalice database init proyect
+		var PoolConnectionController PoolConnectionController
+		PoolConnectionController.SyncAccountPool()
+		PoolConnectionController.SyncPlayerNamePoolConnection()
+	}()
 	return nil
 }

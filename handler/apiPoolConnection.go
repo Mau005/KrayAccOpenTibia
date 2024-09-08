@@ -95,7 +95,7 @@ func (apc *ApiPoolConnectionHandler) LoginAccountPoolConnection(w http.ResponseW
 
 func (apc *ApiPoolConnectionHandler) SyncAccountPoolConnection(w http.ResponseWriter, r *http.Request) {
 	var PoolConnectionController controller.PoolConnectionController
-	PoolConnectionController.SyncAccountPool(w)
+	PoolConnectionController.SyncAccountPool()
 }
 
 func (apc *ApiPoolConnectionHandler) MySyncAccountData(w http.ResponseWriter, r *http.Request) {

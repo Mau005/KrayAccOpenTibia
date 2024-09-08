@@ -65,12 +65,12 @@ func (lh *Layouthandler) Generatelayout(navWeb models.NavWeb, condition models.S
 			<div class="logo-container">
                 <img src="www/img/logo.png" alt="Logo" class="logo">
             </div>
-            <button onclick="downloadFile('/www/dowloads/TheLastRookgardBETA.zip', 'TheLastRookgardV1.0.0BETA.zip')" class="vibrant-button">Descargar</button>`
+            <button onclick="downloadFile('https://drive.google.com/file/d/16H2EU1Y2aa4LMb5W1nVAG7VRfbQEcIZA/view', 'TheLastRookgardV1.0.0')" class="vibrant-button">Descargar</button>`
 	layout.Head = `
 	    <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.1, user-scalable=no" />
-        <title>The Last Rookgard By Krayno</title>
+        <title>Kray World By Krayno</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="/www/style.css">
         <link rel="icon" type="image/png" sizes="16x16" href="/www/img/icon.png">
