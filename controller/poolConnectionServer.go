@@ -147,6 +147,7 @@ func (pc *PoolConnectionController) CreateCharacter(nameCharacter, idWorld strin
 		utils.Error("error generate id Index World register character", err.Error())
 		return err
 	}
+	fmt.Println(idIndexWorld)
 
 	if len(config.Global.PoolServer) < int(idIndexWorld) {
 		utils.Error("out of the world index", fmt.Sprintf("%d", idIndexWorld))
