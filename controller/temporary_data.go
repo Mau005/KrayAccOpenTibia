@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/Mau005/KrayAccOpenTibia/config"
@@ -18,37 +19,37 @@ type TemporaryData struct {
 
 func LoadTemporaryData() error {
 	TempData = &TemporaryData{ServStatusTotal: models.ServerStatus{}}
-
-	counTry := 0
 	var api ApiController
 	go func() {
 		for {
 			// TODO: server local check status
-			counTry += 1
-			// oldestUptime := 0
-			for _, value := range config.Global.PoolServer {
-				serv, err := api.CheckOnlineServer(value.World.ExternalAddress, fmt.Sprintf("%d", value.World.ExternalPort))
+			playerOnline := 0
+			MonsterTotal := 0
+			oldestUptime := 0
+			for _, pool := range config.Global.PoolServer {
+				serv, err := api.CheckOnlineServer(pool.World.ExternalAddress, fmt.Sprintf("%d", pool.World.ExternalPort))
 				if err != nil {
-					utils.Error(fmt.Sprintf("error check online server xml function, %s", value.IpWebApi), err.Error())
+					utils.Error(fmt.Sprintf("error check online server xml function, %s", pool.IpWebApi), err.Error())
 					continue
 				}
 
-				TempData.ServStatusTotal.Players.Online += serv.Players.Online
-				TempData.ServStatusTotal.Monsters.Total += serv.Monsters.Total
+				playerOnline += serv.Players.Online
+				MonsterTotal += serv.Monsters.Total
+
 				TempData.ServStatusTotal.NPCs.Total += serv.NPCs.Total
 
-				//check rev old time server
-				// if serv.ServerInfo.Uptime >= oldestUptime {
-				// 	oldestUptime = serv.ServerInfo.Uptime
-				// }
+				timeNow, _ := strconv.ParseInt(serv.ServerInfo.Uptime, 10, 64)
+
+				if oldestUptime <= int(timeNow) {
+					oldestUptime = int(timeNow)
+				}
 
 				TempData.ServStatus = append(TempData.ServStatus, serv) // check server
 			}
-			// TempData.ServStatusTotal.ServerInfo.Uptime = oldestUptime
+			TempData.ServStatusTotal.ServerInfo.Uptime = string(oldestUptime)
+			TempData.ServStatusTotal.Players.Online = playerOnline
+			TempData.ServStatusTotal.Monsters.Total = MonsterTotal
 
-			if counTry >= 3 {
-				return
-			}
 			time.Sleep(utils.TimeCheckInfoServer * time.Minute)
 		}
 	}()
