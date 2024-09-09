@@ -178,10 +178,10 @@ func LoadConfigLua(targetServer string) (err error) {
 		return
 	}
 
-	StatusProtocolPort, err := strconv.ParseUint(L.GetGlobal("statusProtocolPort").String(), 10, 16)
-	if err != nil {
-		return
-	}
+	// StatusProtocolPort, err := strconv.ParseUint(L.GetGlobal("statusProtocolPort").String(), 10, 16)
+	// if err != nil {
+	// 	return
+	// }
 
 	Location := L.GetGlobal("location").String()
 	NameServer := L.GetGlobal("serverName").String()
@@ -227,7 +227,7 @@ func LoadConfigLua(targetServer string) (err error) {
 		Location:                   Location,
 		Name:                       NameServer,
 		PreviewState:               1,
-		ExternalPort:               uint16(StatusProtocolPort),
+		ExternalPort:               uint16(GameProtocolPort),
 		ExternalPortProtected:      uint16(GameProtocolPort),
 		ExternalPortUnprotected:    uint16(LoginProtocolPort),
 		CurrentTournamentPhase:     2,
