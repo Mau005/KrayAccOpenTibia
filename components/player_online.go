@@ -11,6 +11,7 @@ func CreatePlayerOnline() string {
 
 	whoIsOnline := `
     <h1>Quien esta Online?</h1>
+    %s
     `
 
 	data := PoolConnectionCtl.WhoIsOnlinePoolConnection()
@@ -26,7 +27,7 @@ func CreatePlayerOnline() string {
                                         %s
                                     </button>
                                 </h2>
-                                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#%s">
+                                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#%s">
                                     <div class="accordion-body">
                                         %s
                                     </div>
@@ -73,6 +74,6 @@ func CreatePlayerOnline() string {
                     `, playerList))
 	}
 
-	return whoIsOnline
+	return fmt.Sprintf(whoIsOnline, contentOutput)
 
 }

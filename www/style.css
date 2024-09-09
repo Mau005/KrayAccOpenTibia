@@ -409,3 +409,37 @@ body {
     outline: none;
     box-shadow: 0 0 10px var(--highlight-color), 0 0 20px var(--highlight-color), 0 0 30px var(--highlight-color);
 }
+
+.account-container {
+    background-color: var(--navbar-bg-color);
+    border: 2px solid #a98232;
+    padding: 20px;
+    border-radius: 10px;
+    font-family: 'Verdana', sans-serif;
+  }
+  .account-header {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  .account-status {
+    border: 1px solid #a98232;
+    padding: 15px;
+    background-color: var(--form-primary-bg-color);
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+  .character-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+  .character-table th, .character-table td {
+    border: 1px solid #a98232;
+    padding: 10px;
+    text-align: left;
+  }
+  .character-table th {
+    background-color: #d2b48c;
+    color: var(--card-bg-color);
+  }

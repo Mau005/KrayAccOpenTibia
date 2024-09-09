@@ -1,93 +1,130 @@
-                        <h2>Últimas Noticias</h2>
-                        <div class="news-item">
-                            <img src="www/img/icon.png" alt="Imagen de Noticia">
-                            <p>Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat...</p>
-                            <button class="btn btn-primary">Leer más</button>
-                        </div>
-                        <!-- Agrega más noticias aquí -->
-                    
-                        <!-- Nueva Sección de Noticias -->
-                        <div class="card mb-4">
-                            <img src="www/img/dark_wall.png" class="card-img-top" alt="Últimas Noticias">
-                            <div class="card-body">
-                                <h5 class="card-title">Última Noticia</h5>
-                                <p class="card-text">Esta es una breve descripción de la última noticia en el juego. Mantente al tanto de las novedades y actualizaciones.</p>
-                                <a href="#" class="btn btn-primary">Leer más</a>
-                            </div>
-                        </div>
-                    
-                        <!-- Tabla de Lista de Personajes -->
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                Lista de Personajes
-                            </div>
-                            <div class="card-body">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Nombre</th>
-                                            <th scope="col">Nivel</th>
-                                            <th scope="col">Experiencia</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Personaje 1</td>
-                                            <td>50</td>
-                                            <td>500,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Personaje 2</td>
-                                            <td>45</td>
-                                            <td>450,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Personaje 3</td>
-                                            <td>40</td>
-                                            <td>400,000</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    
-                        <!-- Acordeón -->
-                        <div class="accordion mb-4" id="accordionExample">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingOne">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        Información Adicional
-                                    </button>
-                                </h2>
-                                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body">
-                                        Aquí puedes encontrar información adicional sobre el juego, como guías, tutoriales, y más.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <!-- Panel de Búsqueda -->
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                Buscar por Habilidades o Mundo
-                            </div>
-                            <div class="card-body">
-                                <form>
-                                    <div class="mb-3">
-                                        <label for="searchWorld" class="form-label">Buscar por Mundo</label>
-                                        <input type="text" class="form-control" id="searchWorld" placeholder="Ingresa el nombre del mundo">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="searchSkill" class="form-label">Buscar por Habilidad</label>
-                                        <select class="form-select" id="searchSkill">
-                                            <option selected>Selecciona una habilidad...</option>
-                                            <option value="1">Espada</option>
-                                            <option value="2">Hacha</option>
-                                            <option value="3">Magia</option>
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Buscar</button>
-                                </form>
-                            </div>
-                        </div>
+<div class="account-container">
+    <div class="account-header">Welcome to your account Mauricio Andres!</div>
+    <div class="account-status">
+        <h5>Account Status</h5>
+        <p><strong>Free Account</strong></p>
+        <p>Your Premium Time expired at Jun 26 2024, 06:14:59 CEST.</p>
+        <button class="btn btn-primary">Manage Account</button>
+        <button class="btn btn-success">Get Premium</button>
+        <button class="btn btn-danger">Logout</button>
+    </div>
+
+    <div class="download-client">
+        <h5>Download Client</h5>
+        <p>Click <a href="#">here</a> to download the latest Tibia client!</p>
+    </div>
+
+    <div class="character-list">
+        <h5>Characters</h5>
+        <table class="character-table">
+        <thead>
+            <tr>
+            <th>Name</th>
+            <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            <td>Arkan Of Adt - Master Sorcerer - Level 60 - On Honbra</td>
+            <td><a href="#">[Edit]</a> <a href="#">[Delete]</a></td>
+            </tr>
+            <!-- Agrega más filas según sea necesario -->
+        </tbody>
+        </table>
+    </div>
+</div>
+
+
+<h2>Últimas Noticias</h2>
+<div class="news-item">
+    <img src="www/img/icon.png" alt="Imagen de Noticia">
+    <p>Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur arcu erat...</p>
+    <button class="btn btn-primary">Leer más</button>
+</div>
+<!-- Agrega más noticias aquí -->
+
+<!-- Nueva Sección de Noticias -->
+<div class="card mb-4">
+    <img src="www/img/dark_wall.png" class="card-img-top" alt="Últimas Noticias">
+    <div class="card-body">
+        <h5 class="card-title">Última Noticia</h5>
+        <p class="card-text">Esta es una breve descripción de la última noticia en el juego. Mantente al tanto de las novedades y actualizaciones.</p>
+        <a href="#" class="btn btn-primary">Leer más</a>
+    </div>
+</div>
+
+<!-- Tabla de Lista de Personajes -->
+<div class="card mb-4">
+    <div class="card-header">
+        Lista de Personajes
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Nivel</th>
+                    <th scope="col">Experiencia</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Personaje 1</td>
+                    <td>50</td>
+                    <td>500,000</td>
+                </tr>
+                <tr>
+                    <td>Personaje 2</td>
+                    <td>45</td>
+                    <td>450,000</td>
+                </tr>
+                <tr>
+                    <td>Personaje 3</td>
+                    <td>40</td>
+                    <td>400,000</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Acordeón -->
+<div class="accordion mb-4" id="accordionExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Información Adicional
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                Aquí puedes encontrar información adicional sobre el juego, como guías, tutoriales, y más.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Panel de Búsqueda -->
+<div class="card mb-4">
+    <div class="card-header">
+        Buscar por Habilidades o Mundo
+    </div>
+    <div class="card-body">
+        <form>
+            <div class="mb-3">
+                <label for="searchWorld" class="form-label">Buscar por Mundo</label>
+                <input type="text" class="form-control" id="searchWorld" placeholder="Ingresa el nombre del mundo">
+            </div>
+            <div class="mb-3">
+                <label for="searchSkill" class="form-label">Buscar por Habilidad</label>
+                <select class="form-select" id="searchSkill">
+                    <option selected>Selecciona una habilidad...</option>
+                    <option value="1">Espada</option>
+                    <option value="2">Hacha</option>
+                    <option value="3">Magia</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+    </div>
+</div>
