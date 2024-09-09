@@ -65,6 +65,7 @@ func NewRouter() *mux.Router {
 	api.HandleFunc(utils.ApiUrlMySyncAccount, ApiConnection.MySyncAccountData).Methods("POST")
 	api.HandleFunc(utils.ApiUrlSyncPlayerName, ApiConnection.SynPlayerName).Methods("POST")
 	api.HandleFunc(utils.ApiUrlGetAllPlayers, ApiConnection.GetAllPlayer).Methods("POST")
+	api.HandleFunc(utils.ApiUrlWhoIsOnline, ApiConnection.WhoIsOnline).Methods("POST")
 
 	//api.HandleFunc("/connect_pool")
 

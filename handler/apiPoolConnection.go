@@ -128,3 +128,9 @@ func (apc *ApiPoolConnectionHandler) GetAllPlayer(w http.ResponseWriter, r *http
 	players := playerCtl.GetAllPlayer()
 	json.NewEncoder(w).Encode(&players)
 }
+
+func (apc *ApiPoolConnectionHandler) WhoIsOnline(w http.ResponseWriter, r *http.Request) {
+	var playerCtl controller.PlayerController
+	players := playerCtl.GetPlayerOnline()
+	json.NewEncoder(w).Encode(&players)
+}

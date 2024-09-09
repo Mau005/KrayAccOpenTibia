@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -265,6 +266,47 @@ func (pc *PoolConnectionController) SyncAccountPool() {
 
 }
 
+func (pc *PoolConnectionController) WhoIsOnlinePoolConnection() map[string][]models.Players {
+	//var poolPlayerOnline map[string][]models.Players
+	poolPlayerOnline := make(map[string][]models.Players)
+
+	for _, pool := range config.Global.PoolServer {
+		if pool.IpWebApi == "" {
+			var playerCtl PlayerController
+			whoisOnline := playerCtl.GetPlayerOnline()
+			poolPlayerOnline[pool.World.Name] = whoisOnline
+			continue
+		}
+
+		req, err := http.NewRequest("POST", fmt.Sprintf("%s%s%s", pool.IpWebApi, utils.ApiUrl, utils.ApiUrlWhoIsOnline), nil)
+		if err != nil {
+			log.Println(err)
+			utils.Error("error send woisonline pool connection", err.Error())
+			continue
+		}
+
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", pool.Token))
+
+		reso := &http.Client{}
+		r, err := reso.Do(req)
+		if err != nil {
+			log.Println(err)
+			utils.Error("error send solicitude whoIsOnline", err.Error())
+			continue
+		}
+		var players []models.Players
+
+		if r.StatusCode != http.StatusOK {
+			continue
+		}
+
+		json.NewDecoder(r.Body).Decode(&players)
+
+		poolPlayerOnline[pool.World.Name] = players
+	}
+	return poolPlayerOnline
+}
+
 func (pc *PoolConnectionController) SyncPlayerNamePoolConnection() {
 
 	go func() {
@@ -282,7 +324,6 @@ func (pc *PoolConnectionController) SyncPlayerNamePoolConnection() {
 				}
 				continue
 			}
-			fmt.Println(fmt.Sprintf("%s%s%s", pool.IpWebApi, utils.ApiUrl, utils.ApiUrlGetAllPlayers))
 
 			req, err := http.NewRequest("POST", fmt.Sprintf("%s%s%s", pool.IpWebApi, utils.ApiUrl, utils.ApiUrlGetAllPlayers), nil)
 			if err != nil {
