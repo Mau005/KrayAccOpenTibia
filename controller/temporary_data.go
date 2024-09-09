@@ -43,8 +43,6 @@ func LoadTemporaryData() error {
 				if oldestUptime <= int(timeNow) {
 					oldestUptime = int(timeNow)
 				}
-
-				TempData.ServStatus = append(TempData.ServStatus, serv) // check server
 			}
 			TempData.ServStatusTotal.ServerInfo.Uptime = string(oldestUptime)
 			TempData.ServStatusTotal.Players.Online = playerOnline
