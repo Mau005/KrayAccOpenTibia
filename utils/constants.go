@@ -79,6 +79,7 @@ const (
 	ApiUrlSyncPlayerName        = "/sync_player_name"
 	ApiUrlGetAllPlayers         = "/get_all_players"
 	ApiUrlWhoIsOnline           = "/get_player_online"
+	ApiUrlGetPlayerAccount      = "/get_player_account"
 )
 
 // privbi

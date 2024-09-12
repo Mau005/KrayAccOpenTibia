@@ -86,6 +86,8 @@ func Load(filename string) error {
 		if err != nil {
 			return err
 		}
+	} else {
+		utils.Warn("configurate Target Server not found")
 	}
 
 	err = db.ConnectionMysql(
@@ -154,7 +156,7 @@ func LoadConfigLua(targetServer string) (err error) {
 	defer L.Close()
 	path_new := fmt.Sprintf("%s/%s", targetPath, "config.lua")
 	if err := L.DoFile(path_new); err != nil {
-		utils.ErrorFatal("error executing Lua script:", err.Error())
+		return err
 	}
 	var WorldType int
 	switch L.GetGlobal("worldType").String() {

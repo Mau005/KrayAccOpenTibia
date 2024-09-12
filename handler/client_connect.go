@@ -25,7 +25,7 @@ func (hcc *HandlerClientConnect) CacheInfoHandler(w http.ResponseWriter, r *http
 	}
 	err := json.NewEncoder(w).Encode(&response)
 	if err != nil {
-		utils.Error("error cache info client", err.Error())
+		log.Println(err)
 	}
 }
 
@@ -57,7 +57,6 @@ func (hcc *HandlerClientConnect) loginHandler(answerExpected models.AnswerExpect
 
 	response, err := PoolConnectionController.CharacterLoginAccountPoolConnection(answerExpected)
 	if err != nil {
-		utils.Error(err.Error())
 		json.NewEncoder(w).Encode(map[string]interface{}{
 			"errorCode":    3,
 			"errorMessage": "incorrect credentials",
@@ -67,7 +66,6 @@ func (hcc *HandlerClientConnect) loginHandler(answerExpected models.AnswerExpect
 
 	w.Header().Set("Content-Type", "application/json")
 	if err = json.NewEncoder(w).Encode(&response); err != nil {
-		utils.Error(err.Error())
 		utils.Warn("error encode response", err.Error())
 		return
 	}

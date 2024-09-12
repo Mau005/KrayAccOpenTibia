@@ -111,13 +111,11 @@ func (ac *ApiController) CheckOnlineServer(ip, port string) (models.ServerStatus
 
 	_, err = conn.Write(packet)
 	if err != nil {
-		utils.Error("Error  writing packet:" + err.Error())
 		return serverStatus, err
 	}
 
 	answer, err := io.ReadAll(conn)
 	if err != nil {
-		utils.Error("Error  reading response:" + err.Error())
 		return serverStatus, err
 	}
 
@@ -127,7 +125,6 @@ func (ac *ApiController) CheckOnlineServer(ip, port string) (models.ServerStatus
 
 	err = xml.Unmarshal(answer, &serverStatus)
 	if err != nil {
-		utils.Error(err.Error())
 		return serverStatus, err
 	}
 

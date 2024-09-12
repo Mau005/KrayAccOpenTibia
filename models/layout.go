@@ -19,6 +19,7 @@ type SolicitudeLayout struct {
 	RecoveryAccount bool
 	Dowloads        bool
 	PoliticService  bool
+	MyAccount       bool
 }
 
 type Layout struct {
@@ -42,6 +43,7 @@ type Layout struct {
 	PoliticService  string
 	LogoButtons     string
 	Head            string
+	MyAccount       string
 }
 
 func NewLayoutDefault() SolicitudeLayout {

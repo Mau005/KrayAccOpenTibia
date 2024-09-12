@@ -20,14 +20,14 @@ func CreatePlayerOnline() string {
 		content := `
         
                         <!-- Acordeón -->
-                        <div class="accordion mb-4" id="%s">
+                        <div class="accordion mb-4">
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="headingOne">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#%s" aria-expanded="true" aria-controls="%s">
                                         %s
                                     </button>
                                 </h2>
-                                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#%s">
+                                <div id="%s" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#%s">
                                     <div class="accordion-body">
                                         %s
                                     </div>
@@ -48,7 +48,7 @@ func CreatePlayerOnline() string {
             </tr>
             `, FunctionImagenSourcePlayer(player), player.Name, player.Level, player.Experience)
 		}
-		contentOutput += fmt.Sprintf(content, world, world, world, fmt.Sprintf(`
+		contentOutput += fmt.Sprintf(content, world, world, world, world, world, fmt.Sprintf(`
                         <!-- Tabla de Lista de Personajes -->
                         <div class="card mb-4">
                             <div class="card-header">

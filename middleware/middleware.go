@@ -51,6 +51,7 @@ func AuthPathPublicMiddleware(next http.Handler) http.Handler {
 			navWeb.MyPlayers = acc.Players
 			navWeb.IsPremmium = int64(acc.PremiumEndsAt) > time.Now().Unix()
 			navWeb.Authentication = true
+			navWeb.AccountID = claims.AccountID
 		}
 		context.Set(r, utils.CtxNavWeb, navWeb)
 		context.Set(r, utils.CtxClaim, *claims)

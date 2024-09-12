@@ -14,3 +14,30 @@ func FunctionImagenSourcePlayer(player models.Players) string {
 	<img src="%s" alt="Jugador %d">
 	`, urlImg, player.ID)
 }
+
+func FunctionGetVocation(player models.Players) string {
+
+	switch player.Vocation {
+	case 0:
+		return "No Vocation"
+	case 1:
+		return "Sorcerer"
+	case 2:
+		return "Druid"
+	case 3:
+		return "Paladin"
+	case 4:
+		return "Knight"
+	case 5:
+		return "Master Sorcerer"
+	case 6:
+		return "Elder Druid"
+	case 7:
+		return "Royal Paladin"
+	case 8:
+		return "Elite Knight"
+	default:
+		return "No encontrado"
+
+	}
+}

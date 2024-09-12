@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 	"time"
 
@@ -24,19 +25,20 @@ func LoadTemporaryData() error {
 		for {
 			// TODO: server local check status
 			playerOnline := 0
+			playerNPC := 0
 			MonsterTotal := 0
 			oldestUptime := 0
 			for _, pool := range config.Global.PoolServer {
 				serv, err := api.CheckOnlineServer(pool.World.ExternalAddress, fmt.Sprintf("%d", pool.World.ExternalPort))
 				if err != nil {
-					utils.Error(fmt.Sprintf("error check online server xml function, %s", pool.IpWebApi), err.Error())
+					log.Println(err)
 					continue
 				}
 
 				playerOnline += serv.Players.Online
 				MonsterTotal += serv.Monsters.Total
 
-				TempData.ServStatusTotal.NPCs.Total += serv.NPCs.Total
+				playerNPC += serv.NPCs.Total
 
 				timeNow, _ := strconv.ParseInt(serv.ServerInfo.Uptime, 10, 64)
 
@@ -47,6 +49,7 @@ func LoadTemporaryData() error {
 			TempData.ServStatusTotal.ServerInfo.Uptime = string(oldestUptime)
 			TempData.ServStatusTotal.Players.Online = playerOnline
 			TempData.ServStatusTotal.Monsters.Total = MonsterTotal
+			TempData.ServStatusTotal.NPCs.Total = playerNPC
 
 			time.Sleep(utils.TimeCheckInfoServer * time.Minute)
 		}

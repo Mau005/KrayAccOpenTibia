@@ -8,9 +8,9 @@ import (
 
 func CreateLogin(navWeb models.NavWeb) (components string) {
 	if navWeb.Authentication {
-		iconStatus := `<img src="www/img/account-status_red.gif" alt="status account"> Cuenta Gratuita`
+		iconStatus := `<img src="/www/img/account-status_red.gif" alt="status account"> Cuenta Gratuita`
 		if navWeb.IsPremmium {
-			iconStatus = `<img src="www/img/account-status_green.gif" alt="status account">Cuenta VIP`
+			iconStatus = `<img src="/www/img/account-status_green.gif" alt="status account">Cuenta VIP`
 		}
 		components += fmt.Sprintf(`
                         <ul class="list-group">

@@ -423,7 +423,7 @@ body {
     margin-bottom: 15px;
   }
   .account-status {
-    border: 1px solid #a98232;
+    border: 1px solid var(--primary-text-color);
     padding: 15px;
     background-color: var(--form-primary-bg-color);
     border-radius: 5px;
@@ -435,7 +435,7 @@ body {
     margin-top: 15px;
   }
   .character-table th, .character-table td {
-    border: 1px solid #a98232;
+    border: 1px solid var(--primary-text-color);
     padding: 10px;
     text-align: left;
   }
@@ -443,3 +443,6 @@ body {
     background-color: #d2b48c;
     color: var(--card-bg-color);
   }
+
+
+  

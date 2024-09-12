@@ -1,0 +1,43 @@
+    <!DOCTYPE html>
+    <html lang="es">
+    {{.Head}}
+    <body>
+        <!-- Navegación -->
+        {{.NavBar}}  
+        <!-- Contenido Principal -->
+        <div class="container">
+            {{.LogoButtons}}
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="main-content">
+                       {{.MyAccount}}
+                        <hr>
+                    </div>
+                </div>
+                <!-- Sidebar -->
+                <div class="col-lg-3">
+                    <div class="sidebar">
+                        <h4>Menus</h4>
+                        <hr>
+                        {{.ServerStatus}}
+                        <hr>
+                        {{.Login}}
+                        <hr>
+                        {{.TopPlayers}}
+                        <hr>
+                        {{.Rates}}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- Modal -->
+        {{.Modal}}
+
+        {{.Scripts}}
+        
+       
+    </body>
+
+    </html>

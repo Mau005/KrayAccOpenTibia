@@ -8,27 +8,27 @@ import (
 	"github.com/fatih/color"
 )
 
-var ListLogInfo []string
+var ErrorColor = color.New(color.FgRed)
 
 func Info(msg ...string) {
 
 	infoColor := color.New(color.FgGreen).SprintFunc()
-	log.Println(infoColor(uniteText("[OK]", msg)))
+	fmt.Println(infoColor(uniteText("[OK]", msg)))
 }
 
 func Warn(msg ...string) {
 	warnColor := color.New(color.FgHiYellow).SprintFunc()
-	log.Println(warnColor(uniteText("[WARNING]", msg)))
+	fmt.Println(warnColor(uniteText("[WARNING]", msg)))
 }
 
 func WarnLog(msg ...string) {
 	warnColor := color.New(color.FgHiYellow).SprintFunc()
-	log.Println(warnColor(uniteText("[ALERT SECURITY]", msg)))
+	fmt.Println(warnColor(uniteText("[ALERT SECURITY]", msg)))
 }
 
-func Error(msg ...string) {
+func ErrorR(msg ...string) {
 	errorColor := color.New(color.FgRed).SprintFunc()
-	log.Println(errorColor(uniteText("[ERROR]", msg)))
+	fmt.Println(errorColor(uniteText("[ERROR]", msg)))
 }
 func ErrorFatal(msg ...string) {
 	errorColor := color.New(color.FgRed).SprintFunc()
@@ -37,12 +37,12 @@ func ErrorFatal(msg ...string) {
 
 func InfoBlue(msg ...string) {
 	errorColor := color.New(color.FgBlue).SprintFunc()
-	log.Println(errorColor(msg))
+	fmt.Println(errorColor(msg))
 }
 
 func InfoSuccess(msg string) {
 	errorColor := color.New(color.FgHiCyan).SprintFunc()
-	log.Println(errorColor(msg))
+	fmt.Println(errorColor(msg))
 }
 func InfoBlueNotLog(msg ...string) {
 	errorColor := color.New(color.FgBlue).SprintFunc()

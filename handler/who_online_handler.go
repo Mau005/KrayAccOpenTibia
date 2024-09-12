@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"net/http"
 	"text/template"
 
@@ -19,11 +20,11 @@ func (woh *WhoOnlineHandler) GetViewPlayer(w http.ResponseWriter, r *http.Reques
 	ConditionalLayout.WhoIsOnline = true
 	templ, err := template.New("player_online.html").ParseFiles("www/player_online.html")
 	if err != nil {
-		utils.Error("error create tempalte", err.Error())
+		log.Println(err)
 		return
 	}
 	err = templ.Execute(w, Layouthandler.Generatelayout(navWeb, ConditionalLayout))
 	if err != nil {
-		utils.Error("error execute template", err.Error())
+		log.Println(err)
 	}
 }

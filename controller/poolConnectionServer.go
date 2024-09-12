@@ -27,13 +27,13 @@ func (pc *PoolConnectionController) GetWorldPool() {
 			config.Global.PoolServer[index] = pool
 			continue
 		} else if len(pool.Token) == 0 || len(pool.IpWebApi) == 0 {
-			utils.Error("error pool not have data ", "index array:", fmt.Sprintf("%d", index))
+			log.Println("error pool not have data ", "index array:", fmt.Sprintf("%d", index))
 			continue
 		}
 
 		req, err := http.NewRequest("POST", fmt.Sprintf("%s%s%s", pool.IpWebApi, utils.ApiUrl, utils.ApiUrlGetPoolConnect), nil)
 		if err != nil {
-			utils.Error("error create solicitude http ip:", pool.IpWebApi, err.Error())
+			log.Println("error create solicitude http ip:", pool.IpWebApi, err.Error())
 			continue
 		}
 
@@ -43,20 +43,20 @@ func (pc *PoolConnectionController) GetWorldPool() {
 		client := &http.Client{}
 		resp, err := client.Do(req)
 		if err != nil {
-			utils.Error("error send solicitude", pool.IpWebApi)
+			log.Println("error send solicitude", pool.IpWebApi)
 			continue
 		}
 		defer resp.Body.Close()
 
 		body, err := io.ReadAll(resp.Body)
 		if err != nil {
-			utils.Error("error read body", err.Error())
+			log.Println("error read body", err.Error())
 			continue
 		}
 		var poolResponse []models.PoolServer
 		err = json.Unmarshal(body, &poolResponse)
 		if err != nil {
-			utils.Error("decode unmarshal response router", err.Error())
+			log.Println("decode unmarshal response router", err.Error())
 			continue
 		}
 
@@ -101,7 +101,7 @@ func (pc *PoolConnectionController) CharacterLoginAccountPoolConnection(answerEx
 			}
 			req, err := http.NewRequest("POST", fmt.Sprintf("%s%s%s", pool.IpWebApi, utils.ApiUrl, utils.ApiUrlLoginClientConnection), bytes.NewBuffer(jsonBody))
 			if err != nil {
-				utils.Error("not create solcitiude", pool.IpWebApi)
+				log.Println("not create solcitiude", pool.IpWebApi)
 				continue
 			}
 			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", pool.Token))
@@ -109,12 +109,12 @@ func (pc *PoolConnectionController) CharacterLoginAccountPoolConnection(answerEx
 			client := &http.Client{}
 			resp, err := client.Do(req)
 			if err != nil {
-				utils.Error("error send session", err.Error())
+				log.Println("error send session", err.Error())
 				continue
 			}
 			err = json.NewDecoder(resp.Body).Decode(&account)
 			if err != nil {
-				utils.Error("error decode account", err.Error())
+				log.Println("error decode account", err.Error())
 				continue
 			}
 			response.PlayData.Characters = append(response.PlayData.Characters, apiCtl.PreparingCharacter(account.Players, uint(pool.World.ID))...)
@@ -145,13 +145,12 @@ func (pc *PoolConnectionController) CreateCharacter(nameCharacter, idWorld strin
 
 	idIndexWorld, err := strconv.ParseInt(worldSub[0], 10, 64)
 	if err != nil {
-		utils.Error("error generate id Index World register character", err.Error())
+		log.Println("error generate id Index World register character", err)
 		return err
 	}
-	fmt.Println(idIndexWorld)
 
 	if len(config.Global.PoolServer) < int(idIndexWorld) {
-		utils.Error("out of the world index", fmt.Sprintf("%d", idIndexWorld))
+		log.Println("out of the world index", fmt.Sprintf("%d", idIndexWorld))
 		return errors.New("out of the world index")
 	}
 
@@ -175,13 +174,11 @@ func (pc *PoolConnectionController) CreateCharacter(nameCharacter, idWorld strin
 	} else {
 		playerJson, err := json.Marshal(player)
 		if err != nil {
-			utils.Error("error marshal playerjson", err.Error())
 			return err
 		}
 
 		req, err := http.NewRequest("POST", fmt.Sprintf("%s%s%s", config.Global.PoolServer[idIndexWorld].IpWebApi, utils.ApiUrl, utils.ApiUrlRegisterCharacter), bytes.NewBuffer(playerJson))
 		if err != nil {
-			utils.Error("error generate solicitude create character", err.Error())
 			return err
 		}
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", config.Global.PoolServer[idIndexWorld].Token))
@@ -189,11 +186,9 @@ func (pc *PoolConnectionController) CreateCharacter(nameCharacter, idWorld strin
 		client := &http.Client{}
 		resp, err := client.Do(req)
 		if err != nil {
-			utils.Error("Error connection pool server", config.Global.PoolServer[idIndexWorld].IpWebApi)
 			return err
 		}
 		if resp.StatusCode != http.StatusOK {
-			utils.Error("error create character in server")
 			return err
 		}
 	}
@@ -221,19 +216,18 @@ func (pc *PoolConnectionController) CreateAccountPool(account models.Account) {
 
 		jsonData, err := json.Marshal(Request)
 		if err != nil {
-			utils.Error("error json marshal pool create account")
+			log.Println("error json marshal pool create account")
 			continue
 		}
 
 		if len(pool.Token) == 0 || len(pool.IpWebApi) == 0 {
-			fmt.Println(pool)
-			utils.Error("error len token or ipwebapi")
+			log.Println("error len token or ipwebapi")
 			continue
 		}
 
 		req, err := http.NewRequest("POST", fmt.Sprintf("%s%s%s", pool.IpWebApi, utils.ApiUrl, utils.ApiUrlCreateAccount), bytes.NewBuffer(jsonData))
 		if err != nil {
-			utils.Error("error create account solicidute http: ", pool.IpWebApi)
+			log.Println("error create account solicidute http: ", pool.IpWebApi)
 			continue
 		}
 
@@ -242,7 +236,7 @@ func (pc *PoolConnectionController) CreateAccountPool(account models.Account) {
 		client := &http.Client{}
 		resp, err := client.Do(req)
 		if err != nil {
-			utils.Error("error send solicitude", pool.IpWebApi)
+			log.Println("error send solicitude", pool.IpWebApi)
 			continue
 		}
 		defer resp.Body.Close()
@@ -257,11 +251,16 @@ func (pc *PoolConnectionController) SyncAccountPool() {
 	accountCtl.GetAllAccount()
 	body, err := json.Marshal(account)
 	if err != nil {
-		utils.Error(err.Error())
+		log.Println(err)
 	}
 
 	for _, pool := range config.Global.PoolServer {
-		go pc.parallelSynAccount(pool, body)
+		go func() {
+			err := pc.parallelSynAccount(pool, body)
+			if err != nil {
+				log.Println(err)
+			}
+		}()
 	}
 
 }
@@ -280,8 +279,7 @@ func (pc *PoolConnectionController) WhoIsOnlinePoolConnection() map[string][]mod
 
 		req, err := http.NewRequest("POST", fmt.Sprintf("%s%s%s", pool.IpWebApi, utils.ApiUrl, utils.ApiUrlWhoIsOnline), nil)
 		if err != nil {
-			log.Println(err)
-			utils.Error("error send woisonline pool connection", err.Error())
+			log.Println("error send woisonline pool connection", err)
 			continue
 		}
 
@@ -290,8 +288,7 @@ func (pc *PoolConnectionController) WhoIsOnlinePoolConnection() map[string][]mod
 		reso := &http.Client{}
 		r, err := reso.Do(req)
 		if err != nil {
-			log.Println(err)
-			utils.Error("error send solicitude whoIsOnline", err.Error())
+			log.Println("error send solicitude whoIsOnline", err)
 			continue
 		}
 		var players []models.Players
@@ -327,7 +324,7 @@ func (pc *PoolConnectionController) SyncPlayerNamePoolConnection() {
 
 			req, err := http.NewRequest("POST", fmt.Sprintf("%s%s%s", pool.IpWebApi, utils.ApiUrl, utils.ApiUrlGetAllPlayers), nil)
 			if err != nil {
-				utils.Error(err.Error())
+				log.Println(err)
 				continue
 			}
 
@@ -336,7 +333,7 @@ func (pc *PoolConnectionController) SyncPlayerNamePoolConnection() {
 			client := &http.Client{}
 			resp, err := client.Do(req)
 			if err != nil {
-				utils.Error("poolConnectionServer 300", "error send solicitude", pool.IpWebApi)
+				log.Println("poolConnectionServer 300", "error send solicitude", pool.IpWebApi)
 				continue
 			}
 			defer resp.Body.Close()
@@ -345,7 +342,7 @@ func (pc *PoolConnectionController) SyncPlayerNamePoolConnection() {
 
 			err = json.NewDecoder(resp.Body).Decode(&players)
 			if err != nil {
-				utils.Error("poolConnectionServer 309", "error send solicitude", pool.IpWebApi)
+				log.Println("poolConnectionServer 309", "error send solicitude", pool.IpWebApi)
 				continue
 			}
 
@@ -361,14 +358,13 @@ func (pc *PoolConnectionController) SyncPlayerNamePoolConnection() {
 	}()
 }
 
-func (pc *PoolConnectionController) parallelSynAccount(pool models.PoolServer, body []byte) {
+func (pc *PoolConnectionController) parallelSynAccount(pool models.PoolServer, body []byte) (err error) {
 	if pool.IpWebApi == "" || pool.Token == "" {
-		return
+		return nil
 	}
 
 	req, err := http.NewRequest("POST", fmt.Sprintf("%s%s%s", pool.IpWebApi, utils.ApiUrl, utils.ApiUrlMySyncAccount), bytes.NewBuffer(body))
 	if err != nil {
-		utils.Error("error sync send api: ", pool.IpWebApi)
 		return
 	}
 
@@ -377,7 +373,6 @@ func (pc *PoolConnectionController) parallelSynAccount(pool models.PoolServer, b
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		utils.Error("error send solicitude", pool.IpWebApi)
 		return
 	}
 	defer resp.Body.Close()
@@ -386,15 +381,13 @@ func (pc *PoolConnectionController) parallelSynAccount(pool models.PoolServer, b
 		var exp models.Exception
 		err = json.NewDecoder(resp.Body).Decode(&exp)
 		if err != nil {
-			utils.Error("error decode captured exception")
 			return
 		}
-		utils.Error("error poolConnectionServer 354", "error connection", exp.Msg)
+		return errors.New(fmt.Sprintf("error poolConnectionServer 354 error connection %s", exp.Msg))
 	} else {
 		var msg []string
 		err = json.NewDecoder(resp.Body).Decode(&msg)
 		if err != nil {
-			utils.Error("error decode msg alerts")
 			return
 		}
 		for _, msgCaptured := range msg {
@@ -403,4 +396,57 @@ func (pc *PoolConnectionController) parallelSynAccount(pool models.PoolServer, b
 		}
 
 	}
+	return nil
+}
+
+func (pc *PoolConnectionController) GetACcountPlayerPoolConenction(accountID int) (account models.Account) {
+
+	for _, pool := range config.Global.PoolServer {
+
+		if pool.IpWebApi == "" {
+			var accountCtl AccountController
+			acc, err := accountCtl.GetAccountWithPlayer(accountID)
+			if err != nil {
+				log.Println(err)
+				continue
+			}
+			account.Players = append(account.Players, acc.Players...)
+			account.Name = acc.Name
+			account.Email = acc.Email
+			continue
+		}
+
+		accByte, err := json.Marshal(models.Account{ID: accountID})
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+
+		req, err := http.NewRequest("POST", fmt.Sprintf("%s%s%s", pool.IpWebApi, utils.ApiUrl, utils.ApiUrlGetPlayerAccount), bytes.NewBuffer(accByte))
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", pool.Token))
+
+		client := &http.Client{}
+		body, err := client.Do(req)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+
+		var accountFinaly models.Account
+
+		if err := json.NewDecoder(body.Body).Decode(&accountFinaly); err != nil {
+			log.Println(err)
+			continue
+		}
+
+		account.Players = append(account.Players, accountFinaly.Players...)
+		account.Email = accountFinaly.Email
+		account.Name = accountFinaly.Name
+	}
+	return account
 }

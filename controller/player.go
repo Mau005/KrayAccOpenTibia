@@ -55,6 +55,12 @@ func (pc *PlayerController) GetPlayerOnline() (players []models.Players) {
 	return
 }
 
+func (pc *PlayerController) GetNameWorld(name string) models.PlayersNames {
+	var playerName models.PlayersNames
+	db.DB.Where("name = ?", name).First(&playerName)
+	return playerName
+}
+
 func (pc *PlayerController) GetPlayerDeath() (deaths []models.PlayerDeaths) {
 	db.DB.Preload("Player").Order("time desc").Limit(50).Find(&deaths)
 	return

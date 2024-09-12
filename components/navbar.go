@@ -25,7 +25,7 @@ func CreateNavbar(navweb models.NavWeb) string {
  	<nav class="navbar navbar-expand-lg fixed-top">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="#">
-				<img src="www/img/icon.png" alt="Logo">
+				<img src="/www/img/icon.png" alt="Logo">
 			</a>
 	
 			<!-- Input para buscar personajes -->

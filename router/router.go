@@ -48,6 +48,7 @@ func NewRouter() *mux.Router {
 		//SecurityPath
 		s := r.PathPrefix("/auth").Subrouter()
 		s.Use(middleware.AuthMiddleware)
+		s.HandleFunc("/my_board", handlerAccount.MyAccount).Methods("GET")
 		s.HandleFunc("/create_character", handlerAccount.CreateCharacter).Methods("POST")
 		s.HandleFunc("/create_news_ticket", NewsTickerHandler.CreateTicket).Methods("POST")
 	}
@@ -66,6 +67,7 @@ func NewRouter() *mux.Router {
 	api.HandleFunc(utils.ApiUrlSyncPlayerName, ApiConnection.SynPlayerName).Methods("POST")
 	api.HandleFunc(utils.ApiUrlGetAllPlayers, ApiConnection.GetAllPlayer).Methods("POST")
 	api.HandleFunc(utils.ApiUrlWhoIsOnline, ApiConnection.WhoIsOnline).Methods("POST")
+	api.HandleFunc(utils.ApiUrlGetPlayerAccount, ApiConnection.GetPlayerAccount).Methods("POST")
 
 	//api.HandleFunc("/connect_pool")
 

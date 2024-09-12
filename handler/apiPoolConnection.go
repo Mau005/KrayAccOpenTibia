@@ -134,3 +134,24 @@ func (apc *ApiPoolConnectionHandler) WhoIsOnline(w http.ResponseWriter, r *http.
 	players := playerCtl.GetPlayerOnline()
 	json.NewEncoder(w).Encode(&players)
 }
+
+func (apc *ApiPoolConnectionHandler) GetPlayerAccount(w http.ResponseWriter, r *http.Request) {
+	var accountCtl controller.AccountController
+	var account models.Account
+	var errorCtl controller.ExceptionController
+	if err := json.NewDecoder(r.Body).Decode(&account); err != nil {
+		errorCtl.Exeption(err.Error(), http.StatusConflict, w)
+		return
+	}
+
+	account, err := accountCtl.GetAccountWithPlayer(account.ID)
+	if err != nil {
+		errorCtl.Exeption(err.Error(), http.StatusInternalServerError, w)
+		return
+	}
+
+	if err := json.NewEncoder(w).Encode(&account); err != nil {
+		errorCtl.Exeption(err.Error(), http.StatusConflict, w)
+		return
+	}
+}

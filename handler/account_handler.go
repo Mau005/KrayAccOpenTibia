@@ -3,9 +3,12 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
+	"text/template"
 	"time"
 
+	"github.com/Mau005/KrayAccOpenTibia/components"
 	"github.com/Mau005/KrayAccOpenTibia/config"
 	"github.com/Mau005/KrayAccOpenTibia/controller"
 	"github.com/Mau005/KrayAccOpenTibia/models"
@@ -169,4 +172,30 @@ func (ah *AccountHandler) CreateAccount(w http.ResponseWriter, r *http.Request) 
 		exceptCtl.Exeption(err.Error(), http.StatusInternalServerError, w)
 	}
 
+}
+
+func (ah *AccountHandler) MyAccount(w http.ResponseWriter, r *http.Request) {
+	navWeb, _ := context.Get(r, utils.CtxNavWeb).(models.NavWeb)
+
+	if !navWeb.Authentication {
+		http.Redirect(w, r, "/", http.StatusOK)
+		return
+	}
+
+	templ, err := template.New("my_account.html").ParseFiles("www/my_account.html")
+	if err != nil {
+		log.Println("error create template", err)
+		return
+	}
+
+	var Layouthandler Layouthandler
+	layout := Layouthandler.Generatelayout(navWeb, models.SolicitudeLayout{News: true, Login: true, ServerStatus: true, TopPlayers: true, Rates: true})
+	var poolConnectionCTL controller.PoolConnectionController
+	accountCheck := poolConnectionCTL.GetACcountPlayerPoolConenction(navWeb.AccountID)
+	layout.MyAccount = components.CreateMyAccount(accountCheck)
+
+	if err := templ.Execute(w, layout); err != nil {
+		log.Println("error execute template", err)
+		return
+	}
 }
