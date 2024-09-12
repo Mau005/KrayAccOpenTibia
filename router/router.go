@@ -80,6 +80,7 @@ func NewRouter() *mux.Router {
 	ctl.HandleFunc("/eventschedule", handlerClientConnect.EventScheduleHandler)
 	ctl.HandleFunc("/boostedcreature", handlerClientConnect.BoostedCreatureHandler)
 	ctl.HandleFunc("/login", handlerClientConnect.PreparingHanlderClient)
+	ctl.HandleFunc("/get_news", ApiConnection.GetNews).Methods("GET")
 
 	return r
 }

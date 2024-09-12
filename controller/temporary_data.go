@@ -59,7 +59,7 @@ func LoadTemporaryData() error {
 			TempData.ServStatusTotal.Monsters.Total = MonsterTotal
 			TempData.ServStatusTotal.NPCs.Total = playerNPC
 
-			time.Sleep(utils.TimeCheckInfoServer * time.Second)
+			time.Sleep(utils.TimeCheckInfoServer * time.Minute)
 		}
 	}()
 

@@ -65,7 +65,7 @@ func (lh *Layouthandler) Generatelayout(navWeb models.NavWeb, condition models.S
 			<div class="logo-container">
                 <img src="/www/img/logo.png" alt="Logo" class="logo">
             </div>
-            <button onclick="downloadFile('https://drive.google.com/file/d/16H2EU1Y2aa4LMb5W1nVAG7VRfbQEcIZA/view', 'TheLastRookgardV1.0.0')" class="vibrant-button">Descargar</button>`
+            <button onclick="downloadFile('https://drive.google.com/file/d/1XFytxk-jtrV7mHFgl2GjLPdh95qwunCB/view?usp=sharing', 'TheLastRookgardV1.0.0')" class="vibrant-button">Descargar</button>`
 	layout.Head = `
 	    <head>
         <meta charset="UTF-8">

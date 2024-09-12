@@ -9,6 +9,7 @@ import (
 	"github.com/Mau005/KrayAccOpenTibia/config"
 	"github.com/Mau005/KrayAccOpenTibia/controller"
 	"github.com/Mau005/KrayAccOpenTibia/models"
+	"github.com/Mau005/KrayAccOpenTibia/utils"
 )
 
 type ApiPoolConnectionHandler struct{}
@@ -154,4 +155,12 @@ func (apc *ApiPoolConnectionHandler) GetPlayerAccount(w http.ResponseWriter, r *
 		errorCtl.Exeption(err.Error(), http.StatusConflict, w)
 		return
 	}
+}
+
+func (apc *ApiPoolConnectionHandler) GetNews(w http.ResponseWriter, r *http.Request) {
+	var newsCtl controller.NewsTickerController
+
+	news := newsCtl.GetTickerLimited(utils.LimitRecordFive)
+
+	json.NewEncoder(w).Encode(news)
 }
