@@ -46,12 +46,20 @@ func LoadTemporaryData() error {
 					oldestUptime = int(timeNow)
 				}
 			}
-			TempData.ServStatusTotal.ServerInfo.Uptime = string(oldestUptime)
+
+			if oldestUptime == 0 {
+				TempData.ServStatusTotal.ServerInfo.Uptime = ""
+			} else {
+
+				TempData.ServStatusTotal.ServerInfo.Uptime = strconv.Itoa(oldestUptime)
+			}
+
 			TempData.ServStatusTotal.Players.Online = playerOnline
+
 			TempData.ServStatusTotal.Monsters.Total = MonsterTotal
 			TempData.ServStatusTotal.NPCs.Total = playerNPC
 
-			time.Sleep(utils.TimeCheckInfoServer * time.Minute)
+			time.Sleep(utils.TimeCheckInfoServer * time.Second)
 		}
 	}()
 

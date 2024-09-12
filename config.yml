@@ -37,6 +37,6 @@ ApiConnectionPool:
 Certificate:
 # If you activate the certificate, the web will enter secure mode 
 # and activate cookie securite True, it will only work with https requests
-  ProtolTLS: false #certification ssl for https in webservice
+  ProtocolHTTPS: false #certification ssl for https in webservice
   Chain: /etc/letsencrypt/live/tibiakray.info/fullchain.pem
   PrivKey: /etc/letsencrypt/live/tibiakray.info/privkey.pem
