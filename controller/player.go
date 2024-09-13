@@ -1,8 +1,11 @@
 package controller
 
 import (
+	"fmt"
+
 	"github.com/Mau005/KrayAccOpenTibia/db"
 	"github.com/Mau005/KrayAccOpenTibia/models"
+	"github.com/Mau005/KrayAccOpenTibia/utils"
 )
 
 type PlayerController struct{}
@@ -52,6 +55,35 @@ func (pc *PlayerController) GetPlayerOnline() (players []models.Players) {
 		db.DB.Where("id = ?", value.PlayerID).First(&playerTarget)
 		players = append(players, playerTarget)
 	}
+	return
+}
+
+func (pc *PlayerController) IndexHighScore(indexHighScore int) (response string) {
+	switch indexHighScore {
+	case utils.FirstHighScore:
+		return "skill_fist"
+	case utils.ClubHighScore:
+		return "skill_club"
+	case utils.SwordHighScore:
+		return "skill_sword"
+	case utils.AxeHighScore:
+		return "skill_axe"
+	case utils.DistHighScore:
+		return "skill_dist"
+	case utils.ShieldHighScore:
+		return "skill_shielding"
+	case utils.FishingHighScore:
+		return "skill_fishing"
+	case utils.MagLevelHighScore:
+		return "maglevel"
+	default:
+		return "level"
+	}
+}
+
+func (pc *PlayerController) GetHighScore(indexHighScore int) (players []models.Players) {
+	target := pc.IndexHighScore(indexHighScore)
+	db.DB.Limit(utils.LimitRecordHighScore).Order(fmt.Sprintf("%s desc", target)).Find(&players)
 	return
 }
 

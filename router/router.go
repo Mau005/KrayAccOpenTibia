@@ -31,6 +31,11 @@ func NewRouter() *mux.Router {
 		var killerhandler handler.PlayerDeathHandler
 		r.HandleFunc("/last_death", killerhandler.GetViewPlayerDeath).Methods("GET")
 
+		//
+		var highscoreHandler handler.HighScorehandler
+		r.HandleFunc("/highscore", highscoreHandler.ViewHighScore).Methods("GET")
+		r.HandleFunc("/highscore/{world}/{id}", highscoreHandler.GetHighScoreHandler).Methods("POST")
+
 		//Not Found
 		// r.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// 	bodyResponde, err := io.ReadAll(r.Body)
@@ -68,6 +73,7 @@ func NewRouter() *mux.Router {
 	api.HandleFunc(utils.ApiUrlGetAllPlayers, ApiConnection.GetAllPlayer).Methods("POST")
 	api.HandleFunc(utils.ApiUrlWhoIsOnline, ApiConnection.WhoIsOnline).Methods("POST")
 	api.HandleFunc(utils.ApiUrlGetPlayerAccount, ApiConnection.GetPlayerAccount).Methods("POST")
+	api.HandleFunc(utils.ApiUrlGetHighScore, ApiConnection.GetHighScore).Methods("POST")
 
 	//api.HandleFunc("/connect_pool")
 

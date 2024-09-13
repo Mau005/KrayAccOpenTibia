@@ -1,8 +1,9 @@
 package utils
 
 const (
-	LimitRecordFive     = 5
-	TimeCheckInfoServer = 1 //minutes
+	LimitRecordFive      = 5
+	LimitRecordHighScore = 100
+	TimeCheckInfoServer  = 1 //minutes
 )
 const (
 	//ACCOUNT
@@ -80,6 +81,20 @@ const (
 	ApiUrlGetAllPlayers         = "/get_all_players"
 	ApiUrlWhoIsOnline           = "/get_player_online"
 	ApiUrlGetPlayerAccount      = "/get_player_account"
+	ApiUrlGetHighScore          = "/get_highscore"
+)
+
+// HighScore
+const (
+	FirstHighScore = iota
+	ClubHighScore
+	AxeHighScore
+	SwordHighScore
+	DistHighScore
+	ShieldHighScore
+	FishingHighScore
+	MagLevelHighScore
+	LevelHighScore
 )
 
 // privbi

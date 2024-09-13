@@ -103,16 +103,16 @@ func (apc *ApiPoolConnectionHandler) MySyncAccountData(w http.ResponseWriter, r 
 	var accounts []models.Account
 	json.NewDecoder(r.Body).Decode(&accounts)
 	var accountCTL controller.AccountController
-	var test []string
+	var accountNormalice []string
 	for _, value := range accounts {
 		_, err := accountCTL.CreateAccountPoolConnection(value)
 		if err == nil {
-			test = append(test, fmt.Sprintf("AccountID %d normalice in database accountName: %s", value.ID, value.Name))
+			accountNormalice = append(accountNormalice, fmt.Sprintf("AccountID %d normalice in database accountName: %s", value.ID, value.Name))
 		}
 	}
 
-	if len(test) > 0 {
-		json.NewEncoder(w).Encode(&test)
+	if len(accountNormalice) > 0 {
+		json.NewEncoder(w).Encode(&accountNormalice)
 	} else {
 		var errorCtl controller.ExceptionController
 		errorCtl.Exeption("not have changes", http.StatusExpectationFailed, w)
@@ -163,4 +163,16 @@ func (apc *ApiPoolConnectionHandler) GetNews(w http.ResponseWriter, r *http.Requ
 	news := newsCtl.GetTickerLimited(utils.LimitRecordFive)
 
 	json.NewEncoder(w).Encode(news)
+}
+
+func (apc *ApiPoolConnectionHandler) GetHighScore(w http.ResponseWriter, r *http.Request) {
+	var request struct {
+		ID int
+	}
+	json.NewDecoder(r.Body).Decode(&request)
+
+	var playerCtl controller.PlayerController
+	players := playerCtl.GetHighScore(request.ID)
+	json.NewEncoder(w).Encode(&players)
+
 }

@@ -29,8 +29,8 @@ ServerWeb:
 
 #APiMODE!
 ApiConnectionPool:
-  # - IpWebApi: http://127.0.0.1:8005
-  #   Token: 123123123
+   - IpWebApi: http://127.0.0.1:8001
+     Token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwidXNlcm5hbWUiOiJhZG1pbiIsIkVtYWlsIjoiIiwidHlwZWFjY2VzcyI6NiwiaWF0IjoxNzI2MjYwMDM1LCJpc3MiOiJLcmF5QWNjQWRtaW4ifQ.4HEwvXt7wO5FfVJX2i8smIGZUAIwap87XvrkVp7p0vbT-9uh2GpPsr1UKLJRyJx6BduRDjPqDkC-giocn26X2g
   # - IpWebApi: http://thelastrookgard.cl
   #   Token: aws
 
