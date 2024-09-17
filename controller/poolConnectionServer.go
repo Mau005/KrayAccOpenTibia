@@ -38,7 +38,6 @@ func (pc *PoolConnectionController) GetWorldPool() {
 		}
 
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", pool.Token))
-		req.Header.Set("Content-Type", "applicantion/json")
 
 		client := &http.Client{}
 		resp, err := client.Do(req)
@@ -258,19 +257,16 @@ func (pc *PoolConnectionController) CreateAccountPool(account models.Account) {
 func (pc *PoolConnectionController) SyncAccountPool() {
 	var accountCtl AccountController
 	account := accountCtl.GetAllAccount()
-	accountCtl.GetAllAccount()
 	body, err := json.Marshal(account)
 	if err != nil {
 		log.Println(err)
 	}
 
 	for _, pool := range config.Global.PoolServer {
-		go func() {
-			err := pc.parallelSynAccount(pool, body)
-			if err != nil {
-				log.Println(err)
-			}
-		}()
+		err := pc.parallelSynAccount(pool, body)
+		if err != nil {
+			log.Println(err)
+		}
 	}
 
 }
@@ -316,46 +312,10 @@ func (pc *PoolConnectionController) WhoIsOnlinePoolConnection() map[string][]mod
 
 func (pc *PoolConnectionController) SyncPlayerNamePoolConnection() {
 
-	go func() {
-
-		for _, pool := range config.Global.PoolServer {
-			if pool.IpWebApi == "" {
-				var playerCtl PlayerController
-				players := playerCtl.GetAllPlayer()
-				for _, player := range players {
-					db.DB.Create(&models.PlayersNames{
-						Name:      player.Name,
-						World:     pool.World.Name,
-						AccountID: player.AccountID,
-					})
-				}
-				continue
-			}
-
-			req, err := http.NewRequest("POST", fmt.Sprintf("%s%s%s", pool.IpWebApi, utils.ApiUrl, utils.ApiUrlGetAllPlayers), nil)
-			if err != nil {
-				log.Println(err)
-				continue
-			}
-
-			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", pool.Token))
-
-			client := &http.Client{}
-			resp, err := client.Do(req)
-			if err != nil {
-				log.Println("poolConnectionServer 300", "error send solicitude", pool.IpWebApi)
-				continue
-			}
-			defer resp.Body.Close()
-
-			var players []models.Players
-
-			err = json.NewDecoder(resp.Body).Decode(&players)
-			if err != nil {
-				log.Println("poolConnectionServer 309", "error send solicitude", pool.IpWebApi)
-				continue
-			}
-
+	for _, pool := range config.Global.PoolServer {
+		if pool.IpWebApi == "" {
+			var playerCtl PlayerController
+			players := playerCtl.GetAllPlayer()
 			for _, player := range players {
 				db.DB.Create(&models.PlayersNames{
 					Name:      player.Name,
@@ -363,9 +323,42 @@ func (pc *PoolConnectionController) SyncPlayerNamePoolConnection() {
 					AccountID: player.AccountID,
 				})
 			}
-
+			continue
 		}
-	}()
+
+		req, err := http.NewRequest("POST", fmt.Sprintf("%s%s%s", pool.IpWebApi, utils.ApiUrl, utils.ApiUrlGetAllPlayers), nil)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", pool.Token))
+
+		client := &http.Client{}
+		resp, err := client.Do(req)
+		if err != nil {
+			log.Println("poolConnectionServer 300", "error send solicitude", pool.IpWebApi)
+			continue
+		}
+		defer resp.Body.Close()
+
+		var players []models.Players
+
+		err = json.NewDecoder(resp.Body).Decode(&players)
+		if err != nil {
+			log.Println("poolConnectionServer 309", "error send solicitude", pool.IpWebApi)
+			continue
+		}
+
+		for _, player := range players {
+			db.DB.Create(&models.PlayersNames{
+				Name:      player.Name,
+				World:     pool.World.Name,
+				AccountID: player.AccountID,
+			})
+		}
+
+	}
 }
 
 func (pc *PoolConnectionController) parallelSynAccount(pool models.PoolServer, body []byte) (err error) {
@@ -393,7 +386,7 @@ func (pc *PoolConnectionController) parallelSynAccount(pool models.PoolServer, b
 		if err != nil {
 			return
 		}
-		return errors.New(fmt.Sprintf("error poolConnectionServer 354 error connection %s", exp.Msg))
+		return fmt.Errorf("error poolConnectionServer 354 error connection %s", exp.Msg)
 	} else {
 		var msg []string
 		err = json.NewDecoder(resp.Body).Decode(&msg)
