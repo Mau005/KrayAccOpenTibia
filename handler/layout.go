@@ -38,7 +38,7 @@ func (lh *Layouthandler) Generatelayout(navWeb models.NavWeb, condition models.S
 	if condition.HighScore {
 		layout.HighScore = components.CreateHighScore()
 		layout.Scripts += `
-		<script src="/www/js/highScore.js"></script>`
+		<script src="/www/js/highscore.js"></script>`
 	}
 	if condition.ServerStatus {
 		layout.ServerStatus = components.CreateServerStatus(controller.TempData.ServStatusTotal)
