@@ -159,6 +159,16 @@ func (pc *PoolConnectionController) CreateCharacter(nameCharacter, idWorld strin
 	player.Name = nameCharacter
 	player.Sex = isMale
 
+	player.Level = config.Global.ServerWeb.DefaultPlayer.Level
+	player.Experience = config.Global.ServerWeb.DefaultPlayer.Experience
+	player.Health = config.Global.ServerWeb.DefaultPlayer.HealthMax
+	player.HealthMax = config.Global.ServerWeb.DefaultPlayer.HealthMax
+	player.Mana = config.Global.ServerWeb.DefaultPlayer.ManaMax
+	player.ManaMax = config.Global.ServerWeb.DefaultPlayer.ManaMax
+	player.Cap = config.Global.ServerWeb.DefaultPlayer.Cap
+	player.TownID = config.Global.ServerWeb.DefaultPlayer.TownID
+	player.Vocation = config.Global.ServerWeb.DefaultPlayer.Vocation
+
 	var count int64
 	db.DB.Where("name = ?", player.Name).Find(&models.PlayersNames{}).Count(&count)
 	if count > 0 {
