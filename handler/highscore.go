@@ -7,18 +7,37 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"text/template"
 
 	"github.com/Mau005/KrayAccOpenTibia/config"
 	"github.com/Mau005/KrayAccOpenTibia/controller"
 	"github.com/Mau005/KrayAccOpenTibia/models"
 	"github.com/Mau005/KrayAccOpenTibia/utils"
+	"github.com/gorilla/context"
 	"github.com/gorilla/mux"
 )
 
 type HighScorehandler struct{}
 
 func (hs *HighScorehandler) ViewHighScore(w http.ResponseWriter, r *http.Request) {
+	navWeb, _ := context.Get(r, utils.CtxNavWeb).(models.NavWeb)
 
+	templ, err := template.New("highscore.html").ParseFiles("www/highscore.html")
+	if err != nil {
+		log.Println("error create template", err)
+		return
+	}
+	var Layouthandler Layouthandler
+	err = templ.Execute(w, Layouthandler.Generatelayout(navWeb, models.SolicitudeLayout{News: true,
+		Login:        true,
+		ServerStatus: true,
+		TopPlayers:   true,
+		Rates:        true,
+		HighScore:    true}))
+	if err != nil {
+		log.Println("error execute template", err)
+		return
+	}
 }
 
 func (hs *HighScorehandler) GetHighScoreHandler(w http.ResponseWriter, r *http.Request) {

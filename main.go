@@ -17,9 +17,6 @@ func main() {
 	flag.Parse()
 	if *preparing {
 		security()
-	} else {
-		// Maneja otros argumentos o comportamientos predeterminados aquí
-		fmt.Println("No valid arguments provided.")
 	}
 
 	err := config.Load("config.yml")

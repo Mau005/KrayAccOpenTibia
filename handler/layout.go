@@ -35,6 +35,11 @@ func (lh *Layouthandler) Generatelayout(navWeb models.NavWeb, condition models.S
         <script src="/www/js/redirectMenuLogin.js"></script>
 		`
 	}
+	if condition.HighScore {
+		layout.HighScore = components.CreateHighScore()
+		layout.Scripts += `
+		<script src="/www/js/highScore.js"></script>`
+	}
 	if condition.ServerStatus {
 		layout.ServerStatus = components.CreateServerStatus(controller.TempData.ServStatusTotal)
 		layout.Scripts += fmt.Sprintf(`

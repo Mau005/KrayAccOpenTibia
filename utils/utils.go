@@ -26,6 +26,11 @@ func WarnLog(msg ...string) {
 	fmt.Println(warnColor(uniteText("[ALERT SECURITY]", msg)))
 }
 
+func WarnSecurity(msg ...string) {
+	warColor := color.New(color.BgYellow).SprintFunc()
+	fmt.Println(warColor(uniteText("[WARNING-SECURITY]", msg)))
+}
+
 func ErrorR(msg ...string) {
 	errorColor := color.New(color.FgRed).SprintFunc()
 	fmt.Println(errorColor(uniteText("[ERROR]", msg)))
