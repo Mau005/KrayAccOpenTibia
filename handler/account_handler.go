@@ -48,7 +48,7 @@ func (ah *AccountHandler) Authentication(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	secure := config.Global.Certificate.ProtocolTLS
+	secure := false
 
 	if !config.Global.ServerWeb.ApiMode {
 		http.SetCookie(w, &http.Cookie{
