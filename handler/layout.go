@@ -49,6 +49,9 @@ func (lh *Layouthandler) Generatelayout(navWeb models.NavWeb, condition models.S
         </script>
 		`, controller.TempData.ServStatusTotal.ServerInfo.Uptime)
 	}
+	if condition.Discord {
+		layout.Discord = components.GetDiscord()
+	}
 
 	if condition.WhoIsOnline {
 		layout.WhoIsOnline = components.CreatePlayerOnline()

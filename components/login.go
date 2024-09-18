@@ -19,7 +19,6 @@ func CreateLogin(navWeb models.NavWeb) (components string) {
                             </li>
                             <li class="list-group-button" onclick="redirectMenuLogin(1)">Mi Cuenta</li>
                             <li class="list-group-button"  data-bs-toggle="modal" data-bs-target="#registerCharacter">Crear Personaje</li>
-                            <li class="list-group-button" onclick="redirectMenuLogin(3)">Crear Guild</li>
                             <li class="list-group-button" onclick="redirectMenuLogin(0)">Desconectarse</li>
                         </ul>
 		`, iconStatus)

@@ -31,6 +31,7 @@ func (hs *HighScorehandler) ViewHighScore(w http.ResponseWriter, r *http.Request
 	err = templ.Execute(w, Layouthandler.Generatelayout(navWeb, models.SolicitudeLayout{News: true,
 		Login:        true,
 		ServerStatus: true,
+		Discord:      true,
 		TopPlayers:   true,
 		Rates:        true,
 		HighScore:    true}))

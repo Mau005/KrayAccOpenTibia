@@ -24,7 +24,7 @@ func CreateHighScore() string {
                                     </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="skills" class="form-label">Selecciona un skill y su valor:</label>
+                                    <label for="skills" class="form-label">Selecciona un skill y su valor: </label>
                                     <select class="form-select" id="skills" name="skills">
                                         <option value="8">Level</option>
                                         <option value="0">First</option>

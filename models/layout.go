@@ -20,6 +20,7 @@ type SolicitudeLayout struct {
 	Dowloads        bool
 	PoliticService  bool
 	MyAccount       bool
+	Discord         bool
 }
 
 type Layout struct {
@@ -44,8 +45,9 @@ type Layout struct {
 	LogoButtons     string
 	Head            string
 	MyAccount       string
+	Discord         string
 }
 
 func NewLayoutDefault() SolicitudeLayout {
-	return SolicitudeLayout{Login: true, ServerStatus: true, TopPlayers: true, Rates: true}
+	return SolicitudeLayout{Login: true, ServerStatus: true, TopPlayers: true, Rates: true, Discord: true}
 }

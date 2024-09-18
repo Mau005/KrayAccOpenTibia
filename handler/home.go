@@ -21,7 +21,7 @@ func (hh *HomeHandler) GetHome(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var Layouthandler Layouthandler
-	err = templ.Execute(w, Layouthandler.Generatelayout(navWeb, models.SolicitudeLayout{News: true, Login: true, ServerStatus: true, TopPlayers: true, Rates: true}))
+	err = templ.Execute(w, Layouthandler.Generatelayout(navWeb, models.SolicitudeLayout{News: true, Discord: true, Login: true, ServerStatus: true, TopPlayers: true, Rates: true}))
 	if err != nil {
 		log.Println("error execute template", err)
 		return
