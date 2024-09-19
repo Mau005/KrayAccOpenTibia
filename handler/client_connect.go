@@ -52,7 +52,7 @@ func (hcc *HandlerClientConnect) BoostedCreatureHandler(w http.ResponseWriter, r
 }
 
 func (hcc *HandlerClientConnect) loginHandler(answerExpected models.AnswerExpected, w http.ResponseWriter) (err error) {
-
+	w.Header().Set("Content-Type", "application/json")
 	var PoolConnectionController controller.PoolConnectionController
 
 	response, err := PoolConnectionController.CharacterLoginAccountPoolConnection(answerExpected)
@@ -64,7 +64,6 @@ func (hcc *HandlerClientConnect) loginHandler(answerExpected models.AnswerExpect
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
 	if err = json.NewEncoder(w).Encode(&response); err != nil {
 		utils.Warn("error encode response", err.Error())
 		return
