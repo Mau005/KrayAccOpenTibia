@@ -120,23 +120,30 @@ func (pc *PoolConnectionController) CharacterLoginAccountPoolConnection(answerEx
 		}
 		response.PlayData.World = append(response.PlayData.World, pool.World)
 	}
-	response.Session = pc.preparingSessionClien(account, answerExpected.Password, answerExpected.Token)
+	response.Session, err = pc.preparingSessionClien(account, answerExpected.Password, answerExpected.Token)
+	if err != nil {
+		return response, err
+	}
 	return response, nil
 }
 
-func (pc *PoolConnectionController) preparingSessionClien(account models.Account, password string, token string) models.ClientSession {
+func (pc *PoolConnectionController) preparingSessionClien(account models.Account, password string, token string) (models.ClientSession, error) {
 	var session models.ClientSession
+
+	if account.ID == 0 {
+		return session, errors.New("errors session")
+	}
 
 	nowTime := time.Now().Unix()
 	session.IsPremium = uint32(account.PremiumEndsAt) > uint32(nowTime)
-	session.LastLoginTime = uint32(time.Now().Unix())
+	session.LastLoginTime = uint32(nowTime)
 	session.PremiumUntil = uint64(time.Now().Add(4 * time.Hour).Unix())
 	session.OptionTracking = false
 	session.SessionKey = fmt.Sprintf("%s\n%s\n%s\n%d", account.Email, password, token, time.Now().Add(30*time.Minute).Unix())
 	session.Status = "active"
 	session.IsReturner = true
 	session.ShowRewardNews = false
-	return session
+	return session, nil
 }
 
 func (pc *PoolConnectionController) CreateCharacter(nameCharacter, idWorld string, isMale int, accountID int) error {
