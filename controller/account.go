@@ -95,12 +95,9 @@ func (ac *AccountController) CreateAccount(account models.Account) (models.Accou
 }
 
 func (ac *AccountController) LoginAccesAccountClient(answerExpected models.AnswerExpected) (account models.Account, err error) {
-	if err = db.DB.Preload("Players").Where("email = ?", answerExpected.Email).First(&account).Error; err != nil {
-		return
-	}
 	var apiCtl ApiController
-	passSha := apiCtl.ConvertSha1(answerExpected.Password)
-	if passSha != account.Password {
+	passwordCheck := apiCtl.ConvertSha1(answerExpected.Password)
+	if err = db.DB.Preload("Players").Where("email = ? and password = ?", answerExpected.Email, passwordCheck).First(&account).Error; err != nil {
 		err = errors.New("incorrect credentials")
 		return
 	}
