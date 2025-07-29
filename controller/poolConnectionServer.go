@@ -160,6 +160,10 @@ func (pc *PoolConnectionController) CreateCharacter(nameCharacter, idWorld strin
 		return errors.New("out of the world index")
 	}
 
+	if !(len(nameCharacter) > 3) {
+		return errors.New("short name not valid")
+	}
+
 	var player models.Players
 	player.AccountID = accountID
 	player.Name = nameCharacter

@@ -29,10 +29,16 @@ type Certificate struct {
 }
 
 type Configuration struct {
-	DB          MySQL        `yaml:"MySQL"`
-	ServerWeb   ServerWeb    `yaml:"ServerWeb"`
-	Certificate Certificate  `yaml:"Certificate"`
-	PoolServer  []PoolServer `yaml:"ApiConnectionPool"`
+	DB           MySQL        `yaml:"MySQL"`
+	ServerWeb    ServerWeb    `yaml:"ServerWeb"`
+	Certificate  Certificate  `yaml:"Certificate"`
+	PoolServer   []PoolServer `yaml:"ApiConnectionPool"`
+	ClientConfig ClientConfig `yaml:"Client"`
+}
+
+type ClientConfig struct {
+	Url  string `yaml:"Url"`
+	Name string `yaml:"Name"`
 }
 
 //Local Server

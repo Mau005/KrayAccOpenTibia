@@ -25,12 +25,15 @@ ServerWeb:
     Cap: 400
     TownID: 1
     Vocation: 0
+Client:
+  Url: https://drive.google.com/file/d/1RwdE7mRugngdrjRfePY2Q2Qffv_-UzIw/view
+  Name: AinhoClient
 
 
 #APiMODE!
 ApiConnectionPool:
-   - IpWebApi: http://127.0.0.1:8001
-     Token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwidXNlcm5hbWUiOiJhZG1pbiIsIkVtYWlsIjoiIiwidHlwZWFjY2VzcyI6NiwiaWF0IjoxNzI2MjYwMDM1LCJpc3MiOiJLcmF5QWNjQWRtaW4ifQ.4HEwvXt7wO5FfVJX2i8smIGZUAIwap87XvrkVp7p0vbT-9uh2GpPsr1UKLJRyJx6BduRDjPqDkC-giocn26X2g
+  #  - IpWebApi: http://127.0.0.1:8001
+  #    Token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwidXNlcm5hbWUiOiJhZG1pbiIsIkVtYWlsIjoiIiwidHlwZWFjY2VzcyI6NiwiaWF0IjoxNzI2MjYwMDM1LCJpc3MiOiJLcmF5QWNjQWRtaW4ifQ.4HEwvXt7wO5FfVJX2i8smIGZUAIwap87XvrkVp7p0vbT-9uh2GpPsr1UKLJRyJx6BduRDjPqDkC-giocn26X2g
   # - IpWebApi: http://thelastrookgard.cl
   #   Token: aws
 

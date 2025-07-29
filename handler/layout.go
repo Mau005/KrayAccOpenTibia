@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/Mau005/KrayAccOpenTibia/components"
+	"github.com/Mau005/KrayAccOpenTibia/config"
 	"github.com/Mau005/KrayAccOpenTibia/controller"
 	"github.com/Mau005/KrayAccOpenTibia/models"
 	"github.com/Mau005/KrayAccOpenTibia/utils"
@@ -69,11 +70,11 @@ func (lh *Layouthandler) Generatelayout(navWeb models.NavWeb, condition models.S
 
 	//default:
 	layout.NavBar = components.CreateNavbar(navWeb)
-	layout.LogoButtons = `
+	layout.LogoButtons = fmt.Sprintf(`
 			<div class="logo-container">
                 <img src="/www/img/logo.png" alt="Logo" class="logo">
             </div>
-            <button onclick="downloadFile('https://drive.google.com/file/d/1XFytxk-jtrV7mHFgl2GjLPdh95qwunCB/view?usp=sharing', 'TheLastRookgardV1.0.0')" class="vibrant-button">Descargar</button>`
+            <button onclick="downloadFile('%s', '%s')" class="vibrant-button">Descargar</button>`, config.Global.ClientConfig.Url, config.Global.ClientConfig.Name)
 	layout.Head = `
 	    <head>
         <meta charset="UTF-8">
