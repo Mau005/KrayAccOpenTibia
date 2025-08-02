@@ -13,9 +13,9 @@ type PlayerDeaths struct {
 	PlayersID              int     `gorm:"column:player_id;type:int(11)" json:"player_id"`
 	Time                   int     `gorm:"column:time" json:"time"`
 	Level                  int     `gorm:"column:level" json:"level"`
-	KilledBy               string  `gorm:"column:killed_by" json:"killed_by"`
+	KilledBy               string  `gorm:"column:killed_by;type:varchar(255)"`
 	IsPLayer               int     `gorm:"column:is_player" json:"is_player"`
-	MostDamageBy           string  `gorm:"column:mostdamage_by" json:"mostdamage_by"`
+	MostDamageBy           string  `gorm:"column:mostdamage_by;type:varchar(100)"`
 	MostDamageIsPLayer     int     `gorm:"column:mostdamage_is_player" json:"mostdamage_is_player"`
 	Unjustified            int     `gorm:"column:unjustified" json:"unjustified"`
 	MonstDamageUnjustified int     `gorm:"column:mostdamage_unjustified" json:"mostdamage_unjustified"`

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenTibia Medieval</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-image: url('img/background.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+    }
+    .medieval-panel {
+      border: 1.5px solid #bfa056;
+      background: rgba(18, 13, 7, 0.96);
+      box-shadow: 0 3px 30px #000b, 0 0 4px 0 #bfa05655;
+      backdrop-filter: blur(2px);
+    }
+    .font-medieval {
+      font-family: 'UnifrakturCook', Georgia, 'Times New Roman', Times, serif;
+    }
+    .modal-bg {
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(2px);
+    }
+    .hide { display: none !important; }
+    ::-webkit-scrollbar { width: 8px; background: #2c1c09; }
+    ::-webkit-scrollbar-thumb { background: #866315; border-radius: 10px; }
+    .tooltip { position: relative; cursor: pointer; }
+    .tooltip .tooltiptext {
+      visibility: hidden; width: max-content;
+      background: #2a1702ee; color: #ffd67c; text-align: center;
+      border-radius: 6px; padding: 4px 12px; position: absolute; z-index: 10;
+      bottom: 120%; left: 50%; transform: translateX(-50%);
+      opacity: 0; transition: opacity 0.2s; font-size: 0.9rem; font-weight: bold;
+      pointer-events: none;
+    }
+    .tooltip:hover .tooltiptext, .tooltip:focus .tooltiptext {
+      visibility: visible; opacity: 1;
+    }
+    .animated-icon { transition: transform .2s cubic-bezier(.36,1.35,.41,1.02);}
+    .tooltip:hover .animated-icon, .tooltip:focus .animated-icon {
+      transform: scale(1.18) rotate(-8deg);
+      filter: drop-shadow(0 0 5px #eab308bb);
+    }
+    .dropdown-menu {
+      display: none; position: absolute; right: 0;
+      background: #221908fa; min-width: 160px; border-radius: 0.5rem;
+      box-shadow: 0 4px 32px #0008; z-index: 90; border: 1.5px solid #bfa056;
+    }
+    .dropdown:hover .dropdown-menu, .dropdown:focus-within .dropdown-menu {
+      display: block;
+    }
+    @media (max-width: 1024px) { .dropdown-menu { right: unset; left: 0; } }
+  </style>
+</head>
+<body class="min-h-screen text-zinc-200 flex flex-col relative">
+
+  <!-- Navbar Responsive -->
+  <nav class="w-full bg-zinc-950 bg-opacity-95 shadow-xl z-50 border-b-2 border-yellow-900">
+    <div class="container mx-auto flex flex-wrap items-center justify-between px-4 py-3">
+      <div class="flex items-center gap-3">
+        <img src="img/logo.png" alt="Logo" class="h-10 w-10 rounded-lg shadow-lg border-2 border-yellow-700 bg-black/80 p-1">
+        <span class="font-medieval text-3xl tracking-widest text-yellow-300 drop-shadow-md">OpenTibia</span>
+      </div>
+      <button class="lg:hidden p-2 rounded border border-yellow-700 text-yellow-400"
+        onclick="document.getElementById('mobileMenu').classList.toggle('hidden')">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"/>
+        </svg>
+      </button>
+      <!-- Usuario logueado Dropdown -->
+      <div class="hidden lg:block relative dropdown">
+        <button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-yellow-800/40 hover:bg-yellow-900 border border-yellow-700">
+          <img src="img/outfit.png" class="w-8 h-8 rounded border border-yellow-800">
+          <span class="font-bold text-yellow-200">KnightHero</span>
+          <svg class="w-4 h-4 text-yellow-300" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.093l3.71-3.86a.75.75 0 111.08 1.04l-4.25 4.42a.75.75 0 01-1.08 0l-4.25-4.42a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+          </svg>
+        </button>
+        <ul class="dropdown-menu absolute mt-2 right-0 text-left text-yellow-200">
+          <li><a href="#" class="block px-4 py-2 hover:bg-yellow-800/40">Mi perfil</a></li>
+          <li><a href="#" class="block px-4 py-2 hover:bg-yellow-800/40">Mis personajes</a></li>
+          <li><a href="#" class="block px-4 py-2 hover:bg-yellow-800/40">Mis compras</a></li>
+          <li><a href="#" class="block px-4 py-2 hover:bg-yellow-800/40">Historial</a></li>
+          <li><a href="#" class="block px-4 py-2 text-red-300 hover:bg-yellow-800/40">Cerrar sesión</a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="mobileMenu" class="lg:hidden hidden px-5 pb-4">
+      <div class="flex items-center gap-2 my-3">
+        <img src="img/outfit.png" class="w-8 h-8 rounded border border-yellow-800">
+        <span class="font-bold text-yellow-200">KnightHero</span>
+      </div>
+      <ul class="flex flex-col gap-3 font-semibold text-md">
+        <li><a href="#" class="hover:text-yellow-400 transition">Inicio</a></li>
+        <li><a href="#" class="hover:text-yellow-400 transition">Avisos</a></li>
+        <li><a href="#" class="hover:text-yellow-400 transition">Noticias</a></li>
+        <li><a href="#" class="hover:text-yellow-400 transition">Mapa</a></li>
+        <li><a href="#" class="hover:text-yellow-400 transition">Descargas</a></li>
+        <li><a href="#" class="hover:text-yellow-400 transition">Ranking</a></li>
+        <li><a href="#" class="hover:text-yellow-400 transition">Tienda</a></li>
+        <li><a href="#" class="hover:text-yellow-400 transition">Comunidad</a></li>
+        <li><a href="#" class="block text-red-300 hover:text-yellow-400 transition">Cerrar sesión</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="flex-1 container mx-auto px-2 lg:px-8 py-8 flex flex-col lg:flex-row gap-6">
+
+    <!-- Sidebar -->
+    <aside class="lg:w-1/4 flex flex-col gap-6">
+      <!-- Panel usuario logueado mejorado -->
+      <section class="medieval-panel rounded-3xl p-6 flex flex-col items-center text-center relative border-2 border-yellow-700 shadow-2xl"
+         style="background: rgba(20,15,6,0.97)">
+        <!-- Marco y avatar -->
+        <div class="rounded-xl border-2 border-yellow-700 p-2 bg-black/70 mb-2" style="box-shadow:0 2px 14px #a67c1a55;">
+          <img src="img/outfit.png" alt="Outfit" class="w-16 h-16 rounded-lg object-contain">
+        </div>
+        <!-- Nombre destacado -->
+        <h3 class="font-medieval text-2xl text-yellow-200 mb-1 tracking-wider drop-shadow-lg"
+            style="font-family:'UnifrakturCook',serif;">KnightHero</h3>
+        <!-- Online badge -->
+        <div class="flex items-center justify-center mb-2">
+          <span class="inline-block w-3 h-3 rounded-full bg-green-500 animate-pulse mr-2"></span>
+          <span class="text-sm text-green-300 font-semibold">En línea</span>
+        </div>
+        <!-- Premium coins badge -->
+        <div class="px-6 py-2 rounded-xl bg-yellow-900/70 border border-yellow-700 mb-4 font-bold text-lg text-yellow-200 shadow"
+             style="letter-spacing:0.5px;">
+          Premium Coins: <span class="text-yellow-400">1290</span>
+        </div>
+        <!-- Botones grandes y modernos -->
+        <button class="w-full mb-2 py-3 rounded-xl bg-gradient-to-b from-yellow-700 to-yellow-800 hover:from-yellow-600 hover:to-yellow-700 text-xl font-bold text-black tracking-wide transition duration-150 shadow-lg border-2 border-yellow-800"
+                style="font-family:'Segoe UI',sans-serif;">Ver perfil</button>
+        <button class="w-full mb-2 py-3 rounded-xl bg-gradient-to-b from-yellow-600 to-yellow-700 hover:from-yellow-500 hover:to-yellow-600 text-xl font-bold text-yellow-100 tracking-wide transition duration-150 shadow-lg border-2 border-yellow-700">Mis personajes</button>
+        <button class="w-full mb-2 py-3 rounded-xl bg-gradient-to-b from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-lg font-bold text-yellow-100 tracking-wide transition duration-150 shadow-lg border-2 border-yellow-600">Crear personaje</button>
+        <button class="w-full mt-2 py-3 rounded-xl bg-gradient-to-b from-red-700 to-red-600 hover:from-red-600 hover:to-red-500 text-xl font-bold text-white tracking-wide transition duration-150 shadow-lg border-2 border-red-900">Cerrar sesión</button>
+      </section>
+      <section class="medieval-panel rounded-2xl p-5">
+        <h3 class="font-medieval text-lg mb-3 text-yellow-300">Menú Rápido</h3>
+        <ul class="space-y-2 font-semibold text-zinc-100">
+          <li><a href="#" class="hover:text-yellow-400">Top Jugadores</a></li>
+          <li><a href="#" class="hover:text-yellow-400">Últimas Muertes</a></li>
+          <li><a href="#" class="hover:text-yellow-400">Foro</a></li>
+          <li><a href="#" class="hover:text-yellow-400">Soporte</a></li>
+        </ul>
+      </section>
+    </aside>
+
+    <!-- Zona Central -->
+    <section class="flex-1 flex flex-col gap-6">
+      <!-- Avisos -->
+      <div class="medieval-panel rounded-2xl p-6">
+        <div class="flex items-center mb-4 gap-2">
+          <span class="tooltip inline-flex items-center justify-center bg-yellow-800 rounded-full w-10 h-10 focus:outline-none" tabindex="0">
+            <img src="img/newsicon_support_small.png" class="w-7 h-7 animated-icon" alt="Avisos">
+            <span class="tooltiptext">Avisos importantes del staff</span>
+          </span>
+          <h2 class="font-medieval text-2xl text-yellow-200 tracking-wider">Avisos</h2>
+        </div>
+        <div id="avisosContent" class="text-zinc-200 text-lg flex flex-col gap-3 max-h-56 overflow-y-auto"></div>
+      </div>
+      <!-- Noticias tipo blog -->
+      <div class="medieval-panel rounded-2xl p-6 mt-2">
+        <div class="flex items-center mb-4 gap-2">
+          <span class="tooltip inline-flex items-center justify-center bg-yellow-800 rounded-full w-10 h-10 focus:outline-none" tabindex="0">
+            <img src="img/newsicon_development_small.png" class="w-7 h-7 animated-icon" alt="Noticias">
+            <span class="tooltiptext">Últimas noticias y novedades</span>
+          </span>
+          <h2 class="font-medieval text-2xl text-yellow-200 tracking-wider">Noticias</h2>
+        </div>
+        <div id="newsBlog" class="grid grid-cols-1 gap-6 max-h-96 overflow-y-auto"></div>
+      </div>
+    </section>
+
+    <!-- Ranking / Online -->
+    <aside class="lg:w-1/4 flex flex-col gap-6">
+      <section class="medieval-panel rounded-2xl p-5">
+        <h3 class="font-medieval text-lg mb-3 text-yellow-300">Ranking</h3>
+        <ul class="space-y-1">
+          <li class="flex items-center gap-2">
+            <img src="img/outfit.png" class="w-8 h-8 rounded-lg border border-yellow-800">
+            <span class="font-bold text-yellow-100">KnightHero</span>
+            <span class="ml-auto text-yellow-500">Lv 321</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <img src="https://outfit-images.ots.me/1285/animoutfit.php?id=129&addons=2&head=100&body=22&legs=55&feet=17&mount=0&direction=2" class="w-8 h-8 rounded-lg border border-yellow-800">
+            <span class="font-bold text-yellow-100">SorcererX</span>
+            <span class="ml-auto text-yellow-500">Lv 289</span>
+          </li>
+        </ul>
+      </section>
+      <section class="medieval-panel rounded-2xl p-5">
+        <h3 class="font-medieval text-lg mb-3 text-yellow-300">Jugadores Online</h3>
+        <p class="text-yellow-100 text-2xl font-extrabold mb-2">123</p>
+        <a href="#" class="text-yellow-300 underline hover:text-yellow-400">Ver quién está online</a>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="w-full mt-10 bg-zinc-950 bg-opacity-95 border-t-2 border-yellow-900 text-center py-5 relative">
+    <p class="text-zinc-300">OpenTibia &copy; 2025. Todos los derechos reservados. — <a href="#" class="underline hover:text-yellow-400">Discord</a></p>
+    <button id="adminBtn" class="absolute left-2 bottom-2 px-3 py-1 bg-yellow-700 text-black font-bold rounded-lg shadow hide"
+      onclick="openModal('adminModal')">Administrador</button>
+  </footer>
+
+  <!-- Modal Admin Noticias/Avisos -->
+  <div id="adminModal" class="fixed inset-0 z-50 flex items-center justify-center modal-bg hide">
+    <div class="bg-zinc-900 border-2 border-yellow-700 rounded-2xl shadow-2xl p-8 w-full max-w-3xl relative medieval-panel">
+      <button class="absolute top-3 right-4 text-yellow-600 hover:text-yellow-300 text-3xl font-bold" onclick="closeModal('adminModal')">&times;</button>
+      <h2 class="font-medieval text-2xl text-yellow-300 mb-2">Editor de Avisos y Noticias</h2>
+      <div class="mb-6">
+        <label class="font-bold text-yellow-300">Avisos (máximo 5, cada uno editable):</label>
+        <div id="avisosAdminList"></div>
+        <button onclick="addAvisoCard()" class="mt-3 bg-yellow-700 hover:bg-yellow-500 text-black font-bold py-1 px-4 rounded-lg">Agregar Aviso</button>
+      </div>
+      <div>
+        <label class="font-bold text-yellow-300">Noticias Blog (últimas 5):</label>
+        <div id="newsEditorList"></div>
+        <button onclick="addNewsCard()" class="mt-3 bg-yellow-700 hover:bg-yellow-500 text-black font-bold py-1 px-4 rounded-lg">Agregar Noticia</button>
+      </div>
+      <button onclick="saveAllContent()" class="mt-6 w-full bg-yellow-700 hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded-lg transition">Guardar cambios</button>
+      <div class="text-xs text-zinc-400 mt-2">Puedes usar <b>Ctrl+B</b> para negrita, <b>Ctrl+I</b> para itálica, pegar imágenes vía URL, enlaces, etc.</div>
+    </div>
+  </div>
+
+  <script>
+    // Mostrar botón admin al doble click en footer
+    document.querySelectorAll("footer")[0].addEventListener("dblclick", () => {
+      document.getElementById("adminBtn").classList.toggle("hide");
+    });
+
+    // ========== AVISOS ================
+    const defaultAvisosArr = [
+      `<b>Mantención programada domingo 20:00</b>`,
+      `Nuevo Discord oficial abierto`,
+      `¡Sorteo de items premium este mes!`,
+      `Lee las reglas antes de jugar`,
+      `¿Dudas? Contacta soporte`
+    ];
+    function renderAvisos() {
+      let avisosArr = [];
+      try { avisosArr = JSON.parse(localStorage.getItem("avisosArr")) || defaultAvisosArr; } catch { avisosArr = defaultAvisosArr; }
+      avisosArr = avisosArr.slice(-5).reverse();
+      let html = avisosArr.map((aviso, i) => `
+        <div class="flex items-center gap-3 group relative">
+          <span class="tooltip inline-flex items-center justify-center bg-yellow-700 rounded-full w-8 h-8 flex-shrink-0" tabindex="0">
+            <img src="img/newsicon_support_small.png" class="w-5 h-5 animated-icon" alt="Aviso">
+            <span class="tooltiptext">Aviso N°${avisosArr.length-i}</span>
+          </span>
+          <div class="bg-yellow-900/30 p-2 rounded flex-1">${aviso}</div>
+        </div>
+      `).join('');
+      document.getElementById("avisosContent").innerHTML = html;
+    }
+    function renderAvisosAdmin() {
+      let avisosArr = [];
+      try { avisosArr = JSON.parse(localStorage.getItem("avisosArr")) || defaultAvisosArr; } catch { avisosArr = defaultAvisosArr; }
+      avisosArr = avisosArr.slice(-5); // últimos 5
+      let html = avisosArr.map((aviso, i) => `
+        <div class="flex items-center gap-2 mb-1">
+          <div contenteditable="true" spellcheck="true" class="flex-1 min-h-[38px] p-2 rounded bg-zinc-800 border border-yellow-700 text-zinc-100" data-aviso-edit="${i}" style="white-space:pre-line;">${aviso}</div>
+          <button onclick="deleteAvisoCard(${i})" class="bg-red-700 hover:bg-red-500 text-white px-2 py-1 rounded text-xs">Eliminar</button>
+        </div>
+      `).join('');
+      document.getElementById("avisosAdminList").innerHTML = html;
+    }
+    function addAvisoCard() {
+      let avisosArr = [];
+      try { avisosArr = JSON.parse(localStorage.getItem("avisosArr")) || defaultAvisosArr; } catch { avisosArr = defaultAvisosArr; }
+      if (avisosArr.length >= 5) return alert("Máximo 5 avisos");
+      avisosArr.push("Nuevo aviso...");
+      localStorage.setItem("avisosArr", JSON.stringify(avisosArr));
+      renderAvisosAdmin();
+    }
+    function deleteAvisoCard(idx) {
+      let avisosArr = [];
+      try { avisosArr = JSON.parse(localStorage.getItem("avisosArr")) || defaultAvisosArr; } catch { avisosArr = defaultAvisosArr; }
+      avisosArr.splice(idx, 1);
+      localStorage.setItem("avisosArr", JSON.stringify(avisosArr));
+      renderAvisosAdmin();
+    }
+
+    // ========== NOTICIAS (igual que antes, máximo 5) ================
+    const defaultNoticias = [
+      { id: 1, html: `<h3>Actualización de Primavera</h3><p><b>¡Nuevas zonas</b> y sistema de monturas!</p>` },
+      { id: 2, html: `<h3>¡Evento PvP esta semana!</h3><p>Premios exclusivos a los mejores jugadores.</p>` },
+    ];
+    function renderNewsCards(cards) {
+      let visibles = cards.slice(-5).reverse();
+      let html = visibles.map(card => `
+        <article class="bg-zinc-900/80 border-l-4 border-yellow-800 rounded-xl p-5 mb-4 shadow">
+          ${card.html}
+          <div class="text-xs mt-2 text-zinc-500">Noticia ID: ${card.id}</div>
+        </article>
+      `).join('');
+      document.getElementById('newsBlog').innerHTML = html;
+    }
+    function renderEditorList(cards) {
+      let html = cards.slice(-5).map(card => `
+        <div data-news-card-edit contenteditable="true" data-id="${card.id}"
+          class="w-full min-h-[60px] max-h-[170px] overflow-y-auto p-2 mb-3 rounded bg-zinc-800 border border-yellow-700 text-zinc-100"
+          style="white-space:pre-line;">${card.html}</div>
+        <button onclick="deleteNewsCard(${card.id})" class="mb-6 ml-1 bg-red-700 hover:bg-red-500 text-white px-2 py-0.5 rounded">Eliminar</button>
+      `).join('');
+      document.getElementById('newsEditorList').innerHTML = html;
+    }
+    function addNewsCard() {
+      let cards = [];
+      document.querySelectorAll("[data-news-card-edit]").forEach(div=>{
+        cards.push({id: +div.dataset.id, html: div.innerHTML});
+      });
+      let nextId = cards.length ? Math.max(...cards.map(c=>c.id)) + 1 : 1;
+      cards.push({id: nextId, html: `<h3>Nueva Noticia</h3><p>Texto de la noticia...</p>`});
+      renderEditorList(cards);
+    }
+    function deleteNewsCard(id) {
+      let cards = [];
+      document.querySelectorAll("[data-news-card-edit]").forEach(div=>{
+        if (+div.dataset.id !== id)
+          cards.push({id: +div.dataset.id, html: div.innerHTML});
+      });
+      renderEditorList(cards);
+    }
+    function saveAllContent() {
+      // Avisos
+      let avisos = [];
+      document.querySelectorAll("[data-aviso-edit]").forEach(div=>{
+        if(div.textContent.trim()!=="") avisos.push(div.innerHTML);
+      });
+      localStorage.setItem("avisosArr", JSON.stringify(avisos));
+      renderAvisos();
+      renderAvisosAdmin();
+
+      // Noticias
+      let cards = [];
+      document.querySelectorAll("[data-news-card-edit]").forEach(div=>{
+        cards.push({id: +div.dataset.id, html: div.innerHTML});
+      });
+      localStorage.setItem("newsBlog", JSON.stringify(cards));
+      renderNewsCards(cards);
+      renderEditorList(cards);
+      closeModal('adminModal');
+    }
+    function loadData() {
+      let noticias = localStorage.getItem("newsBlog");
+      try { noticias = JSON.parse(noticias); } catch { noticias = defaultNoticias; }
+      if (!Array.isArray(noticias)) noticias = defaultNoticias;
+
+      renderAvisos();
+      renderNewsCards(noticias);
+      renderEditorList(noticias);
+      renderAvisosAdmin();
+    }
+    loadData();
+
+    // Modal helpers
+    function openModal(id) {
+      document.getElementById(id).classList.remove("hide");
+      document.body.classList.add('overflow-hidden');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.add("hide");
+      document.body.classList.remove('overflow-hidden');
+    }
+  </script>
+</body>
+</html>
