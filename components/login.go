@@ -25,7 +25,7 @@ func CreateLogin(navWeb models.NavWeb) (components string) {
 	} else {
 		components += `
 		                    <h4>Iniciar Sesión</h4>
-                        <form action="" onsubmit="loginUser(event)">
+                        <form action="#" onsubmit="loginUser(event)">
                             <div class="mb-3">
                                 <label for="username" class="form-label">Usuario</label>
                                 <input type="text" class="form-control" id="username" >
