@@ -9,6 +9,7 @@ type ServerWeb struct {
 	EnvironmentVariables bool    `yaml:"EnvironmentVariables"`
 	UrlItemView          string  `yaml:"UrlItemView"`
 	UrlOutfitsView       string  `yaml:"UrlOutfitsView"`
+	IpTunnelSession      string  `yaml:"IpTunnelSession"`
 	TargetServer         string  `yaml:"TargetServer"`
 	LimitCreateCharacter uint8   `yaml:"LimitCreateCharacter"`
 	DefaultPlayer        Players `yaml:"DefaultPlayer"`

@@ -2,11 +2,14 @@ package controller
 
 import (
 	"bytes"
+	"crypto/rand"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"log"
+	"net"
 	"net/http"
 	"strconv"
 	"strings"
@@ -80,7 +83,7 @@ func (pc *PoolConnectionController) GetWorldPool() {
 // 	}
 // }
 
-func (pc *PoolConnectionController) CharacterLoginAccountPoolConnection(answerExpected models.AnswerExpected) (models.ResponseData, error) {
+func (pc *PoolConnectionController) CharacterLoginAccountPoolConnection(answerExpected models.AnswerExpected, ip string) (models.ResponseData, error) {
 	var account models.Account
 	var response models.ResponseData
 	var err error
@@ -120,18 +123,42 @@ func (pc *PoolConnectionController) CharacterLoginAccountPoolConnection(answerEx
 		}
 		response.PlayData.World = append(response.PlayData.World, pool.World)
 	}
-	response.Session, err = pc.preparingSessionClien(account, answerExpected.Password, answerExpected.Token)
+	response.Session, err = pc.preparingSessionClien(account, ip)
 	if err != nil {
 		return response, err
 	}
 	return response, nil
 }
+func generateRawSessionKey() ([]byte, error) {
+	raw := make([]byte, 16)
+	_, err := rand.Read(raw)
+	if err != nil {
+		return nil, err
+	}
+	return raw, nil
+}
 
-func (pc *PoolConnectionController) preparingSessionClien(account models.Account, password string, token string) (models.ClientSession, error) {
+func insertSessionToDB(rawToken []byte, accountID int, ip string) error {
+	ipBytes := net.ParseIP(ip)
+	if ipBytes == nil {
+		return fmt.Errorf("invalid IP: %s", ip)
+	}
+	var ses models.Session
+	ses.IP = ipBytes
+	ses.AccountID = accountID
+	ses.Token = rawToken
+	return db.DB.Create(&ses).Error
+}
+func (pc *PoolConnectionController) preparingSessionClien(account models.Account, ip string) (models.ClientSession, error) {
 	var session models.ClientSession
 
 	if account.ID == 0 {
 		return session, errors.New("errors session")
+	}
+
+	ipTarget := ip
+	if config.Global.ServerWeb.IpTunnelSession != "" {
+		ipTarget = config.Global.ServerWeb.IpTunnelSession
 	}
 
 	nowTime := time.Now().Unix()
@@ -139,7 +166,24 @@ func (pc *PoolConnectionController) preparingSessionClien(account models.Account
 	session.LastLoginTime = uint32(nowTime)
 	session.PremiumUntil = uint64(time.Now().Add(4 * time.Hour).Unix())
 	session.OptionTracking = false
-	session.SessionKey = fmt.Sprintf("%s\n%s\n%s\n%d", account.Email, password, token, time.Now().Add(30*time.Minute).Unix())
+
+	//test := fmt.Sprintf("%s\n%s\n%s\n%d", account.Email, password, token, time.Now().Add(30*time.Minute).Unix())
+	// session.SessionKey = base64.StdEncoding.EncodeToString([]byte(test))
+
+	rawToken, err := generateRawSessionKey()
+	if err != nil {
+		return session, fmt.Errorf("error generating raw session key: %w", err)
+	}
+
+	err = insertSessionToDB(rawToken, account.ID, ipTarget)
+	if err != nil {
+		log.Println("Error inserting session:", err)
+		return session, err
+	}
+
+	// Ahora codificamos para el cliente
+	session.SessionKey = base64.StdEncoding.EncodeToString(rawToken)
+
 	session.Status = "active"
 	session.IsReturner = true
 	session.ShowRewardNews = false

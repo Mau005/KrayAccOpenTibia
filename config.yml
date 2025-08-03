@@ -4,7 +4,7 @@ MySQL:
   Port: 3306
   UserName: root
   DBPassword: 12345
-  DataBase: arkino
+  DataBase: tfs
 
 ServerWeb:
   IP: 0.0.0.0 #generic ip local or global
@@ -12,21 +12,22 @@ ServerWeb:
   Debug: true #log debug db other errors details
   ApiMode: false # enable kray api to connect with other kray api and simulate multi world
   LengthSecurity: 128 #len security generate token active
+  IpTunnelSession: #indicar una ip generia si utilizas tunnel con proxi inverso
   EnvironmentVariables: false
-  TargetServer: /Users/mau/Proyectos/Arkino/tfs #Default pathNow case "" empty not found
+  TargetServer: /home/mau/Arkino1310/tfs #Default pathNow case "" empty not found
   UrlItemView: https://item-images.ots.me/1285
   UrlOutfitsView: https://outfit-images.ots.me/1285 #animoutfit.php?id=128&addons=3&head=123&body=12&legs=23&feet=31&mount=0&direction=2
   LimitCreateCharacter: 5
   DefaultPlayer:
     Level: 1
-    Experience: 0
+    Experience: 1
     HealthMax: 150
     ManaMax: 10
     Cap: 400
-    TownID: 1
+    TownID: 6
     Vocation: 0
 Client:
-  Url: https://drive.google.com/file/d/1RwdE7mRugngdrjRfePY2Q2Qffv_-UzIw/view
+  Url: sin nada
   Name: AinhoClient
 
 #APiMODE!

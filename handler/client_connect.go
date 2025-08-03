@@ -3,7 +3,9 @@ package handler
 import (
 	"encoding/json"
 	"log"
+	"net"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/Mau005/KrayAccOpenTibia/controller"
@@ -50,12 +52,32 @@ func (hcc *HandlerClientConnect) BoostedCreatureHandler(w http.ResponseWriter, r
 	}
 	hcc.RespondJSON(w, response)
 }
+func (hcc *HandlerClientConnect) GetClientIP(r *http.Request) string {
+	// Si estás detrás de un proxy o load balancer
+	ip := r.Header.Get("X-Forwarded-For")
+	if ip != "" {
+		// Puede haber múltiples IPs separadas por coma
+		return strings.Split(ip, ",")[0]
+	}
 
-func (hcc *HandlerClientConnect) loginHandler(answerExpected models.AnswerExpected, w http.ResponseWriter) (err error) {
+	// Si usas Nginx u otro proxy que usa este header
+	ip = r.Header.Get("X-Real-IP")
+	if ip != "" {
+		return ip
+	}
+
+	// Valor por defecto desde la conexión
+	ip, _, err := net.SplitHostPort(r.RemoteAddr)
+	if err != nil {
+		return r.RemoteAddr // fallback
+	}
+	return ip
+}
+func (hcc *HandlerClientConnect) loginHandler(answerExpected models.AnswerExpected, w http.ResponseWriter, r *http.Request) (err error) {
 	w.Header().Set("Content-Type", "application/json")
 	var PoolConnectionController controller.PoolConnectionController
-
-	response, err := PoolConnectionController.CharacterLoginAccountPoolConnection(answerExpected)
+	ip := hcc.GetClientIP(r)
+	response, err := PoolConnectionController.CharacterLoginAccountPoolConnection(answerExpected, ip)
 	if err != nil {
 		json.NewEncoder(w).Encode(map[string]interface{}{
 			"errorCode":    3,
@@ -81,7 +103,7 @@ func (hcc *HandlerClientConnect) PreparingHanlderClient(w http.ResponseWriter, r
 
 	switch answer.Type {
 	case "login":
-		hcc.loginHandler(answer, w)
+		hcc.loginHandler(answer, w, r)
 
 	case "cacheinfo":
 		hcc.CacheInfoHandler(w, r)
