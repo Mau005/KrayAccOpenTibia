@@ -7,13 +7,13 @@ import (
 )
 
 func CreateNavbar(navweb models.NavWeb) string {
-	componentsAccount := ""
+	//componentsAccount := ""
 	buttonRegister := ""
 	if navweb.Authentication {
-		componentsAccount = `							<li><a class="dropdown-item" href="#">Cambiar contraseña</a></li>`
+		// componentsAccount = `							<li><a class="dropdown-item" href="#">Cambiar contraseña</a></li>`
 
 	} else {
-		componentsAccount = `							<li><a class="dropdown-item" href="#">Recuperar cuenta</a></li>`
+		// componentsAccount = `							<li><a class="dropdown-item" href="#">Recuperar cuenta</a></li>`
 		buttonRegister = `
 					<button type="button" class="btn-glow" data-bs-toggle="modal" data-bs-target="#registerModal">
 						Registrarse
@@ -69,15 +69,8 @@ func CreateNavbar(navweb models.NavWeb) string {
 					</li>
 	
 					<!-- Menú desplegable para Cuentas -->
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCuentas" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-							Cuentas
-						</a>
-						<ul class="dropdown-menu" aria-labelledby="navbarDropdownCuentas">
-							%s
-							<li><a class="dropdown-item" href="#">Terminos de uso</a></li>
-							<li><a class="dropdown-item" href="#">Politicas de Privacidad</a></li>
-						</ul>
+					<li class="nav-item">
+						<a class="nav-link" href="/auth/my_board">Bienvenido %s</a>
 					</li>
 
 					%s
@@ -86,5 +79,5 @@ func CreateNavbar(navweb models.NavWeb) string {
 		</div>
 	</nav>
 	
-	`, componentsAccount, buttonRegister)
+	`, navweb.AccountName, buttonRegister)
 }

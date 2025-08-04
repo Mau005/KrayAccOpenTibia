@@ -15,7 +15,7 @@ type PlayerDeathHandler struct{}
 func (pdh *PlayerDeathHandler) GetViewPlayerDeath(w http.ResponseWriter, r *http.Request) {
 	navWeb, _ := context.Get(r, utils.CtxNavWeb).(models.NavWeb)
 
-	templ, err := template.New("death_player.html").ParseFiles("www/death_player.html")
+	templ, err := template.New("index.html").ParseFiles("www/index.html")
 	if err != nil {
 		log.Println("error create template", err)
 		return

@@ -182,17 +182,18 @@ func (ah *AccountHandler) MyAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	templ, err := template.New("my_account.html").ParseFiles("www/my_account.html")
+	templ, err := template.New("index.html").ParseFiles("www/index.html")
 	if err != nil {
 		log.Println("error create template", err)
 		return
 	}
 
 	var Layouthandler Layouthandler
-	layout := Layouthandler.Generatelayout(navWeb, models.SolicitudeLayout{News: true, Login: true, ServerStatus: true, TopPlayers: true, Rates: true})
+	layout := Layouthandler.Generatelayout(navWeb, models.SolicitudeLayout{News: true, Login: true, ServerStatus: true, TopPlayers: true, Discord: true})
+
 	var poolConnectionCTL controller.PoolConnectionController
 	accountCheck := poolConnectionCTL.GetACcountPlayerPoolConenction(navWeb.AccountID)
-	layout.MyAccount = components.CreateMyAccount(accountCheck)
+	layout.Component = components.CreateMyAccount(accountCheck)
 
 	if err := templ.Execute(w, layout); err != nil {
 		log.Println("error execute template", err)

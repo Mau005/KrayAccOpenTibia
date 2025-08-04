@@ -26,7 +26,7 @@ func CreateLastPlayerKills() string {
 
 	return fmt.Sprintf(`
 	
-		<h1>Quien esta Online?</h1>
+		<h1> Ultimas Muertes!?</h1>
                         <!-- Tabla de Lista de Personajes -->
                         <div class="card mb-4">
                             <div class="card-header">

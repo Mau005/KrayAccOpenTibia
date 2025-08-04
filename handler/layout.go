@@ -12,8 +12,7 @@ import (
 
 type Layouthandler struct{}
 
-func (lh *Layouthandler) Generatelayout(navWeb models.NavWeb, condition models.SolicitudeLayout) (layout models.Layout) {
-
+func (lh *Layouthandler) defaultLayout(navWeb models.NavWeb, condition models.SolicitudeLayout) (layout models.Layout) {
 	//Authentication User register or create character
 	if navWeb.Authentication {
 		layout.Modal += components.CreateModalCreateCharacter()
@@ -25,10 +24,6 @@ func (lh *Layouthandler) Generatelayout(navWeb models.NavWeb, condition models.S
 		<script src="/www/js/register_account.js"></script>
 		`
 	}
-
-	if condition.News {
-		layout.News = components.CreateNewsComponents(navWeb, utils.LimitRecordFive)
-	}
 	if condition.Login {
 		layout.Login = components.CreateLogin(navWeb)
 		layout.Scripts += `
@@ -36,11 +31,7 @@ func (lh *Layouthandler) Generatelayout(navWeb models.NavWeb, condition models.S
         <script src="/www/js/redirectMenuLogin.js"></script>
 		`
 	}
-	if condition.HighScore {
-		layout.HighScore = components.CreateHighScore()
-		layout.Scripts += `
-		<script src="/www/js/highscore.js"></script>`
-	}
+
 	if condition.ServerStatus {
 		layout.ServerStatus = components.CreateServerStatus(controller.TempData.ServStatusTotal)
 		layout.Scripts += fmt.Sprintf(`
@@ -54,25 +45,20 @@ func (lh *Layouthandler) Generatelayout(navWeb models.NavWeb, condition models.S
 		layout.Discord = components.GetDiscord()
 	}
 
-	if condition.WhoIsOnline {
-		layout.WhoIsOnline = components.CreatePlayerOnline()
-	}
-	if condition.LastDeath {
-		layout.LastDeath = components.CreateLastPlayerKills()
-	}
-
 	if condition.TopPlayers {
 		layout.TopPlayers = components.CreateTopPlayerComponent(utils.LimitRecordFive)
 	}
+
 	if condition.Rates {
 		layout.Rates = components.CreateRates(controller.TempData.ServStatusTotal)
 	}
 
 	//default:
 	layout.NavBar = components.CreateNavbar(navWeb)
+	//TODO: agregar nombre del servidor mediante variable externa
 	layout.LogoButtons = fmt.Sprintf(`
-			<div class="logo-container">
-                <img src="/www/img/logo.png" alt="Logo" class="logo">
+			<div class="logo-container text-center">
+                <h1>Bienvenido a AinhoOT</h1>
             </div>
             <button onclick="downloadFile('%s', '%s')" class="vibrant-button">Descargar</button>`, config.Global.ClientConfig.Url, config.Global.ClientConfig.Name)
 	layout.Head = `
@@ -91,6 +77,27 @@ func (lh *Layouthandler) Generatelayout(navWeb models.NavWeb, condition models.S
         <script src="/www/js/dowloadsButton.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 	`
+	return layout
+}
 
+func (lh *Layouthandler) Generatelayout(navWeb models.NavWeb, condition models.SolicitudeLayout) (layout models.Layout) {
+	layout = lh.defaultLayout(navWeb, condition)
+	if condition.News {
+		layout.Component = components.CreateNewsComponents(navWeb, utils.LimitRecordFive)
+	}
+
+	if condition.HighScore {
+		layout.Component = components.CreateHighScore()
+		layout.Scripts += `
+		<script src="/www/js/highscore.js"></script>`
+	}
+
+	if condition.WhoIsOnline {
+		layout.Component = components.CreatePlayerOnline()
+	}
+
+	if condition.LastDeath {
+		layout.Component = components.CreateLastPlayerKills()
+	}
 	return
 }

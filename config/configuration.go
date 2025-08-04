@@ -35,9 +35,9 @@ Created By Krayno https://www.github.com/Mau005
 `
 
 func LaunchAndMonitor(command, pathDir string, args ...string) {
-	utils.Info("loaded Open Server")
+	utils.Warn("Starting to load the server")
 	for {
-		fmt.Printf("Lanzando: %s %v\n", command, args)
+		fmt.Printf("Throwing: %s %v\n", command, args)
 		cmd := exec.Command(command, args...)
 		cmd.Dir = pathDir
 
@@ -47,22 +47,22 @@ func LaunchAndMonitor(command, pathDir string, args ...string) {
 
 		err := cmd.Start()
 		if err != nil {
-			fmt.Printf("Error al iniciar el proceso: %v\n", err)
+			utils.ErrorR("Error starting the proces: %v\n", err.Error())
 			time.Sleep(5 * time.Minute)
 			continue
 		}
 
-		utils.Info("[OK] Loaded Server")
+		utils.Info("[OK] Server loaded")
 		// Espera a que el proceso termine
 		err = cmd.Wait()
 		if err != nil {
-			fmt.Printf("El proceso terminó con error: %v\n", err)
+			utils.ErrorR("The process ended with an error: %v\n", err.Error())
 		} else {
-			fmt.Println("El proceso terminó normalmente.")
+			utils.InfoBlue("The process ended normally.")
 		}
 
 		// Esperar un poco antes de reiniciar
-		fmt.Println("Reiniciando el proceso en 5 minutos...")
+		utils.Warn("Restarting the process in 5 minutes...")
 		time.Sleep(5 * time.Minute)
 	}
 }
@@ -116,8 +116,8 @@ func Load(filename string) error {
 		}
 	}
 
-	if Global.ServerWeb.TargetServer != "" {
-		err = LoadConfigLua(Global.ServerWeb.TargetServer)
+	if Global.Server.TargetServer != "" {
+		err = LoadConfigLua(Global.Server.TargetServer)
 		if err != nil {
 			return err
 		}
@@ -278,7 +278,11 @@ func LoadConfigLua(targetServer string) (err error) {
 	Global.PoolServer = append(Global.PoolServer, models.PoolServer{World: World, RateServer: rate})
 	utils.Info("configure server local")
 	utils.Info("loaded config.lua")
+	if Global.Server.LoadServer {
+		go LaunchAndMonitor(Global.Server.TargetServer, PathServer)
+	} else {
+		utils.Info("server loading disabled")
+	}
 
-	go LaunchAndMonitor(Global.ServerWeb.TargetServer, PathServer)
 	return
 }

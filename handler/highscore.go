@@ -22,7 +22,7 @@ type HighScorehandler struct{}
 func (hs *HighScorehandler) ViewHighScore(w http.ResponseWriter, r *http.Request) {
 	navWeb, _ := context.Get(r, utils.CtxNavWeb).(models.NavWeb)
 
-	templ, err := template.New("highscore.html").ParseFiles("www/highscore.html")
+	templ, err := template.New("index.html").ParseFiles("www/index.html")
 	if err != nil {
 		log.Println("error create template", err)
 		return

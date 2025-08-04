@@ -5,6 +5,7 @@ import (
 	"log"
 	"strings"
 
+	"github.com/Mau005/KrayAccOpenTibia/models"
 	"github.com/fatih/color"
 )
 
@@ -62,4 +63,31 @@ func uniteText(target string, msg []string) string {
 
 	// Unir todos los elementos en una sola cadena con espacios entre ellos
 	return strings.Join(msgComplex, " ")
+}
+
+func FunctionGetVocation(player models.Players) string {
+
+	switch player.Vocation {
+	case 0:
+		return "No Vocation"
+	case 1:
+		return "Sorcerer"
+	case 2:
+		return "Druid"
+	case 3:
+		return "Paladin"
+	case 4:
+		return "Knight"
+	case 5:
+		return "Master Sorcerer"
+	case 6:
+		return "Elder Druid"
+	case 7:
+		return "Royal Paladin"
+	case 8:
+		return "Elite Knight"
+	default:
+		return "No encontrado"
+
+	}
 }

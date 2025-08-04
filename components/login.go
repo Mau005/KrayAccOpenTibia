@@ -13,6 +13,7 @@ func CreateLogin(navWeb models.NavWeb) (components string) {
 			iconStatus = `<img src="/www/img/account-status_green.gif" alt="status account">Cuenta VIP`
 		}
 		components += fmt.Sprintf(`
+                        <h4>Cuenta</h4>
                         <ul class="list-group">
                             <li class="list-group-item">
                                 %s

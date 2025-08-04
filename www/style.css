@@ -5,22 +5,53 @@
     --primary-text-color: #e4e4e4;
     --highlight-color: #d4af37;
     --form-primary-bg-color: #0f0f0f;
-    --navbar-bg-color: #333;
+    --navbar-bg-color: rgba(0, 0, 0, 0.425);
     --card-bg-color: #333;
     --btn-hover-color: #b8902f;
 }
 
 body {
+    font-family: 'UnifrakturCook', cursive;
     background-color: var(--primary-bg-color);
     color: var(--primary-text-color);
-    background-image: url('/www/img/background.jpg');
+    background-image: url('/www/img/background2.png');
     background-size: cover;
     background-attachment: fixed;
+    background-position: center;
+}
+
+.downloads {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.downloads a {
+    background-color: var(--highlight-color);
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 15px 25px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.downloads a:hover {
+    background-color: var(--btn-hover-color);
+}
+
+.description {
+    text-align: center;
+    font-size: 1.1rem;
+    line-height: 1.6;
 }
 
 .logo-container {
     overflow: hidden; 
 }
+
  
 .logo {
     width: 100%;
@@ -368,7 +399,6 @@ body {
     border-radius: 5px;
     padding: 10px 20px;
     font-size: 16px;
-    font-family: Arial, sans-serif;
     box-shadow: 0 0 10px #d4af37;
     cursor: pointer;
     outline: none;
@@ -415,7 +445,6 @@ body {
     border: 2px solid #a98232;
     padding: 20px;
     border-radius: 10px;
-    font-family: 'Verdana', sans-serif;
   }
   .account-header {
     font-size: 24px;
