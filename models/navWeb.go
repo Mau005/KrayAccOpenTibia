@@ -5,6 +5,7 @@ type NavWeb struct {
 	AccountID      int
 	TypeAccess     int
 	IsPremmium     bool
+	AccountName    string
 	MyPlayers      []Players
 	//Guilds!
 }

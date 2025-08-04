@@ -21,11 +21,10 @@ func CreateMyAccount(account models.Account) string {
         <h5>Estado de cuenta</h5>
         <p><strong>%s</strong></p>
         <p>Your Premium Time expired at Jun 26 2024, 06:14:59 CEST.</p>
-        <button class="btn btn-primary">Configurador de cuenta</button>
         <button class="btn btn-success">Comprar VIP</button>
         <button class="btn btn-danger">Desconectarse</button>
     </div>
-
+ <hr>
     <div class="character-list">
         <h5>Characters</h5>
         <table class="character-table">
@@ -41,6 +40,24 @@ func CreateMyAccount(account models.Account) string {
         </tbody>
         </table>
     </div>
+ <hr>
+    <h5>Cambiar Contraseña</h5>
+    <div class="account-status">
+
+         <form action="#" onsubmit="loginUser(event)">
+            <div class="mb-3">
+                <label for="regPassword" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="regPassword" placeholder="Contraseña" required>
+            </div>
+            <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Repetir Contraseña</label>
+                <input type="password" class="form-control" id="confirmPassword" required>
+            </div>   
+            <button type="submit" class="btn btn-success">Cambiar</button>
+        </form>
+
+    </div>
+
 </div>
 	`
 	var playerCtl controller.PlayerController

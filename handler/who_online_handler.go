@@ -18,7 +18,7 @@ func (woh *WhoOnlineHandler) GetViewPlayer(w http.ResponseWriter, r *http.Reques
 	var Layouthandler Layouthandler
 	ConditionalLayout := models.NewLayoutDefault()
 	ConditionalLayout.WhoIsOnline = true
-	templ, err := template.New("player_online.html").ParseFiles("www/player_online.html")
+	templ, err := template.New("index.html").ParseFiles("www/index.html")
 	if err != nil {
 		log.Println(err)
 		return

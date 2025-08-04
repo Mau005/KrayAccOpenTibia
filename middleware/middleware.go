@@ -47,6 +47,7 @@ func AuthPathPublicMiddleware(next http.Handler) http.Handler {
 			if err != nil {
 				log.Println(err)
 			}
+			navWeb.AccountName = claims.AccountName
 			navWeb.TypeAccess = claims.TypeAccess
 			navWeb.MyPlayers = acc.Players
 			navWeb.IsPremmium = int64(acc.PremiumEndsAt) > time.Now().Unix()

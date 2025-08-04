@@ -10,9 +10,13 @@ type ServerWeb struct {
 	UrlItemView          string  `yaml:"UrlItemView"`
 	UrlOutfitsView       string  `yaml:"UrlOutfitsView"`
 	IpTunnelSession      string  `yaml:"IpTunnelSession"`
-	TargetServer         string  `yaml:"TargetServer"`
 	LimitCreateCharacter uint8   `yaml:"LimitCreateCharacter"`
 	DefaultPlayer        Players `yaml:"DefaultPlayer"`
+}
+
+type Server struct {
+	LoadServer   bool   `yaml:"LoadServer"`
+	TargetServer string `yaml:"TargetServer"`
 }
 
 type MySQL struct {
@@ -35,6 +39,7 @@ type Configuration struct {
 	Certificate  Certificate  `yaml:"Certificate"`
 	PoolServer   []PoolServer `yaml:"ApiConnectionPool"`
 	ClientConfig ClientConfig `yaml:"Client"`
+	Server       Server       `yaml:"Server"`
 }
 
 type ClientConfig struct {

@@ -24,28 +24,23 @@ type SolicitudeLayout struct {
 }
 
 type Layout struct {
-	NavBar          string
-	Menu            string
-	Footer          string
-	TopPlayers      string
-	News            string
-	ServerStatus    string
-	Rates           string
-	Login           string
-	Modal           string
-	Scripts         string
-	WhoIsOnline     string
-	LastDeath       string
-	HighScore       string
-	Guilds          string
-	Staff           string
-	RecoveryAccount string
-	Dowloads        string
-	PoliticService  string
-	LogoButtons     string
-	Head            string
-	MyAccount       string
-	Discord         string
+	//Standar web
+	NavBar    string
+	Component string
+
+	//Configuration WEB
+	Modal       string
+	Scripts     string
+	LogoButtons string
+	Head        string
+
+	//SideBar
+	Login        string
+	Footer       string
+	TopPlayers   string
+	ServerStatus string
+	Rates        string
+	Discord      string
 }
 
 func NewLayoutDefault() SolicitudeLayout {

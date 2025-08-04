@@ -14,19 +14,11 @@ func CreateServerStatus(status models.ServerStatus) (components string) {
                                 <span class="item-quantity">%d</span>
                             </li>
                             <li class="custom-list-item">
-                                <span class="item-message">Creaturas</span>
-                                <span class="item-quantity">%d</span>
-                            </li>
-                            <li class="custom-list-item">
-                                <span class="item-message">NPCs:</span>
-                                <span class="item-quantity">%d</span>
-                            </li>
-                            <li class="custom-list-item">
                                 <span class="item-message">Tiempo Online: </span>
                                 <span id="counter" class="item-quantity">Server OFF</span>
                             </li>
                         </ul>
-	`, status.Players.Online, status.Monsters.Total, status.NPCs.Total)
+	`, status.Players.Online)
 
 	return
 }
