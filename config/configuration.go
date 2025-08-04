@@ -7,9 +7,11 @@ import (
 	"log"
 	"math/big"
 	"os"
+	"os/exec"
 	"runtime"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/Mau005/KrayAccOpenTibia/db"
 	"github.com/Mau005/KrayAccOpenTibia/models"
@@ -31,6 +33,39 @@ ____  __.                      _____
 	   \/           \/\/            \/     \/    \/ 
 Created By Krayno https://www.github.com/Mau005
 `
+
+func LaunchAndMonitor(command, pathDir string, args ...string) {
+	utils.Info("loaded Open Server")
+	for {
+		fmt.Printf("Lanzando: %s %v\n", command, args)
+		cmd := exec.Command(command, args...)
+		cmd.Dir = pathDir
+
+		// Puedes redirigir salida si quieres ver la consola del programa lanzado
+		cmd.Stdout = nil // o usar os.Stdout
+		cmd.Stderr = nil // o usar os.Stderr
+
+		err := cmd.Start()
+		if err != nil {
+			fmt.Printf("Error al iniciar el proceso: %v\n", err)
+			time.Sleep(5 * time.Minute)
+			continue
+		}
+
+		utils.Info("[OK] Loaded Server")
+		// Espera a que el proceso termine
+		err = cmd.Wait()
+		if err != nil {
+			fmt.Printf("El proceso terminó con error: %v\n", err)
+		} else {
+			fmt.Println("El proceso terminó normalmente.")
+		}
+
+		// Esperar un poco antes de reiniciar
+		fmt.Println("Reiniciando el proceso en 5 minutos...")
+		time.Sleep(5 * time.Minute)
+	}
+}
 
 func Load(filename string) error {
 	Global = &models.Configuration{}
@@ -86,6 +121,7 @@ func Load(filename string) error {
 		if err != nil {
 			return err
 		}
+
 	} else {
 		utils.Warn("configurate Target Server not found")
 	}
@@ -136,25 +172,29 @@ func LoadConfigLua(targetServer string) (err error) {
 	checkOS := runtime.GOOS
 	// targetExecute := ""
 	targetPath := ""
+	path_new := "/"
+	//targetExecute := ""
 	switch checkOS {
 
 	case "windows":
 		slicePath := strings.Split(targetServer, "\\")
-		// targetExecute = fmt.Sprintf("%s.exe", slicePath[len(slicePath)-1])
+		//targetExecute = fmt.Sprintf("%s.exe", slicePath[len(slicePath)-1])
 		targetPath = strings.Join(slicePath[:len(slicePath)-1], "\\")
+		path_new = fmt.Sprintf("%s\\%s", targetPath, "config.lua")
 
 	default:
 		slicePath := strings.Split(targetServer, "/")
-		// targetExecute = fmt.Sprintf("./%s", slicePath[len(slicePath)-1])
+		//targetExecute = fmt.Sprintf("./%s", slicePath[len(slicePath)-1])
 		targetPath = strings.Join(slicePath[:len(slicePath)-1], "/")
+		path_new = fmt.Sprintf("%s/%s", targetPath, "config.lua")
 	}
 
-	// PathServer := targetPath
-	// NameExecute := targetExecute
+	PathServer := targetPath
+	//NameExecute := targetExecute
 
 	L := lua.NewState()
 	defer L.Close()
-	path_new := fmt.Sprintf("%s/%s", targetPath, "config.lua")
+
 	if err := L.DoFile(path_new); err != nil {
 		return err
 	}
@@ -238,5 +278,7 @@ func LoadConfigLua(targetServer string) (err error) {
 	Global.PoolServer = append(Global.PoolServer, models.PoolServer{World: World, RateServer: rate})
 	utils.Info("configure server local")
 	utils.Info("loaded config.lua")
+
+	go LaunchAndMonitor(Global.ServerWeb.TargetServer, PathServer)
 	return
 }
