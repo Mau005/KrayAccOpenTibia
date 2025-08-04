@@ -39,7 +39,7 @@ type ClientCharacters struct {
 	IsMale                           bool   `json:"ismale"`
 	Tutorial                         bool   `json:"tutorial"`
 	Level                            int    `json:"level"`
-	Vocation                         int    `json:"vocation"`
+	Vocation                         string `json:"vocation"`
 	OutfitID                         int    `json:"outfitid"`
 	HeadColor                        int    `json:"headcolor"`
 	TorsoColor                       int    `json:"torsocolor"`

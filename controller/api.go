@@ -39,13 +39,14 @@ func (ac *ApiController) PreparingCharacter(players []models.Players, worldID ui
 		if player.Sex == 1 {
 			sex = true
 		}
+		vocation := utils.FunctionGetVocation(player)
 		characters = append(characters, models.ClientCharacters{
 			WorldID:                          worldID,
 			Name:                             player.Name,
 			IsMale:                           sex,
 			Tutorial:                         false,
 			Level:                            player.Level,
-			Vocation:                         player.Vocation,
+			Vocation:                         vocation,
 			OutfitID:                         player.LookType,
 			HeadColor:                        player.LookHead,
 			TorsoColor:                       player.LookBody,

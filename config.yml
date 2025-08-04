@@ -26,8 +26,8 @@ ServerWeb:
     TownID: 6
     Vocation: 0
 Server:
-  LoadServer: false
-  TargetServer: C:\Users\mau\Desktop\Tibia\Arkino1310\theforgottenserver-x64 #Default pathNow case "" empty not found
+  LoadServer: true
+  TargetServer: /home/mau/Arkino1310/tfs #Default pathNow case "" empty not found
 
 Client:
   Url: sin nada

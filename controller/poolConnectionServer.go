@@ -162,9 +162,9 @@ func (pc *PoolConnectionController) preparingSessionClien(account models.Account
 	}
 
 	nowTime := time.Now().Unix()
-	session.IsPremium = uint32(account.PremiumEndsAt) > uint32(nowTime)
+	session.IsPremium = int64(account.PremiumEndsAt) > nowTime
 	session.LastLoginTime = uint32(nowTime)
-	session.PremiumUntil = uint64(time.Now().Add(4 * time.Hour).Unix())
+	session.PremiumUntil = uint64(nowTime + 4*3600)
 	session.OptionTracking = false
 
 	//test := fmt.Sprintf("%s\n%s\n%s\n%d", account.Email, password, token, time.Now().Add(30*time.Minute).Unix())
