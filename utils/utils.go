@@ -91,3 +91,73 @@ func FunctionGetVocation(player models.Players) string {
 
 	}
 }
+
+func GetTownGeneral(id int) string {
+
+	switch id {
+	case 1:
+		return "Venore"
+	case 2:
+		return "Thais"
+	case 3:
+		return "Kazordoon"
+	case 4:
+		return "Carlin"
+	case 5:
+		return "Ab Dendriel"
+	case 6:
+		return "Rookgard"
+	case 7:
+		return "Liberty Bay"
+	case 8:
+		return "Port Hope"
+	case 9:
+		return "Ankrahmun"
+	case 10:
+		return "Darashia"
+	case 11:
+		return "Edron"
+	case 12:
+		return "Svargrond"
+	case 13:
+		return "Yalahar"
+	case 14:
+		return "Farmine"
+	default:
+		return "Not Defined"
+	}
+}
+
+func GetEquipmenItem(items []models.PlayerItem) map[TypeEquipmentSlot]uint16 {
+	itemResult := make(map[TypeEquipmentSlot]uint16)
+	for _, it := range items {
+		if it.PID > 10 {
+			continue
+		}
+
+		idItem := it.ItemType
+		switch it.PID {
+		case 1:
+			itemResult[HeadEquipment] = idItem
+		case 2:
+			itemResult[AmuletEquipment] = idItem
+		case 3:
+			itemResult[BackpackEquipment] = idItem
+		case 4:
+			itemResult[ArmorEquipment] = idItem
+		case 5:
+			itemResult[RightHandEquipment] = idItem
+		case 6:
+			itemResult[LeftHandEquipment] = idItem
+		case 7:
+			itemResult[LegsEquipment] = idItem
+		case 8:
+			itemResult[FeetEquipment] = idItem
+		case 9:
+			itemResult[RingEquipment] = idItem
+		case 10:
+			itemResult[AmmoEquipment] = idItem
+		}
+	}
+	return itemResult
+}

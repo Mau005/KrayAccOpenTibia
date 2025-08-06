@@ -62,6 +62,7 @@ func CreateModalCreateCharacter() string {
         </div>
         `, idName, idName, idName, value.World.Name, value.RateServer.RateExp)
 	}
+
 	return fmt.Sprintf(`
         <div class="modal fade" id="registerCharacter" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
             <div class="modal-dialog">

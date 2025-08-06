@@ -17,6 +17,7 @@ type ServerWeb struct {
 type Server struct {
 	LoadServer   bool   `yaml:"LoadServer"`
 	TargetServer string `yaml:"TargetServer"`
+	ViewConsole  bool   `yaml:"ViewConsole"`
 }
 
 type MySQL struct {

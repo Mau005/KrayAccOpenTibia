@@ -16,7 +16,9 @@ import (
 	"github.com/gorilla/context"
 )
 
-type AccountHandler struct{}
+type AccountHandler struct {
+	AccCtl controller.AccountController
+}
 
 func (ah *AccountHandler) Authentication(w http.ResponseWriter, r *http.Request) {
 	var exceptCtl controller.ExceptionController
@@ -199,4 +201,15 @@ func (ah *AccountHandler) MyAccount(w http.ResponseWriter, r *http.Request) {
 		log.Println("error execute template", err)
 		return
 	}
+}
+
+func (ah *AccountHandler) PostChangePassword(w http.ResponseWriter, r *http.Request) {
+	reg := r.FormValue("regPassword")
+
+	fmt.Println(r.FormValue("myaccount"))
+	if reg == "" {
+		http.Redirect(w, r, "/auth/my_board", http.StatusOK)
+	}
+	ah.Desconnected(w, r)
+	http.Redirect(w, r, "/", http.StatusOK)
 }

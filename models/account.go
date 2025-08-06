@@ -6,7 +6,7 @@ type Account struct {
 	Password      string    `gorm:"column:password;size:40" json:"password"`
 	Secret        *string   `gorm:"column:secret;size:16" json:"secret"`
 	Type          int       `gorm:"column:type;default:1" json:"type"`
-	PremiumEndsAt uint      `gorm:"column:premium_ends_at;default:0" json:"premium_ends_at"`
+	PremiumEndsAt uint      `gorm:"column:premium_ends_at;default:0" json:"premium_ends_at"` // este sí es unsigned
 	Email         string    `gorm:"column:email;not null;unique;size:255;default:''" json:"email"`
 	Creation      int       `gorm:"column:creation;default:0" json:"creation"`
 	Players       []Players `gorm:"foreignKey:AccountID" json:"players"`

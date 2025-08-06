@@ -1,0 +1,253 @@
+    <!DOCTYPE html>
+    <html lang="es">
+    {{.Head}}
+      <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+    <body>
+        <!-- Navegación -->
+        {{.NavBar}}  
+        <!-- Contenido Principal -->
+        <div class="container">
+            {{.LogoButtons}}
+            
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="main-content">
+                    <h2 class="text-center mb-4" style="color: var(--highlight-color);">Tienda de Objetos</h2>
+
+                    <!-- Filtros -->
+                    <div class="mb-4 d-flex flex-wrap justify-content-between align-items-center">
+                        <div class="mb-2">
+                        <label for="filter-category" style="color: var(--highlight-color);">Filtrar por categoría:</label>
+                        <select id="filter-category" class="form-select" onchange="filterItems()">
+                            <option value="all">Todos</option>
+                            <option value="weapon">Armas</option>
+                            <option value="armor">Armaduras</option>
+                            <option value="mount">Monturas</option>
+                        </select>
+                        </div>
+
+                        <div class="mb-2">
+                        <label for="filter-price" style="color: var(--highlight-color);">Filtrar por precio:</label>
+                        <select id="filter-price" class="form-select" onchange="filterItems()">
+                            <option value="all">Todos</option>
+                            <option value="low">Menos de 200</option>
+                            <option value="mid">200 - 400</option>
+                            <option value="high">Más de 400</option>
+                        </select>
+                        </div>
+                    </div>
+
+                    <div class="row" id="shop-items">
+                        <!-- Ítems con data-attributes -->
+                        <div class="col-md-4 mb-4 shop-item" data-category="weapon" data-price="150">
+                        <div class="card h-100 text-center">
+                            <img src="http://item-images.ots.me/1285/2392.png" class="card-img-top p-3" alt="Fire Sword">
+                            <div class="card-body">
+                            <h5 class="card-title">Fire Sword</h5>
+                            <p class="card-text">Una espada ardiente que inflige daño de fuego adicional a los enemigos.</p>
+                            <p><strong style="color: var(--highlight-color);">Precio:</strong> 150 puntos</p>
+                            <button class="btn btn-primary" onclick="buyItem('fire_sword')">Comprar</button>
+                            </div>
+                        </div>
+                        </div>
+
+                        <div class="col-md-4 mb-4 shop-item" data-category="armor" data-price="350">
+                        <div class="card h-100 text-center">
+                            <img src="http://item-images.ots.me/1285/2487.png" class="card-img-top p-3" alt="Knight Armor">
+                            <div class="card-body">
+                            <h5 class="card-title">Knight Armor</h5>
+                            <p class="card-text">Una armadura resistente ideal para caballeros valientes.</p>
+                            <p><strong style="color: var(--highlight-color);">Precio:</strong> 350 puntos</p>
+                            <button class="btn btn-primary" onclick="buyItem('knight_armor')">Comprar</button>
+                            </div>
+                        </div>
+                        </div>
+
+                        <div class="col-md-4 mb-4 shop-item" data-category="mount" data-price="600">
+                        <div class="card h-100 text-center">
+                            <img src="http://item-images.ots.me/1285/12304.png" class="card-img-top p-3" alt="Dragon Mount">
+                            <div class="card-body">
+                            <h5 class="card-title">Dragon Mount</h5>
+                            <p class="card-text">Montura legendaria para viajar con estilo.</p>
+                            <p><strong style="color: var(--highlight-color);">Precio:</strong> 600 puntos</p>
+                            <button class="btn btn-primary" onclick="buyItem('dragon_mount')">Comprar</button>
+                            </div>
+                        </div>
+                        </div>
+
+                        <!-- Agrega más ítems aquí con data-category y data-price -->
+                    </div>
+
+                    <hr>
+                    </div>
+
+                    
+                </div>
+                <!-- Sidebar -->
+                 <div class="col-lg-3">
+                    <div class="sidebar">
+                        {{.Login}}
+                    </div>
+                        <hr>
+                    <div class="sidebar">
+                        <h4>Información</h4>
+                        {{.ServerStatus}}
+                    </div>
+                    <hr>
+                    <div class="sidebar">
+                        {{.TopPlayers}}
+                    </div>
+                    <hr>
+                    <div class="sidebar">
+                        <h4>Discord</h4>
+                        {{.Discord}}
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- Modal de Compra -->
+        </div>
+
+    <div class="modal fade" id="buyModal" tabindex="-1" aria-labelledby="buyModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="buyModalLabel">Confirmar Compra</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="mb-3">
+          <label class="form-label">Estás comprando</label>
+          <input type="text" class="form-control" id="buyingItemName" readonly>
+        </div>
+
+        <div class="mb-3">
+          <label for="characterSelect" class="form-label">Selecciona tu personaje</label>
+          <select id="characterSelect" class="form-select">
+            <!-- Se carga dinámicamente -->
+          </select>
+        </div>
+
+        <div class="form-check mb-3">
+          <input type="checkbox" class="form-check-input" id="giftMode" onchange="toggleGiftMode()">
+          <label class="form-check-label" for="giftMode">Enviar como regalo a otro personaje</label>
+        </div>
+
+        <div class="mb-3" id="giftNameContainer" style="display: none;">
+          <label for="giftName" class="form-label">Nombre del personaje destino</label>
+          <input type="text" class="form-control" id="giftName" placeholder="Ejemplo: Krayno">
+        </div>
+
+        <span id="buyError" style="color: red;"></span>
+
+        <button type="button" class="btn btn-primary w-100" onclick="confirmPurchase()">Confirmar Compra</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+    <footer class="text-center py-5 relative">
+        <p>AinhoSoft &copy; 2025. Todos los derechos reservados.</p>
+    </footer>
+        <!-- Modal -->
+        {{.Modal}}
+
+        {{.Scripts}}
+        
+       <script>
+function filterItems() {
+  const category = document.getElementById('filter-category').value;
+  const price = document.getElementById('filter-price').value;
+
+  const items = document.querySelectorAll('.shop-item');
+
+  items.forEach(item => {
+    const itemCategory = item.getAttribute('data-category');
+    const itemPrice = parseInt(item.getAttribute('data-price'));
+
+    let show = true;
+
+    // Filtro por categoría
+    if (category !== 'all' && itemCategory !== category) {
+      show = false;
+    }
+
+    // Filtro por precio
+    if (price === 'low' && itemPrice >= 200) {
+      show = false;
+    } else if (price === 'mid' && (itemPrice < 200 || itemPrice > 400)) {
+      show = false;
+    } else if (price === 'high' && itemPrice <= 400) {
+      show = false;
+    }
+
+    item.style.display = show ? 'block' : 'none';
+  });
+}
+</script>
+<script>
+let selectedItemId = '';
+let selectedItemName = '';
+const characters = ["Mau", "Krayno", "SubirLevel"]; // Simulación, reemplázalo por tu backend si usas Go
+
+function buyItem(itemId) {
+  const itemNames = {
+    "fire_sword": "Fire Sword",
+    "knight_armor": "Knight Armor",
+    "dragon_mount": "Dragon Mount"
+  };
+
+  selectedItemId = itemId;
+  selectedItemName = itemNames[itemId] || itemId;
+
+  document.getElementById("buyingItemName").value = selectedItemName;
+  document.getElementById("giftName").value = '';
+  document.getElementById("giftMode").checked = false;
+  document.getElementById("giftNameContainer").style.display = 'none';
+  document.getElementById("buyError").textContent = '';
+
+  const select = document.getElementById("characterSelect");
+  select.innerHTML = '';
+  characters.forEach(char => {
+    const opt = document.createElement("option");
+    opt.value = char;
+    opt.textContent = char;
+    select.appendChild(opt);
+  });
+
+  const modal = new bootstrap.Modal(document.getElementById("buyModal"));
+  modal.show();
+}
+
+function toggleGiftMode() {
+  const isChecked = document.getElementById("giftMode").checked;
+  document.getElementById("giftNameContainer").style.display = isChecked ? 'block' : 'none';
+}
+
+function confirmPurchase() {
+  const selectedCharacter = document.getElementById("characterSelect").value;
+  const giftMode = document.getElementById("giftMode").checked;
+  const giftName = document.getElementById("giftName").value.trim();
+
+  const receiver = giftMode ? giftName : selectedCharacter;
+
+  if (!receiver) {
+    document.getElementById("buyError").textContent = "Debes seleccionar o ingresar un personaje.";
+    return;
+  }
+
+  // Aquí puedes usar fetch() o enviar al backend
+  alert(`Has comprado ${selectedItemName} para ${receiver}.`);
+
+  bootstrap.Modal.getInstance(document.getElementById("buyModal")).hide();
+}
+</script>
+
+
+    </body>
+
+    </html>

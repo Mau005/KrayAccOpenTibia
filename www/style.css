@@ -4,7 +4,7 @@
     --secondary-bg-color: rgba(24, 24, 24, 0.911);
     --primary-text-color: #e4e4e4;
     --highlight-color: #d4af37;
-    --form-primary-bg-color: #0f0f0f;
+    --form-primary-bg-color: #6d6d6d;
     --navbar-bg-color: rgba(0, 0, 0, 0.425);
     --card-bg-color: #333;
     --btn-hover-color: #b8902f;
@@ -41,6 +41,55 @@ body {
 .downloads a:hover {
     background-color: var(--btn-hover-color);
 }
+.character-profile .table th {
+  background-color: var(--navbar-bg-color);
+  color: var(--highlight-color);
+}
+
+.character-profile .table td {
+  background-color: var(--secondary-bg-color);
+  color: var(--primary-text-color);
+}
+
+.character-profile .info-block {
+  background-color: var(--secondary-bg-color);
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #444;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.outfit-img {
+  max-width: 250px;
+  filter: drop-shadow(2px 4px 6px black);
+}
+
+.equipment-grid {
+  width: 220px;
+  display: grid;
+  grid-template-columns: repeat(3, 64px);
+  grid-template-rows: repeat(3, 64px);
+  gap: 4px;
+  justify-content: center;
+}
+
+.slot {
+  width: 64px;
+  height: 64px;
+  background-color: rgba(20, 20, 20, 0.8);
+  border: 1px solid #444;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slot img {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+}
+
 
 .description {
     text-align: center;

@@ -11,6 +11,11 @@ func CreateNavbar(navweb models.NavWeb) string {
 	buttonRegister := ""
 	if navweb.Authentication {
 		// componentsAccount = `							<li><a class="dropdown-item" href="#">Cambiar contraseña</a></li>`
+		buttonRegister = fmt.Sprintf(`
+					<li class="nav-item">
+						<a class="nav-link" href="/auth/my_board">Bienvenido %s</a>
+					</li>
+		`, navweb.AccountName)
 
 	} else {
 		// componentsAccount = `							<li><a class="dropdown-item" href="#">Recuperar cuenta</a></li>`
@@ -29,8 +34,8 @@ func CreateNavbar(navweb models.NavWeb) string {
 			</a>
 	
 			<!-- Input para buscar personajes -->
-			<form class="d-flex ms-2" role="search">
-				<input class="form-control me-2" type="search" placeholder="Buscar personaje" aria-label="Buscar">
+			<form action="/get_character" method="POST" class="d-flex ms-2">
+				<input class="form-control me-2" name="search" type="search" placeholder="Buscar personaje" aria-label="Buscar">
 				<button class="btn btn-outline-light" type="submit">Buscar</button>
 			</form>
 	
@@ -68,10 +73,7 @@ func CreateNavbar(navweb models.NavWeb) string {
 						</ul>
 					</li>
 	
-					<!-- Menú desplegable para Cuentas -->
-					<li class="nav-item">
-						<a class="nav-link" href="/auth/my_board">Bienvenido %s</a>
-					</li>
+
 
 					%s
 				</ul>
@@ -79,5 +81,5 @@ func CreateNavbar(navweb models.NavWeb) string {
 		</div>
 	</nav>
 	
-	`, navweb.AccountName, buttonRegister)
+	`, buttonRegister)
 }

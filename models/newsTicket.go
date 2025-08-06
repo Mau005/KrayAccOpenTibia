@@ -7,5 +7,5 @@ type NewsTicket struct {
 	IconID    uint8
 	Ticket    string
 	PlayersID int
-	Player    Players `gorm:"foreignKey:ID;references:PlayersID"`
+	Player    Players `gorm:"foreignKey:PlayersID;references:ID"`
 }
