@@ -82,6 +82,22 @@ const (
 	ApiUrlWhoIsOnline           = "/get_player_online"
 	ApiUrlGetPlayerAccount      = "/get_player_account"
 	ApiUrlGetHighScore          = "/get_highscore"
+	ApiUrlGetPlayer             = "/get_player/{name}"
+)
+
+type TypeEquipmentSlot uint8
+
+const (
+	HeadEquipment TypeEquipmentSlot = iota
+	AmuletEquipment
+	BackpackEquipment
+	ArmorEquipment
+	RightHandEquipment
+	LeftHandEquipment
+	LegsEquipment
+	FeetEquipment
+	RingEquipment
+	AmmoEquipment
 )
 
 // HighScore

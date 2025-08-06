@@ -35,15 +35,17 @@ Created By Krayno https://www.github.com/Mau005
 `
 
 func LaunchAndMonitor(command, pathDir string, args ...string) {
-	utils.Warn("Starting to load the server")
+	utils.Info("Starting to load the server")
 	for {
-		fmt.Printf("Throwing: %s %v\n", command, args)
+		utils.Info(fmt.Sprintf("Throwing: %s %v\n", command, args))
 		cmd := exec.Command(command, args...)
 		cmd.Dir = pathDir
 
 		// Puedes redirigir salida si quieres ver la consola del programa lanzado
-		cmd.Stdout = nil // o usar os.Stdout
-		cmd.Stderr = nil // o usar os.Stderr
+		if Global.Server.ViewConsole {
+			cmd.Stdout = os.Stdout // o usar os.Stdout
+			cmd.Stderr = os.Stderr // o usar os.Stderr
+		}
 
 		err := cmd.Start()
 		if err != nil {
@@ -52,7 +54,7 @@ func LaunchAndMonitor(command, pathDir string, args ...string) {
 			continue
 		}
 
-		utils.Info("[OK] Server loaded")
+		utils.Info("Server loaded")
 		// Espera a que el proceso termine
 		err = cmd.Wait()
 		if err != nil {

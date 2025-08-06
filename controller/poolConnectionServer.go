@@ -145,7 +145,7 @@ func insertSessionToDB(rawToken []byte, accountID int, ip string) error {
 	}
 	var ses models.Session
 	ses.IP = ipBytes
-	ses.AccountID = accountID
+	ses.AccountID = int32(accountID)
 	ses.Token = rawToken
 	return db.DB.Create(&ses).Error
 }
@@ -212,7 +212,7 @@ func (pc *PoolConnectionController) CreateCharacter(nameCharacter, idWorld strin
 	player.AccountID = accountID
 	player.Name = nameCharacter
 	player.Sex = isMale
-
+	player.World = worldSub[1]
 	player.Level = config.Global.ServerWeb.DefaultPlayer.Level
 	player.Experience = config.Global.ServerWeb.DefaultPlayer.Experience
 	player.Health = config.Global.ServerWeb.DefaultPlayer.HealthMax
@@ -366,6 +366,10 @@ func (pc *PoolConnectionController) WhoIsOnlinePoolConnection() map[string][]mod
 }
 
 func (pc *PoolConnectionController) SyncPlayerNamePoolConnection() {
+	if len(config.Global.PoolServer) == 1 {
+		//TODO: solucion parche debe cambiar
+		return
+	}
 
 	for _, pool := range config.Global.PoolServer {
 		if pool.IpWebApi == "" {
@@ -507,4 +511,46 @@ func (pc *PoolConnectionController) GetACcountPlayerPoolConenction(accountID int
 		account.Name = accountFinaly.Name
 	}
 	return account
+}
+
+func (pc *PoolConnectionController) GetPlayerPoolConnection(namePlayer string) (player models.Players, err error) {
+	for _, pool := range config.Global.PoolServer {
+
+		if pool.IpWebApi == "" {
+			var palyController PlayerController
+			player, err = palyController.GetPlayerName(namePlayer)
+			if err != nil {
+				log.Println(err)
+				continue
+			}
+			return
+		}
+
+		targetPlayer := strings.Replace(utils.ApiUrlGetPlayer, "{name}", strings.ReplaceAll(namePlayer, " ", "%20"), 1)
+
+		req, err := http.NewRequest("GET", fmt.Sprintf("%s%s%s", pool.IpWebApi, utils.ApiUrl, targetPlayer), nil)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", pool.Token))
+
+		client := &http.Client{}
+		body, err := client.Do(req)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+
+		if err = json.NewDecoder(body.Body).Decode(&player); err != nil {
+			log.Println(err)
+			continue
+		}
+
+		if player.ID != 0 {
+			return player, nil
+		}
+	}
+	return player, fmt.Errorf("player not found error")
 }

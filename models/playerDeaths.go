@@ -10,7 +10,7 @@ package models
 // unjustified
 // mostdamage_unjustified
 type PlayerDeaths struct {
-	PlayersID              int     `gorm:"column:player_id;type:int(11)" json:"player_id"`
+	PlayersID              int32   `gorm:"column:player_id;type:int(11)" json:"player_id"`
 	Time                   int     `gorm:"column:time" json:"time"`
 	Level                  int     `gorm:"column:level" json:"level"`
 	KilledBy               string  `gorm:"column:killed_by;type:varchar(255)"`
@@ -19,7 +19,7 @@ type PlayerDeaths struct {
 	MostDamageIsPLayer     int     `gorm:"column:mostdamage_is_player" json:"mostdamage_is_player"`
 	Unjustified            int     `gorm:"column:unjustified" json:"unjustified"`
 	MonstDamageUnjustified int     `gorm:"column:mostdamage_unjustified" json:"mostdamage_unjustified"`
-	Player                 Players `gorm:"foreignKey:ID;references:PlayersID"`
+	Player                 Players `gorm:"foreignKey:PlayersID;references:ID" json:"player"`
 }
 
 func (PlayerDeaths) TableName() string { return "player_deaths" }

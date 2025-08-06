@@ -10,6 +10,7 @@ import (
 	"github.com/Mau005/KrayAccOpenTibia/controller"
 	"github.com/Mau005/KrayAccOpenTibia/models"
 	"github.com/Mau005/KrayAccOpenTibia/utils"
+	"github.com/gorilla/mux"
 )
 
 type ApiPoolConnectionHandler struct{}
@@ -173,6 +174,19 @@ func (apc *ApiPoolConnectionHandler) GetHighScore(w http.ResponseWriter, r *http
 
 	var playerCtl controller.PlayerController
 	players := playerCtl.GetHighScore(request.ID)
+	json.NewEncoder(w).Encode(&players)
+
+}
+
+func (apc *ApiPoolConnectionHandler) GetPlayer(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	var playerCtl controller.PlayerController
+	var Exception controller.ExceptionController
+	players, err := playerCtl.GetPlayerName(vars["name"])
+	if err != nil {
+		Exception.Exeption(err.Error(), http.StatusNotFound, w)
+		return
+	}
 	json.NewEncoder(w).Encode(&players)
 
 }

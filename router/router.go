@@ -13,6 +13,7 @@ import (
 func NewRouter() *mux.Router {
 	var NewsTickerHandler handler.NewsTicketHandler
 	var handlerAccount handler.AccountHandler
+	var handlerPlayer handler.PlayerHandler
 	r := mux.NewRouter()
 
 	fs := http.FileServer(http.Dir("./www"))
@@ -23,13 +24,13 @@ func NewRouter() *mux.Router {
 		r.HandleFunc("/get_news_ticket", NewsTickerHandler.GetTicket).Methods("GET") //API PUBLIC
 
 		var homeHandler handler.HomeHandler
-		r.HandleFunc("/", homeHandler.GetHome).Methods("GET") //Public
+		r.HandleFunc("/", homeHandler.GetHome).Methods("GET")     //Public
+		r.HandleFunc("/test", homeHandler.GetTest).Methods("GET") //Public
 
 		var whoPlayer handler.WhoOnlineHandler
 		r.HandleFunc("/who_online", whoPlayer.GetViewPlayer).Methods("GET")
 
-		var killerhandler handler.PlayerDeathHandler
-		r.HandleFunc("/last_death", killerhandler.GetViewPlayerDeath).Methods("GET")
+		r.HandleFunc("/last_death", handlerPlayer.GetViewPlayerDeath).Methods("GET")
 
 		//
 		var highscoreHandler handler.HighScorehandler
@@ -45,6 +46,8 @@ func NewRouter() *mux.Router {
 		// 	}
 		// 	fmt.Println(string(bodyResponde))
 		// })
+		r.HandleFunc("/get_character", handlerPlayer.GetCharacterPOST).Methods("POST")
+		r.HandleFunc("/get_character/{name}", handlerPlayer.GetCharacter).Methods("GET")
 
 		r.HandleFunc("/login", handlerAccount.Authentication).Methods("POST")
 		r.HandleFunc("/logout", handlerAccount.Desconnected).Methods("GET")
@@ -55,7 +58,9 @@ func NewRouter() *mux.Router {
 		s.Use(middleware.AuthMiddleware)
 		s.HandleFunc("/my_board", handlerAccount.MyAccount).Methods("GET")
 		s.HandleFunc("/create_character", handlerAccount.CreateCharacter).Methods("POST")
+		s.HandleFunc("/change_password", handlerAccount.PostChangePassword).Methods("POST")
 		s.HandleFunc("/create_news_ticket", NewsTickerHandler.CreateTicket).Methods("POST")
+
 	}
 
 	//APIMODE
@@ -74,6 +79,7 @@ func NewRouter() *mux.Router {
 	api.HandleFunc(utils.ApiUrlWhoIsOnline, ApiConnection.WhoIsOnline).Methods("POST")
 	api.HandleFunc(utils.ApiUrlGetPlayerAccount, ApiConnection.GetPlayerAccount).Methods("POST")
 	api.HandleFunc(utils.ApiUrlGetHighScore, ApiConnection.GetHighScore).Methods("POST")
+	api.HandleFunc(utils.ApiUrlGetPlayer, ApiConnection.GetPlayer).Methods("POST")
 
 	//api.HandleFunc("/connect_pool")
 

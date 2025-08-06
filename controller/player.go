@@ -97,3 +97,14 @@ func (pc *PlayerController) GetPlayerDeath() (deaths []models.PlayerDeaths) {
 	db.DB.Preload("Player").Order("time desc").Limit(50).Find(&deaths)
 	return
 }
+
+func (pc *PlayerController) GetPlayerName(name string) (player models.Players, err error) {
+	if err = db.DB.
+		Preload("PlayerItems", "pid > ? and pid < ?", 0, 10).
+		Preload("PlayerDeaths").
+		Where("name = ?", name).
+		First(&player).Error; err != nil {
+		return
+	}
+	return player, nil
+}
