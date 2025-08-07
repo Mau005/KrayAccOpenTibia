@@ -11,7 +11,7 @@
 }
 
 body {
-    font-family: 'UnifrakturCook', cursive;
+    font-family: 'UnifrakturCook';
     background-color: var(--primary-bg-color);
     color: var(--primary-text-color);
     background-image: url('/www/img/background2.png');

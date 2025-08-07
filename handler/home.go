@@ -43,3 +43,51 @@ func (hh *HomeHandler) GetTest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func (hh *HomeHandler) GetWorldMap(w http.ResponseWriter, r *http.Request) {
+	navWeb, _ := context.Get(r, utils.CtxNavWeb).(models.NavWeb)
+
+	templ, err := template.New("worldmap.html").ParseFiles("www/worldmap.html")
+	if err != nil {
+		log.Println("error create template", err)
+		return
+	}
+	var Layouthandler Layouthandler
+	err = templ.Execute(w, Layouthandler.Generatelayout(navWeb, models.SolicitudeLayout{News: true, Discord: true, Login: true, ServerStatus: true, TopPlayers: true, Rates: true}))
+	if err != nil {
+		log.Println("error execute template", err)
+		return
+	}
+}
+
+func (hh *HomeHandler) GetTaskInfo(w http.ResponseWriter, r *http.Request) {
+	navWeb, _ := context.Get(r, utils.CtxNavWeb).(models.NavWeb)
+
+	templ, err := template.New("tasks.html").ParseFiles("www/tasks.html")
+	if err != nil {
+		log.Println("error create template", err)
+		return
+	}
+	var Layouthandler Layouthandler
+	err = templ.Execute(w, Layouthandler.Generatelayout(navWeb, models.SolicitudeLayout{News: true, Discord: true, Login: true, ServerStatus: true, TopPlayers: true, Rates: true}))
+	if err != nil {
+		log.Println("error execute template", err)
+		return
+	}
+}
+
+func (hh *HomeHandler) GetDowloads(w http.ResponseWriter, r *http.Request) {
+	navWeb, _ := context.Get(r, utils.CtxNavWeb).(models.NavWeb)
+
+	templ, err := template.New("dowloads.html").ParseFiles("www/dowloads.html")
+	if err != nil {
+		log.Println("error create template", err)
+		return
+	}
+	var Layouthandler Layouthandler
+	err = templ.Execute(w, Layouthandler.Generatelayout(navWeb, models.SolicitudeLayout{News: true, Discord: true, Login: true, ServerStatus: true, TopPlayers: true, Rates: true}))
+	if err != nil {
+		log.Println("error execute template", err)
+		return
+	}
+}

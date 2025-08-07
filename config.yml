@@ -27,7 +27,7 @@ ServerWeb:
     Vocation: 0
 
 Server:
-  ViewConsole: false
+  ViewConsole: true
   LoadServer: true
   TargetServer: /home/mau/Arkino1310/tfs #Default pathNow case "" empty not found
 
