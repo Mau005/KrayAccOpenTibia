@@ -24,8 +24,11 @@ func NewRouter() *mux.Router {
 		r.HandleFunc("/get_news_ticket", NewsTickerHandler.GetTicket).Methods("GET") //API PUBLIC
 
 		var homeHandler handler.HomeHandler
-		r.HandleFunc("/", homeHandler.GetHome).Methods("GET")     //Public
-		r.HandleFunc("/test", homeHandler.GetTest).Methods("GET") //Public
+		r.HandleFunc("/", homeHandler.GetHome).Methods("GET")              //Public
+		r.HandleFunc("/world_map", homeHandler.GetWorldMap).Methods("GET") //Public
+		r.HandleFunc("/task_info", homeHandler.GetTaskInfo).Methods("GET") //Public
+		r.HandleFunc("/dowloads", homeHandler.GetDowloads).Methods("GET")  //Public
+		r.HandleFunc("/test", homeHandler.GetTest).Methods("GET")          //Public
 
 		var whoPlayer handler.WhoOnlineHandler
 		r.HandleFunc("/who_online", whoPlayer.GetViewPlayer).Methods("GET")
