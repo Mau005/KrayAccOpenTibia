@@ -3,7 +3,6 @@ package controller
 import (
 	"bytes"
 	"crypto/rand"
-	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -123,7 +122,7 @@ func (pc *PoolConnectionController) CharacterLoginAccountPoolConnection(answerEx
 		}
 		response.PlayData.World = append(response.PlayData.World, pool.World)
 	}
-	response.Session, err = pc.preparingSessionClien(account, ip)
+	response.Session, err = pc.preparingSessionClien(account, ip, answerExpected.Password)
 	if err != nil {
 		return response, err
 	}
@@ -149,9 +148,8 @@ func insertSessionToDB(rawToken []byte, accountID int, ip string) error {
 	ses.Token = rawToken
 	return db.DB.Create(&ses).Error
 }
-func (pc *PoolConnectionController) preparingSessionClien(account models.Account, ip string) (models.ClientSession, error) {
+func (pc *PoolConnectionController) preparingSessionClien(account models.Account, ip string, otp string) (models.ClientSession, error) {
 	var session models.ClientSession
-
 	if account.ID == 0 {
 		return session, errors.New("errors session")
 	}
@@ -161,32 +159,29 @@ func (pc *PoolConnectionController) preparingSessionClien(account models.Account
 		ipTarget = config.Global.ServerWeb.IpTunnelSession
 	}
 
-	nowTime := time.Now().Unix()
-	session.IsPremium = int64(account.PremiumEndsAt) > nowTime
-	session.LastLoginTime = uint32(nowTime)
-	session.PremiumUntil = uint64(nowTime + 4*3600)
+	now := time.Now().Unix()
+	session.IsPremium = int64(account.PremiumEndsAt) > now
+	session.LastLoginTime = uint32(now)
+	session.PremiumUntil = uint64(now + 4*3600)
 	session.OptionTracking = false
+	session.Status = "active"
+	session.IsReturner = true
+	session.ShowRewardNews = false
 
-	//test := fmt.Sprintf("%s\n%s\n%s\n%d", account.Email, password, token, time.Now().Add(30*time.Minute).Unix())
-	// session.SessionKey = base64.StdEncoding.EncodeToString([]byte(test))
+	// 1) SessionKey EXACTO para el cliente (3 líneas, sin base64, sin timestamp)
+	// Usa el identificador que tu login soporte: account.Name o account.Email
+	session.SessionKey = fmt.Sprintf("%s\n%s", account.Email, otp)
 
+	// 2) (Opcional) Mantén tu token interno en DB, pero NO lo metas en session.SessionKey
 	rawToken, err := generateRawSessionKey()
 	if err != nil {
 		return session, fmt.Errorf("error generating raw session key: %w", err)
 	}
-
-	err = insertSessionToDB(rawToken, account.ID, ipTarget)
-	if err != nil {
+	if err := insertSessionToDB(rawToken, account.ID, ipTarget); err != nil {
 		log.Println("Error inserting session:", err)
 		return session, err
 	}
 
-	// Ahora codificamos para el cliente
-	session.SessionKey = base64.StdEncoding.EncodeToString(rawToken)
-
-	session.Status = "active"
-	session.IsReturner = true
-	session.ShowRewardNews = false
 	return session, nil
 }
 

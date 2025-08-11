@@ -1,10 +1,10 @@
 #These variables will be used as long as EnvironmentVariables is defined as false 
 MySQL:
-  Host: 127.0.0.1
+  Host: 192.168.3.51
   Port: 3306
   UserName: root
-  DBPassword: 12345
-  DataBase: tfs
+  DBPassword: Fcua29hd.
+  DataBase: ot
 
 ServerWeb:
   IP: 0.0.0.0 #generic ip local or global
@@ -28,8 +28,8 @@ ServerWeb:
 
 Server:
   ViewConsole: true
-  LoadServer: true
-  TargetServer: /home/mau/Arkino1310/tfs #Default pathNow case "" empty not found
+  LoadServer: false
+  TargetServer: /Users/mau/Proyectos/KrayAccOpenTibia/tfs #Default pathNow case "" empty not found
 
 Client:
   Url: sin nada
