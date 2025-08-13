@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"bytes"
 	"fmt"
 
 	"github.com/Mau005/KrayAccOpenTibia/src/db"
@@ -40,6 +41,9 @@ func (pc *PlayerController) GetAllPlayer() (player []models.Players) {
 }
 
 func (pc *PlayerController) CreatePlayer(player models.Players) (models.Players, error) {
+	if len(player.Conditions) == 0 || bytes.Equal(player.Conditions, nil) {
+		player.Conditions = []byte{0x00}
+	}
 	if err := db.DB.Create(&player).Error; err != nil {
 		return player, err
 	}
