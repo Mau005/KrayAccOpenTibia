@@ -1,0 +1,56 @@
+    <!DOCTYPE html>
+    <html lang="es">
+    {{.Head}}
+      <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+    <body>
+        <!-- Navegación -->
+        {{.NavBar}}  
+        <!-- Contenido Principal -->
+        <div class="container">
+            {{.LogoButtons}}
+            
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="main-content">
+                       {{.Component}}
+                        <hr>
+                    </div>
+                    
+                </div>
+                <!-- Sidebar -->
+                 <div class="col-lg-3">
+                    <div class="sidebar">
+                        {{.Login}}
+                    </div>
+                        <hr>
+                    <div class="sidebar">
+                        <h4>Información</h4>
+                        {{.ServerStatus}}
+                    </div>
+                    <hr>
+                    <div class="sidebar">
+                        {{.TopPlayers}}
+                    </div>
+                    <hr>
+                    <div class="sidebar">
+                        <h4>Discord</h4>
+                        {{.Discord}}
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    <footer class="text-center py-5 relative">
+        <p>AinhoSoft &copy; 2025. Todos los derechos reservados.</p>
+    </footer>
+        <!-- Modal -->
+        {{.Modal}}
+
+        {{.Scripts}}
+        
+       
+    </body>
+
+    </html>

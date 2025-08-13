@@ -200,7 +200,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "// register web API\r\n{\r\n    \"email\": \"a@a\",\r\n    \"password\": \"fcua29hd\",\r\n    \"type\": \"login\",\r\n    \"token\": \"yuyuy\"\r\n}",
+					"raw": "// register web API\r\n{\r\n    \"email\": \"a@a\",\r\n    \"password\": \"12345\",\r\n    \"type\": \"login\",\r\n    \"token\": \"yuyuy\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

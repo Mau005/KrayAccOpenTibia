@@ -1,0 +1,329 @@
+    <!DOCTYPE html>
+    <html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.1, user-scalable=no" />
+        <title>The Last Rookgard</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="/www/style.css">
+        <link rel="icon" type="image/png" sizes="16x16" href="/www/img/icon.png">
+    </head>
+
+    <body>
+
+        <!-- Navegación -->
+        <nav class="navbar navbar-expand-lg fixed-top">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="www/img/icon.png" alt="Logo">
+                </a>
+        
+                <!-- Input para buscar personajes -->
+                <form class="d-flex ms-2" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Buscar personaje" aria-label="Buscar">
+                    <button class="btn btn-outline-light" type="submit">Buscar</button>
+                </form>
+        
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Inicio</a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownComunidad" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Biblioteca
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownComunidad">
+                                <li><a class="dropdown-item" href="#">Introduccion</a></li>
+                                <li><a class="dropdown-item" href="#">Server Info</a></li>
+                                <li><a class="dropdown-item" href="#">Mapa del Mundo</a></li>
+                                <li><a class="dropdown-item" href="#">Task Info</a></li>
+                                <li><a class="dropdown-item" href="#">Descargas</a></li>
+                            </ul>
+                        </li>
+                        
+                        <!-- Menú desplegable para Comunidad -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownComunidad" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Comunidad
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownComunidad">
+                                <li><a class="dropdown-item" href="/who_online">Quien Esta Online?</a></li>
+                                <li><a class="dropdown-item" href="#">Highscores</a></li>
+                                <li><a class="dropdown-item" href="#">Ultimas Muertes Registradas</a></li>
+                                <li><a class="dropdown-item" href="#">Guilds</a></li>
+                                <li><a class="dropdown-item" href="#">Staff</a></li>
+                            </ul>
+                        </li>
+        
+                        <!-- Menú desplegable para Cuentas -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCuentas" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Cuentas
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownCuentas">
+                                {{if .NavWeb.Authentication}}
+                                <li><a class="dropdown-item" href="#">Cambiar contraseña</a></li>
+                                {{else}}
+                                <li><a class="dropdown-item" href="#">Recuperar cuenta</a></li>
+                                {{end}}
+                                <li><a class="dropdown-item" href="#">Terminos de uso</a></li>
+                                <li><a class="dropdown-item" href="#">Politicas de Privacidad</a></li>
+                                
+                                
+                            </ul>
+                        </li>
+        
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Support</a>
+                        </li>
+                        {{if not .NavWeb.Authentication}}
+                        <button type="button" class="btn-glow" data-bs-toggle="modal" data-bs-target="#registerModal">
+                            Registrarse
+                        </button>
+                        {{end}}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+
+        <!-- Contenido Principal -->
+        <div class="container">
+
+            <div class="logo-container">
+                <img src="www/img/logo.png" alt="Logo" class="logo">
+            </div>
+
+            <button onclick="downloadFile('/www/dowloads/TheLastRookgardBETA.zip', 'TheLastRookgardV1.0.0BETA.zip')" class="vibrant-button">Descargar</button>
+            <div class="row">
+                
+                <div class="col-lg-8">
+                    <div class="main-content">
+                        <h1>Quien esta Online?</h1>
+                        <!-- Tabla de Lista de Personajes -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                Lista de Personajes
+                            </div>
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Outfits</th>
+                                            <th scope="col">Nombre</th>
+                                            <th scope="col">Nivel</th>
+                                            <th scope="col">Experiencia</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{range .Players}}
+                                        <tr>
+                                            <td><img src="{{$.UrlOutfitsView}}/animoutfit.php?id={{.LookType}}&addons={{.LookAddons}}&head={{.LookHead}}&body={{.LookBody}}&legs={{.LookLegs}}&feet={{.LookFeet}}&mount=0&direction=3"
+                                                alt="Jugador {{.ID}}"></td>
+                                            <td>{{.Name}}</td>
+                                            <td>{{.Level}}</td>
+                                            <td>{{.Experience}}</td>
+                                        </tr>
+                                        {{end}}
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <div class="sidebar">
+                        <h4>Menus</h4>
+                        <hr>
+                        <ul class="custom-list">
+                            <li class="custom-list-item">
+                                <span class="item-message">Jugadores Online: </span>
+                                <span class="item-quantity">{{.ServerStatus.Players.Online}}</span>
+                            </li>
+                            <li class="custom-list-item">
+                                <span class="item-message">Creaturas</span>
+                                <span class="item-quantity">{{.ServerStatus.Monsters.Total}}</span>
+                            </li>
+                            <li class="custom-list-item">
+                                <span class="item-message">NPCs:</span>
+                                <span class="item-quantity">{{.ServerStatus.NPCs.Total}}</span>
+                            </li>
+                            <li class="custom-list-item">
+                                <span class="item-message">Tiempo Online: </span>
+                                <span id="counter" class="item-quantity">Server OFF</span>
+                            </li>
+                        </ul>
+                        <hr>
+                        <ul class="list-group">
+                            <h4>Rates</h4>
+                            <li class="list-group-item">Experiencia: {{.ServerStatus.Rates.Experience}}</li>
+                            <li class="list-group-item">Skills: {{.ServerStatus.Rates.Skill}}</li>
+                            <li class="list-group-item">Loot: {{.ServerStatus.Rates.Loot}}</li>
+                            <li class="list-group-item">Magic: {{.ServerStatus.Rates.Magic}}</li>
+                        </ul>
+                        
+                        <hr>
+                        {{if .NavWeb.Authentication}}
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                {{if $.NavWeb.IsPremmium}}
+                                <img src="www/img/account-status_green.gif"
+                                alt="status account">
+                                Cuenta VIP
+                                {{else}}
+                                <img src="www/img/account-status_red.gif"
+                                    alt="status account">
+                                    Cuenta Gratuita
+                                {{end}}
+                            </li>
+                            <li class="list-group-button" onclick="redirectMenuLogin(1)">Mi Cuenta</li>
+                            <li class="list-group-button"  data-bs-toggle="modal" data-bs-target="#registerCharacter">Crear Personaje</li>
+                            <li class="list-group-button" onclick="redirectMenuLogin(3)">Crear Guild</li>
+                            <li class="list-group-button" onclick="redirectMenuLogin(0)">Desconectarse</li>
+                        </ul>
+                        <hr>
+                        <h4>Mis Personajes</h4>
+                        <ul class="list-group">
+                            {{range $.NavWeb.MyPlayers}}
+                            <li class="list-group-item">
+                                <img src="{{$.UrlOutfitsView}}/animoutfit.php?id={{.LookType}}&addons={{.LookAddons}}&head={{.LookHead}}&body={{.LookBody}}&legs={{.LookLegs}}&feet={{.LookFeet}}&mount=0&direction=3"
+                                    alt="Jugador 1">
+                                {{.Name}} - Nivel {{.Level}}
+                            </li>
+                            {{end}}
+                        </ul>
+
+                        {{else}}
+                        <h4>Iniciar Sesión</h4>
+                        
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Usuario</label>
+                                <input type="text" class="form-control" id="username" >
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Contraseña</label>
+                                <input type="password" class="form-control" id="password" >
+                                <span id="errorLogin"></span>
+                            </div>
+                            
+                            <button type="submit" onclick="loginUser()" class="btn btn-primary">Ingresar</button>
+                        
+                        {{end}}
+                        <hr>
+                        <h4>Top 5 Jugadores</h4>
+                        <ul class="list-group">
+                            {{range .TopPlayers}}
+                            <li class="list-group-item">
+                                <img src="{{$.UrlOutfitsView}}/animoutfit.php?id={{.LookType}}&addons={{.LookAddons}}&head={{.LookHead}}&body={{.LookBody}}&legs={{.LookLegs}}&feet={{.LookFeet}}&mount=0&direction=3"
+                                    alt="Jugador 1">
+                                {{.Name}} - Nivel {{.Level}}
+                            </li>
+                            {{end}}
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="registerModalLabel">Registro de Usuario</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="regUsername" class="form-label">Nombre de Usuario</label>
+                                <input type="text" class="form-control" id="regUsername" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Correo Electrónico</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="regPassword" class="form-label">Contraseña</label>
+                                <input type="password" class="form-control" id="regPassword" placeholder="Contraseña" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">Repetir Contraseña</label>
+                                <input type="password" class="form-control" id="confirmPassword" required>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input type="checkbox" class="form-check-input" id="terms" required>
+                                <label class="form-check-label" for="terms">Aceptar políticas de servicio</label>
+                                <span id="errorRegAccount"></span>
+                            </div>
+                            <button type="submit" onclick="registerAccount()" class="btn btn-primary w-100">Registrar</button>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {{if .NavWeb.Authentication}}
+        <div class="modal fade" id="registerCharacter" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="registerModalLabel">Registro de Usuario</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        
+                            <div class="mb-3">
+                                <label for="nameCharacter" class="form-label">Nombre de Personaje</label>
+                                <input type="text" class="form-control" id="nameCharacter" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="radioMale" class="form-label">Sexo del Personaje</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" id="radioMale">
+                                    <label class="form-check-label" for="radioMale">
+                                      Hombre
+                                    </label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="radio" id="radioFemale">
+                                    <label class="form-check-label" for="radioFemale">
+                                      Mujer
+                                    </label>
+                                  </div>
+                                  <span id="errorCreateCharacter"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100" onclick="createCharacter()">Registrar Personaje</button>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{end}}
+        
+        <script src="/www/js/promise.js"></script>
+        <script src="/www/js/uptime.js"></script>
+        <script>
+            startCounter('{{.ServerStatus.ServerInfo.Uptime}}')
+        </script>
+        <script src="/www/js/dowloadsButton.js"></script>
+        <script src="/www/js/login_home.js"></script>
+        <script src="/www/js/create_character.js"></script>
+        <script src="/www/js/register_account.js"></script>
+        <script src="/www/js/redirectMenuLogin.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+
+    </html>

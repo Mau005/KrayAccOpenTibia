@@ -4,7 +4,7 @@ MySQL:
   Port: 3306
   UserName: root
   DBPassword: 12345
-  DataBase: tfs
+  DataBase: ot
 
 ServerWeb:
   IP: 0.0.0.0 #generic ip local or global
@@ -28,11 +28,11 @@ ServerWeb:
 
 Server:
   ViewConsole: true
-  LoadServer: true
-  TargetServer: /home/mau/Arkino1310/tfs #Default pathNow case "" empty not found
+  LoadServer: false
+  TargetServer:  #Default pathNow case "" empty not found
 
 Client:
-  Url: sin nada
+  Url: https://link_direct.cl/
   Name: AinhoClient
 
 #APiMODE!
