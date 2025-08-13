@@ -137,15 +137,12 @@ func generateRawSessionKey() ([]byte, error) {
 	return raw, nil
 }
 
-func insertSessionToDB(rawToken []byte, accountID int, ip string) error {
+func insertSessionToDB(accountID int, ip string) error {
 	ipBytes := net.ParseIP(ip)
 	if ipBytes == nil {
 		return fmt.Errorf("invalid IP: %s", ip)
 	}
 	var ses models.Session
-	ses.IP = ipBytes
-	ses.AccountID = int32(accountID)
-	ses.Token = rawToken
 	return db.DB.Create(&ses).Error
 }
 func (pc *PoolConnectionController) preparingSessionClien(account models.Account, ip string, otp string) (models.ClientSession, error) {
@@ -160,7 +157,7 @@ func (pc *PoolConnectionController) preparingSessionClien(account models.Account
 	}
 
 	now := time.Now().Unix()
-	session.IsPremium = int64(account.PremiumEndsAt) > now
+	session.IsPremium = int64(account.PremDays) > now
 	session.LastLoginTime = uint32(now)
 	session.PremiumUntil = uint64(now + 4*3600)
 	session.OptionTracking = false
@@ -173,11 +170,11 @@ func (pc *PoolConnectionController) preparingSessionClien(account models.Account
 	session.SessionKey = fmt.Sprintf("%s\n%s", account.Email, otp)
 
 	// 2) (Opcional) Mantén tu token interno en DB, pero NO lo metas en session.SessionKey
-	rawToken, err := generateRawSessionKey()
-	if err != nil {
-		return session, fmt.Errorf("error generating raw session key: %w", err)
-	}
-	if err := insertSessionToDB(rawToken, account.ID, ipTarget); err != nil {
+	// rawToken, err := generateRawSessionKey()
+	// if err != nil {
+	// 	return session, fmt.Errorf("error generating raw session key: %w", err)
+	// }
+	if err := insertSessionToDB(account.ID, ipTarget); err != nil {
 		log.Println("Error inserting session:", err)
 		return session, err
 	}

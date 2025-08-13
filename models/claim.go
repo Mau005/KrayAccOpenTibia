@@ -6,6 +6,6 @@ type Claim struct {
 	AccountID   int    `json:"id"`
 	AccountName string `json:"username"`
 	Email       string `json:"Email"`
-	TypeAccess  int    `json:"typeaccess"`
+	TypeAccess  uint8  `json:"typeaccess"`
 	jwt.StandardClaims
 }

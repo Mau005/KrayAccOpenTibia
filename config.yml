@@ -29,7 +29,7 @@ ServerWeb:
 Server:
   ViewConsole: true
   LoadServer: false
-  TargetServer: /Users/mau/Proyectos/KrayAccOpenTibia/tfs #Default pathNow case "" empty not found
+  TargetServer:  #Default pathNow case "" empty not found
 
 Client:
   Url: sin nada

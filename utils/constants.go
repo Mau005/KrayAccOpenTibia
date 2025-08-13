@@ -61,7 +61,7 @@ const (
 // Privileges User
 // player == account privileges ID
 const (
-	UserPlayer int = iota + 1
+	UserPlayer uint8 = iota + 1
 	UserTutor
 	UserSeniorTutor
 	UserGameMaster

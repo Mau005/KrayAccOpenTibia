@@ -9,7 +9,7 @@ import (
 )
 
 func CreateMyAccount(account models.Account) string {
-	premmy := account.PremiumEndsAt > uint(time.Now().Unix())
+	premmy := int64(account.PremDays) > time.Now().Unix()
 	premyStatus := "Free Account"
 	if premmy {
 		premyStatus = "Vip Account"

@@ -50,7 +50,7 @@ func AuthPathPublicMiddleware(next http.Handler) http.Handler {
 			navWeb.AccountName = claims.AccountName
 			navWeb.TypeAccess = claims.TypeAccess
 			navWeb.MyPlayers = acc.Players
-			navWeb.IsPremmium = int64(acc.PremiumEndsAt) > time.Now().Unix()
+			navWeb.IsPremmium = int64(acc.PremDays) > time.Now().Unix()
 			navWeb.Authentication = true
 			navWeb.AccountID = claims.AccountID
 		}
