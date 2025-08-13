@@ -88,4 +88,3 @@ Based on the Canary protocol.
 
 Enjoy KrayAccOpenTibia!
 Contributions and comments are welcome.
-
