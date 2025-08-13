@@ -2,7 +2,7 @@
 
 ## Project Description
 
-**KrayAccOpenTibia** is a web application written in Go that functions as an **Account Creator** for OpenTibia servers based on **The Forgotten Server 1.6.x**. It offers a modern web interface for registering, logging in, and managing accounts and characters, and acts as a **unified login server** for multiple worlds.
+**KrayAccOpenTibia** is a web application written in Go that functions as an **Account Creator** for OpenTibia servers based on **Canary Server**. It offers a modern web interface for registering, logging in, and managing accounts and characters, and acts as a **unified login server** for multiple worlds.
 
 ## Key Features
 
@@ -29,11 +29,28 @@
 - (Optional) `KRAY_PASSWORD` environment variable for multiworld
 
 ## Installation
-
-```git clone https://github.com/Mau005/KrayAccOpenTibia.git
+Easy Run all OS:
+```
+git clone https://github.com/Mau005/KrayAccOpenTibia.git
 cd KrayAccOpenTibia
-go to build -o KrayAccWeb
-./KrayAccWeb
+go run .\cmd\server\main.go
+```
+Example Build All OS:
+-Build
+```
+go build .\cmd\server\main.go
+```
+
+
+Compile Proyect: 
+On Windows:
+```
+.\build.ps1 -Target windows-amd64
+```
+On Linux/Mac:
+```
+chmod +x build.sh
+./build.sh -t linux-amd64 -v 1.0.0
 ```
 
 Edit the `config.yml` file to define:
@@ -41,7 +58,9 @@ Edit the `config.yml` file to define:
 - Local world (or no world if it's just an API)
 - List of remote worlds (in `PoolServer`)
 - Default parameters for new characters
+- IP Static tunnel active
 - TLS and other options
+
 
 ## Multiworld
 
@@ -63,9 +82,10 @@ To sync between multiple worlds:
 ## Credits
 
 Developed by **Mau005 / Krayno**
-Based on the Canary protocol and framework.
+Based on the Canary protocol.
 
 ---
 
 Enjoy KrayAccOpenTibia!
 Contributions and comments are welcome.
+
