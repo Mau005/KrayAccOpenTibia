@@ -1,72 +1,71 @@
-# KrayAccOpenTibia – Creador de Cuentas para Servidores OpenTibia (TFS 1.6.x)
+# KrayAccOpenTibia – Account Creator for OpenTibia Servers (Canary)
 
-## Descripción del proyecto
+## Project Description
 
-**KrayAccOpenTibia** es una aplicación web escrita en Go que funciona como un **creador y administrador de cuentas (Account Creator)** para servidores OpenTibia basados en **The Forgotten Server 1.6.x**. Ofrece una interfaz web moderna para registrar, iniciar sesión y gestionar cuentas y personajes, y actúa como **servidor de login unificado** para múltiples mundos.
+**KrayAccOpenTibia** is a web application written in Go that functions as an **Account Creator** for OpenTibia servers based on **The Forgotten Server 1.6.x**. It offers a modern web interface for registering, logging in, and managing accounts and characters, and acts as a **unified login server** for multiple worlds.
 
-## Características clave
+## Key Features
 
-- Soporte multi-mundo (sincronización entre varios servidores)
-- Registro e inicio de sesión de cuentas
-- Gestión de cuentas y personajes desde el navegador
-- Generación automática de tokens de sesión (login para cliente Tibia 11/12)
-- Manejo de cuenta Premium por tiempo
-- Creación de personajes con parámetros configurables
-- Sistema de noticias y noticias para cliente Tibia
-- Highscores (rankings) por mundo y skill
-- Estado del servidor y jugadores online
-- Servidor de login (compatible con OTC/Tibia oficial)
-- API REST para sincronización entre instancias
-- Opción para lanzar y reiniciar el TFS automáticamente
+- Multi-world support (synchronization between multiple servers)
+- Account registration and login
+- Account and character management from the browser
+- Automatic session token generation (login for Tibia 12/13/14 client)
+- Timed Premium Account management
+- Character creation with configurable parameters
+- News and feed system for the Tibia client
+- High scores (rankings) by world and skill
+- Server status and online players
+- Login server (compatible with OTC/official Tibia)
+- REST API for synchronization between instances
+- Option to automatically launch and restart Canary
 
-## Requisitos
+## Requirements
 
 - Go (1.20+)
 - MySQL/MariaDB
-- Esquema de base de datos de TFS 1.6.x
-- Configuración de TFS (config.lua)
-- (Opcional) Certificado TLS
-- (Opcional) Variable de entorno `KRAY_PASSWORD` para multi-mundo
+- Canary database schema 1.6.x
+- Canary configuration (config.lua)
+- (Optional) TLS certificate
+- (Optional) `KRAY_PASSWORD` environment variable for multiworld
 
-## Instalación
+## Installation
 
-```bash
-git clone https://github.com/Mau005/KrayAccOpenTibia.git
+```git clone https://github.com/Mau005/KrayAccOpenTibia.git
 cd KrayAccOpenTibia
-go build -o KrayAccWeb .
+go to build -o KrayAccWeb
 ./KrayAccWeb
 ```
 
-Edita el archivo `config.yml` para definir:
-- Conexión a la base de datos
-- Mundo local (o sin mundo si es sólo API)
-- Lista de mundos remotos (en `PoolServer`)
-- Parámetros por defecto para nuevos personajes
-- TLS y otras opciones
+Edit the `config.yml` file to define:
+- Database connection
+- Local world (or no world if it's just an API)
+- List of remote worlds (in `PoolServer`)
+- Default parameters for new characters
+- TLS and other options
 
-## Multi-Mundo
+## Multiworld
 
-Para sincronización entre varios mundos:
-1. Ejecutar una instancia por mundo (una principal con UI, las otras como API)
-2. Configurar `KRAY_PASSWORD` en todas las instancias
-3. En la principal, llenar `PoolServer` con IPs y tokens de los otros mundos
-4. Al registrar cuentas o personajes, estos se replicarán automáticamente
+To sync between multiple worlds:
+1. Run one instance per world (one main instance with UI, the others as API)
+2. Set `KRAY_PASSWORD` on all instances
+3. On the main instance, populate `PoolServer` with IPs and tokens from the other worlds
+4. When registering accounts or characters, these will be automatically replicated
 
-## Uso
+## Usage
 
-- Registro de cuentas desde la web
-- Inicio de sesión con nombre o email
-- Crear personajes eligiendo mundo
-- Ver lista de personajes y VIP status
-- Compatible con clientes Tibia 11/12 usando login server
-- Rankings, noticias y online list
+- Registering accounts from the web
+- Logging in with name or email
+- Creating characters by choosing a world
+- Viewing the character list and VIP status
+- Compatible with Tibia 11/12 clients using the login server
+- Rankings, news, and online lists
 
-## Créditos
+## Credits
 
-Desarrollado por **Mau005 / Krayno**  
-Basado en el protocolo y estructura de TFS 1.6.x.  
+Developed by **Mau005 / Krayno**
+Based on the Canary protocol and framework.
 
 ---
 
-¡Disfruta de KrayAccOpenTibia!  
-Contribuciones y feedback son bienvenidos.
+Enjoy KrayAccOpenTibia!
+Contributions and comments are welcome.

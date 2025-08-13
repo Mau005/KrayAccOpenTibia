@@ -4,7 +4,7 @@ services:
     container_name: mysql_container
     environment:
       MYSQL_ROOT_PASSWORD: 12345
-      MYSQL_DATABASE: tfs
+      MYSQL_DATABASE: ot
     ports:
       - "3306:3306"
     volumes:
@@ -26,7 +26,7 @@ services:
       - db_network
 
 volumes:
-  mysql_data:  # Volumen para almacenar los datos de MySQL
+  mysql_data:
 
 networks:
-  db_network:  # Red interna para los servicios
+  db_network:
