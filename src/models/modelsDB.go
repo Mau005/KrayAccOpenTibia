@@ -3,7 +3,7 @@ package models
 import "gorm.io/gorm"
 
 type Session struct {
-	ID        string `gorm:"column:id;type:varchar(191);primaryKey;not null" json:"id"`
+	ID        string `gorm:"column:id;type:varchar(191);index:idx_player_id" json:"id"`
 	AccountID uint   `gorm:"column:account_id;type:int unsigned;not null" json:"account_id"`
 	Expires   uint64 `gorm:"column:expires;type:bigint unsigned;not null" json:"expires"`
 }
@@ -52,8 +52,8 @@ type Players struct {
 	LookAddons int `gorm:"column:lookaddons;type:int(11);not null;default:0" json:"lookaddons"`
 
 	MagLevel int `gorm:"column:maglevel;type:int(11);not null;default:0" json:"maglevel"`
-	Mana     int `gorm:"column:mana;type:int(11);not null;default:0" json:"mana"`
-	ManaMax  int `gorm:"column:manamax;type:int(11);not null;default:0" json:"manamax"`
+	Mana     int `gorm:"column:mana;type:int(11);not null;default:55" json:"mana"`
+	ManaMax  int `gorm:"column:manamax;type:int(11);not null;default:55" json:"manamax"`
 
 	ManaSpent uint64 `gorm:"column:manaspent;type:bigint(20) unsigned;not null;default:0" json:"manaspent"`
 	Soul      uint   `gorm:"column:soul;type:int(10) unsigned;not null;default:0" json:"soul"`
@@ -66,7 +66,7 @@ type Players struct {
 
 	Conditions []byte `gorm:"column:conditions;type:mediumblob;not null" json:"conditions"`
 
-	Cap int `gorm:"column:cap;type:int(11);not null;default:0" json:"cap"`
+	Cap int `gorm:"column:cap;type:int(11);not null;default:400" json:"cap"`
 
 	Sex       int    `gorm:"column:sex;type:int(11);not null;default:0" json:"sex"`
 	Pronoun   int    `gorm:"column:pronoun;type:int(11);not null;default:0" json:"pronoun"`
