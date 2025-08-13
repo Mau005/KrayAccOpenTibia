@@ -119,7 +119,6 @@ type PlayerItem struct {
 	PID      int `gorm:"column:pid;not null;default:0;primaryKey"`
 	SID      int `gorm:"column:sid;not null;default:0;primaryKey;index:idx_sid"` // INDEX sid
 
-	// Campos normales (DDL usa int(11) para ambos)
 	ItemType int `gorm:"column:itemtype;not null;default:0"`
 	Count    int `gorm:"column:count;not null;default:0"`
 	// BLOB NOT NULL
