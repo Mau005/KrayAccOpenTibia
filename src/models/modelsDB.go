@@ -32,17 +32,17 @@ type Account struct {
 
 type Players struct {
 	ID   uint   `gorm:"column:id;type:int(11);primaryKey;autoIncrement" json:"id"`
-	Name string `gorm:"column:name;type:varchar(255);unique;not null" json:"name"`
+	Name string `gorm:"column:name;type:varchar(255);unique;not null" json:"name" yaml:"Name"`
 
 	GroupID   int `gorm:"column:group_id;type:int(11);not null;default:1" json:"group_id"`
 	AccountID int `gorm:"column:account_id;type:int(11) unsigned;not null;default:0" json:"account_id"`
 
-	Level     int `gorm:"column:level;type:int(11);not null;default:1" json:"level"`
-	Vocation  int `gorm:"column:vocation;type:int(11);not null;default:0" json:"vocation"`
+	Level     int `gorm:"column:level;type:int(11);not null;default:1" json:"level" yaml:"Level"`
+	Vocation  int `gorm:"column:vocation;type:int(11);not null;default:0" json:"vocation" yaml:"Vocation"`
 	Health    int `gorm:"column:health;type:int(11);not null;default:150" json:"health"`
-	HealthMax int `gorm:"column:healthmax;type:int(11);not null;default:150" json:"healthmax"`
+	HealthMax int `gorm:"column:healthmax;type:int(11);not null;default:150" json:"healthmax" yaml:"HealthMax"`
 
-	Experience uint64 `gorm:"column:experience;type:bigint(20);not null;default:0" json:"experience"`
+	Experience uint64 `gorm:"column:experience;type:bigint(20);not null;default:0" json:"experience" yaml:"Experience"`
 
 	LookBody   int `gorm:"column:lookbody;type:int(11);not null;default:0" json:"lookbody"`
 	LookFeet   int `gorm:"column:lookfeet;type:int(11);not null;default:0" json:"lookfeet"`
@@ -53,12 +53,12 @@ type Players struct {
 
 	MagLevel int `gorm:"column:maglevel;type:int(11);not null;default:0" json:"maglevel"`
 	Mana     int `gorm:"column:mana;type:int(11);not null;default:55" json:"mana"`
-	ManaMax  int `gorm:"column:manamax;type:int(11);not null;default:55" json:"manamax"`
+	ManaMax  int `gorm:"column:manamax;type:int(11);not null;default:55" json:"manamax" yaml:"ManaMax"`
 
 	ManaSpent uint64 `gorm:"column:manaspent;type:bigint(20) unsigned;not null;default:0" json:"manaspent"`
 	Soul      uint   `gorm:"column:soul;type:int(10) unsigned;not null;default:0" json:"soul"`
 
-	TownID int `gorm:"column:town_id;type:int(11);not null;default:1" json:"town_id"`
+	TownID int `gorm:"column:town_id;type:int(11);not null;default:1" json:"town_id" yaml:"TownID"`
 
 	PosX int `gorm:"column:posx;type:int(11);not null;default:0" json:"posx"`
 	PosY int `gorm:"column:posy;type:int(11);not null;default:0" json:"posy"`
@@ -66,7 +66,7 @@ type Players struct {
 
 	Conditions []byte `gorm:"column:conditions;type:mediumblob;not null" json:"conditions"`
 
-	Cap int `gorm:"column:cap;type:int(11);not null;default:400" json:"cap"`
+	Cap int `gorm:"column:cap;type:int(11);not null;default:400" json:"cap" yaml:"Cap"`
 
 	Sex       int    `gorm:"column:sex;type:int(11);not null;default:0" json:"sex"`
 	Pronoun   int    `gorm:"column:pronoun;type:int(11);not null;default:0" json:"pronoun"`
