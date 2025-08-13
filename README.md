@@ -2,7 +2,7 @@
 
 ## Descripción del proyecto
 
-**KrayAccOpenTibia** es una aplicación web escrita en Go que funciona como un **creador y administrador de cuentas (Account Creator)** para servidores OpenTibia basados en **The Forgotten Server 1.6.x**. Ofrece una interfaz web moderna para registrar, iniciar sesión y gestionar cuentas y personajes, y actúa como **servidor de login unificado** para múltiples mundos.
+**KrayAccOpenTibia** es una aplicación web escrita en Go que funciona como un **creador y administrador de cuentas (Account Creator)** para servidores OpenTibia basados en **The Forgotten Server 1.6.x**. Ofrece una interfaz web moderna para registrar, iniciar sesión y gestionar cuentas y personajes, y actúa como **servidor de login unificado** para múltiples mundos. **DEPRECADO**
 
 ## Características clave
 
