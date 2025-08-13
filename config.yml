@@ -21,9 +21,9 @@ ServerWeb:
     Level: 1
     Experience: 1
     HealthMax: 150
-    ManaMax: 10
+    ManaMax: 55
     Cap: 400
-    TownID: 6
+    TownID: 1
     Vocation: 0
 
 Server:

@@ -6,6 +6,7 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fatih/color v1.17.0
 	github.com/go-yaml/yaml v2.1.0+incompatible
+	github.com/google/uuid v1.6.0
 	github.com/gorilla/context v1.1.2
 	github.com/gorilla/mux v1.8.1
 	github.com/yuin/gopher-lua v1.1.1

@@ -17,6 +17,7 @@ import (
 	"github.com/Mau005/KrayAccOpenTibia/src/db"
 	"github.com/Mau005/KrayAccOpenTibia/src/models"
 	"github.com/Mau005/KrayAccOpenTibia/src/utils"
+	"github.com/google/uuid"
 )
 
 type PoolConnectionController struct{}
@@ -134,6 +135,7 @@ func insertSessionToDB(accountID int, ip string) error {
 		return fmt.Errorf("invalid IP: %s", ip)
 	}
 	var ses models.Session
+	ses.ID = uuid.NewString()
 	return db.DB.Create(&ses).Error
 }
 func (pc *PoolConnectionController) preparingSessionClien(account models.Account, ip string, otp string) (models.ClientSession, error) {
