@@ -9,3 +9,9 @@ type NewsTicket struct {
 	PlayersID int
 	Player    Players `gorm:"foreignKey:PlayersID;references:ID"`
 }
+
+type NewsShort struct {
+	gorm.Model
+	IconID      uint8
+	Description string
+}
