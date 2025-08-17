@@ -96,16 +96,18 @@ func main() {
 		create_manifest()
 		return
 	} else {
-		man, err := os.ReadFile("manifest.json")
+		man, err := os.ReadFile("./manifest.json")
 		if err != nil {
 			utils.ErrorFatal(err.Error())
 		}
 
-		err = yaml.Unmarshal(man, &config.Manifest)
+		err = json.Unmarshal(man, &config.Manifest)
 		if err != nil {
 			utils.ErrorFatal(err.Error())
 		}
 	}
+
+	fmt.Println(config.Manifest.BaseURL)
 	controller.InitTemporaryEmpty()
 
 	r := mux.NewRouter()
