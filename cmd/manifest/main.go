@@ -81,15 +81,6 @@ func loadDependency() error {
 	}
 	config.Global = global
 
-	man, err := os.ReadFile("manifest.json")
-	if err != nil {
-		return err
-	}
-
-	err = yaml.Unmarshal(man, &config.Manifest)
-	if err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -104,6 +95,16 @@ func main() {
 	if *preparing {
 		create_manifest()
 		return
+	} else {
+		man, err := os.ReadFile("manifest.json")
+		if err != nil {
+			utils.ErrorFatal(err.Error())
+		}
+
+		err = yaml.Unmarshal(man, &config.Manifest)
+		if err != nil {
+			utils.ErrorFatal(err.Error())
+		}
 	}
 	controller.InitTemporaryEmpty()
 
