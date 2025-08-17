@@ -18,6 +18,9 @@
 - Login server (compatible with OTC/official Tibia)
 - REST API for synchronization between instances
 - Option to automatically launch and restart Canary
+- Added News Short
+- Added manifest to update clients at the atomic level
+- Added manifest tool to create manifest and host independently of the website
 
 ## Requirements
 
@@ -28,27 +31,63 @@
 - (Optional) TLS certificate
 - (Optional) `KRAY_PASSWORD` environment variable for multiworld
 
+## Manifest
+**ManifestTools** It is used with the launcher to be able to have a client automation session, this process is atomic level on the part of the launcher since it is configured only to download what is necessary
+
+### Maniferst Config
+
+Dev:
+```bash
+go run .\cmd\manifest\ -create_manifest
+```
+will create a manifest of all the data added to the .\client folder in the project root
+
+Dev:
+```bash
+go run .\cmd\manifest\
+```
+It will run a mini server, independent of the web, for other OpenTibia projects or any type of program that requires it, obviously it will use the same configuration as the standard KrayACC project.
+
+```json
+{
+  "app": "AinhoOT",
+  "version": "1.0.0",
+  "base_url": "https://ainho.ddns.net/launcher_client",
+  "files": [
+    {
+      "path": "sounds/sounds-926b9436418eb757089bbc3600e889d60f7b211f065eaf308216676fb8e61807.dat",
+      "size": 90882,
+      "sha256": "926b9436418eb757089bbc3600e889d60f7b211f065eaf308216676fb8e61807"
+    }
+  ]
+}
+```
+- app: "project name"
+- version: "versioning to be used"
+- base_url: "available static path where the client will search for the files"
+- files: list of hashed files with a size to be verified by the client
+
 ## Installation
 Easy Run all OS:
-```
+```bash
 git clone https://github.com/Mau005/KrayAccOpenTibia.git
 cd KrayAccOpenTibia
 go run .\cmd\server\main.go
 ```
 Example Build All OS:
 -Build
-```
+```bash
 go build .\cmd\server\main.go
 ```
 
 
 Compile Proyect: 
 On Windows:
-```
+```bash
 .\build.ps1 -Target windows-amd64
 ```
 On Linux/Mac:
-```
+```bash
 chmod +x build.sh
 ./build.sh -t linux-amd64 -v 1.0.0
 ```
