@@ -14,8 +14,16 @@ Write-Host "Received target: [$TargetNorm]"
 # --- Base paths (always relative to this script) ---
 $Root        = $PSScriptRoot
 $App         = "KrayACC"
+
+# Server package
 $PkgDir      = Join-Path $Root "cmd/server"
 $Pkg         = "./cmd/server"   # go build uses repo-relative paths
+
+# Manifest tool package
+$PkgManifestDir = Join-Path $Root "cmd/manifest"
+$PkgManifest    = "./cmd/manifest"
+$ToolName       = "manifest"
+
 $Ld          = "-s -w -X main.Version=$Version"
 $Syso        = Join-Path $PkgDir "app.syso"
 $Dist        = Join-Path $Root "dist"
@@ -89,8 +97,12 @@ function Ensure-IconIcns {
 }
 
 function Copy-Assets($dest){
-  Copy-Item (Join-Path $Root "config.yml") $dest
-  Copy-Item (Join-Path $Root "www") -Recurse $dest
+  if (Test-Path (Join-Path $Root "config.yml")) {
+    Copy-Item (Join-Path $Root "config.yml") $dest
+  }
+  if (Test-Path (Join-Path $Root "www")) {
+    Copy-Item (Join-Path $Root "www") -Recurse $dest
+  }
 
   # Copy PNG for Linux/desktop use
   $png = Get-IconPngPath
@@ -125,9 +137,14 @@ function Build-Windows {
   }
   Pop-Location
 
+  # Server
   $env:GOOS="windows"; $env:GOARCH="amd64"; $env:CGO_ENABLED="0"
-  Say "==> Building Windows/amd64 (console)"
+  Say "==> Building Windows/amd64 (console) - server"
   go build -trimpath -ldflags="$Ld" -o (Join-Path $outdir "${App}.exe") $Pkg
+
+  # Tool (manifest)
+  Say "==> Building Windows/amd64 (console) - tool '$ToolName'"
+  go build -trimpath -ldflags="$Ld" -o (Join-Path $outdir "${ToolName}.exe") $PkgManifest
 
   Copy-Assets $outdir
 
@@ -140,9 +157,14 @@ function Build-Linux($arch){
 
   if (Test-Path $Syso) { Remove-Item $Syso } # syso is Windows-only
 
+  # Server
   $env:GOOS="linux"; $env:GOARCH=$arch; $env:CGO_ENABLED="0"
-  Say "==> Building Linux/$arch (console)"
+  Say "==> Building Linux/$arch (console) - server"
   go build -trimpath -ldflags="$Ld" -o (Join-Path $outdir $App) $Pkg
+
+  # Tool (manifest)
+  Say "==> Building Linux/$arch (console) - tool '$ToolName'"
+  go build -trimpath -ldflags="$Ld" -o (Join-Path $outdir $ToolName) $PkgManifest
 
   Copy-Assets $outdir
 
@@ -173,9 +195,14 @@ function Build-Mac($arch){
 
   if (Test-Path $Syso) { Remove-Item $Syso } # syso is Windows-only
 
+  # Server
   $env:GOOS="darwin"; $env:GOARCH=$arch; $env:CGO_ENABLED="0"
-  Say "==> Building macOS/$arch (console)"
+  Say "==> Building macOS/$arch (console) - server"
   go build -trimpath -ldflags="$Ld" -o (Join-Path $outdir $App) $Pkg
+
+  # Tool (manifest)
+  Say "==> Building macOS/$arch (console) - tool '$ToolName'"
+  go build -trimpath -ldflags="$Ld" -o (Join-Path $outdir $ToolName) $PkgManifest
 
   Copy-Assets $outdir
 
@@ -232,14 +259,19 @@ Usage:
   .\build.ps1 -Target <target> [-Version 1.2.3] [-Force]
 
 Targets:
-  windows-amd64  -> Console EXE with icon/version (app.syso)
-  linux-amd64    -> Console binary + config.yml + www + .desktop (+ icon.png from icon.png or icon.iconset)
-  linux-arm64    -> Same for ARM64
-  darwin-amd64   -> Console binary + optional .app (uses icon.icns or auto-generates from icon.iconset on macOS)
-  darwin-arm64   -> Same for Apple Silicon (M1/M2)
-  all            -> Build everything (cleans dist/ root)
+  windows-amd64  -> Console EXE con icon/version (app.syso)
+  linux-amd64    -> Binario + config.yml + www + .desktop (+ icon.png de icon.png o icon.iconset)
+  linux-arm64    -> Igual para ARM64
+  darwin-amd64   -> Binario + opcional .app (usa icon.icns o genera desde icon.iconset en macOS)
+  darwin-arm64   -> Igual para Apple Silicon (M1/M2)
+  all            -> Compila todo (limpia dist/ root)
 
-Examples:
+Salida por target (dist/<target>/):
+  - 'KrayACC' / 'KrayACC.exe'  (server)
+  - 'manifest' / 'manifest.exe' (tool de cmd/manifest)
+  - assets: config.yml, www/, iconos y .desktop (Linux)
+
+Ejemplos:
   .\build.ps1 -Target windows-amd64 -Version 1.0.1
   .\build.ps1 -Target linux-amd64
   .\build.ps1 -Target all -Force
