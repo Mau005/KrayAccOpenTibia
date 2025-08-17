@@ -16,7 +16,7 @@ func AutoMigrate(DB *gorm.DB) {
 
 	DB.AutoMigrate(&models.Account{})
 	DB.AutoMigrate(&models.Players{}, &models.PlayerDeath{}, &models.PlayersOnline{}, &models.PlayerItem{})
-	DB.AutoMigrate(&models.NewsTicket{})
+	DB.AutoMigrate(&models.NewsTicket{}, &models.NewsShort{})
 	DB.AutoMigrate(&models.Towns{})
 	DB.AutoMigrate(&models.PlayersNames{})
 	DB.AutoMigrate(&models.Session{})

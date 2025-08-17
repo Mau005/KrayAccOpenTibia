@@ -2,6 +2,7 @@ package config
 
 import (
 	"crypto/rand"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -23,6 +24,8 @@ import (
 var PoolWorld []models.ClientWorld
 var Global *models.Configuration
 var SecurityPoolConnection string
+
+var Manifest models.Manifest
 var SecretPassword []byte
 var Welcome string = `
 ____  __.                      _____                
@@ -138,6 +141,17 @@ func Load(filename string) error {
 	)
 	if err != nil {
 		return err
+	}
+	jsonFile, err := os.ReadFile("manifest.json")
+	if err == nil {
+		err = json.Unmarshal(jsonFile, &Manifest)
+		if err == nil {
+			utils.Info("Manifest loaded successfully Version: ", Manifest.Version)
+		} else {
+			utils.Warn("Manifest not support.")
+		}
+	} else {
+		utils.Warn("Manifest not Load.")
 	}
 
 	utils.Info("Environment variables are added OK")

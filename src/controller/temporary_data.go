@@ -18,6 +18,10 @@ type TemporaryData struct {
 	ServStatus      []models.ServerStatus
 }
 
+func InitTemporaryEmpty() {
+	TempData = &TemporaryData{ServStatusTotal: models.ServerStatus{}}
+}
+
 func LoadTemporaryData() error {
 	TempData = &TemporaryData{ServStatusTotal: models.ServerStatus{}}
 	var api ApiController

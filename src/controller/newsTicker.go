@@ -87,3 +87,15 @@ func (ntc *NewsTickerController) PutTicker(ticker models.NewsTicket) (models.New
 	}
 	return ticker, nil
 }
+
+func (ntc *NewsTickerController) GetNewsShort() (news []models.NewsShort) {
+	db.DB.Limit(5).Order("created_at DESC").Find(&news)
+	return
+}
+
+func (ntc *NewsTickerController) CreateNewsShort(newsenter models.NewsShort) (models.NewsShort, error) {
+	if err := db.DB.Create(&newsenter).Error; err != nil {
+		return newsenter, err
+	}
+	return newsenter, nil
+}

@@ -17,12 +17,14 @@ func NewRouter() *mux.Router {
 	r := mux.NewRouter()
 
 	fs := http.FileServer(http.Dir("./www"))
+
 	if !config.Global.ServerWeb.ApiMode {
 		//WEB Active!
+		lauch := http.FileServer(http.Dir("./client"))
 		r.Use(middleware.AuthPathPublicMiddleware)
 		r.PathPrefix("/www/").Handler(http.StripPrefix("/www/", fs))
 		r.HandleFunc("/get_news_ticket", NewsTickerHandler.GetTicket).Methods("GET") //API PUBLIC
-
+		r.PathPrefix("/launcher_client").Handler(http.StripPrefix("/launcher_client", lauch))
 		var homeHandler handler.HomeHandler
 		r.HandleFunc("/", homeHandler.GetHome).Methods("GET")              //Public
 		r.HandleFunc("/world_map", homeHandler.GetWorldMap).Methods("GET") //Public
@@ -39,6 +41,8 @@ func NewRouter() *mux.Router {
 		var highscoreHandler handler.HighScorehandler
 		r.HandleFunc("/highscore", highscoreHandler.ViewHighScore).Methods("GET")
 		r.HandleFunc("/highscore/{world}/{id}", highscoreHandler.GetHighScoreHandler).Methods("POST")
+
+		r.HandleFunc("/get_news_short", NewsTickerHandler.GetNewsShort).Methods("GET")
 
 		//Not Found
 		// r.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -63,6 +67,7 @@ func NewRouter() *mux.Router {
 		s.HandleFunc("/create_character", handlerAccount.CreateCharacter).Methods("POST")
 		s.HandleFunc("/change_password", handlerAccount.PostChangePassword).Methods("POST")
 		s.HandleFunc("/create_news_ticket", NewsTickerHandler.CreateTicket).Methods("POST")
+		s.HandleFunc("/create_news_short", NewsTickerHandler.CreateNewsShort).Methods("POST")
 
 	}
 
@@ -89,6 +94,9 @@ func NewRouter() *mux.Router {
 	// Router client connections
 	ctl := r.PathPrefix("/client").Subrouter()
 	ctl.Use(middleware.CommonMiddleware)
+	var maniHandler handler.ManifestHandler
+	ctl.HandleFunc("/manifest", maniHandler.GetManifiest).Methods("GET")
+	ctl.HandleFunc("/info", maniHandler.GetInfo).Methods("GET")
 
 	var handlerClientConnect handler.HandlerClientConnect
 	ctl.HandleFunc("/cacheinfo", handlerClientConnect.CacheInfoHandler)

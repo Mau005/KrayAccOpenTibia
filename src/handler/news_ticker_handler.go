@@ -11,9 +11,11 @@ import (
 	"github.com/gorilla/context"
 )
 
-type NewsTicketHandler struct{}
+type NewsTicketHandler struct {
+	ntc controller.NewsTickerController
+}
 
-func (ntc *NewsTicketHandler) GetTicketLimited(w http.ResponseWriter, r *http.Request) {
+func (nth *NewsTicketHandler) GetTicketLimited(w http.ResponseWriter, r *http.Request) {
 
 }
 
@@ -79,4 +81,46 @@ func (ntc *NewsTicketHandler) GetTicket(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
+}
+func (nth *NewsTicketHandler) GetNewsShort(w http.ResponseWriter, r *http.Request) {
+	json.NewEncoder(w).Encode(struct {
+		NewsShort []models.NewsShort
+	}{
+		NewsShort: nth.ntc.GetNewsShort(),
+	})
+}
+
+func (ntc *NewsTicketHandler) CreateNewsShort(w http.ResponseWriter, r *http.Request) {
+	var exceptCtl controller.ExceptionController
+	claim := context.Get(r, utils.CtxClaim).(models.Claim)
+
+	if claim.TypeAccess <= utils.UserCommunityManager {
+		utils.WarnLog(fmt.Sprintf("account name %s try create news short", claim.AccountName))
+		fmt.Println(claim)
+		return
+	}
+
+	var newsShort models.NewsShort
+
+	err := json.NewDecoder(r.Body).Decode(&newsShort)
+	if err != nil {
+		utils.Warn("error decode json in create news ticker")
+		exceptCtl.Exeption(err.Error(), http.StatusConflict, w)
+		return
+	}
+
+	var newsTicketCtl controller.NewsTickerController
+	newsShort, err = newsTicketCtl.CreateNewsShort(newsShort)
+	if err != nil {
+		utils.Warn(err.Error())
+		exceptCtl.Exeption(err.Error(), http.StatusConflict, w)
+		return
+	}
+
+	err = json.NewEncoder(w).Encode(&newsShort)
+	if err != nil {
+		utils.Warn("error encoder json in create news ticker")
+		exceptCtl.Exeption(err.Error(), http.StatusConflict, w)
+		return
+	}
 }
